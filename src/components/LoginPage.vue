@@ -78,6 +78,9 @@ export default {
       this.$refs.form.validate();
       if (this.$refs.form.validate() === true) {
         this.formValid = true;
+        setTimeout(() => {
+          this.$router.push('/home');
+        }, 1000);
       } else {
         this.formValid = false;
       }
