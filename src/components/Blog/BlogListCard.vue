@@ -20,7 +20,12 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn class="read-more-btn" text color="deep-purple accent-4">
+        <v-btn
+          v-on:click="redirect"
+          class="read-more-btn"
+          text
+          color="deep-purple accent-4"
+        >
           Read More
         </v-btn>
       </v-card-actions>
