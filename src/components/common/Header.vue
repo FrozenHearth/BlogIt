@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card color="grey lighten-4" flat tile>
-      <v-toolbar>
+      <v-toolbar class="header-toolbar">
         <img :src="headerLogo" alt="Header Logo" width="75" height="50" />
         <v-toolbar-title class="header-title">Blog It</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -31,6 +31,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.header-toolbar {
+  position: fixed;
+  width: 100%;
+  z-index: 2;
+}
 .header-title {
   margin-left: 1em;
 }
