@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-content>
     <div class="card-list-container">
       <h1 class="card-list-container-title">Latest Posts</h1>
       <BlogListCard />
@@ -12,7 +12,7 @@
         ></v-pagination>
       </div>
     </div>
-  </div>
+  </v-content>
 </template>
 
 <script>

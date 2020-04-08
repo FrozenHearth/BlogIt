@@ -8,7 +8,7 @@
         <v-btn class="profile-icon" icon>
           <v-icon>mdi-account</v-icon>
         </v-btn>
-        <v-app-bar-nav-icon @click.stop="toggleSidebar"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       </v-toolbar>
     </v-card>
     <BlogSidebar :toggleDrawer="drawer" />
@@ -22,13 +22,8 @@ export default {
   name: 'Header',
   data: () => ({
     headerLogo: ZayaHeaderLogo,
-    drawer: null
+    drawer: false
   }),
-  methods: {
-    toggleSidebar() {
-      this.drawer = !this.drawer;
-    }
-  },
   components: {
     BlogSidebar
   }
