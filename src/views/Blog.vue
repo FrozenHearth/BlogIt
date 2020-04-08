@@ -1,13 +1,13 @@
 <template>
-  <BlogDetails />
+  <ViewBlog />
 </template>
 
 <script>
-import BlogDetails from '../components/Blog/BlogDetails';
+import ViewBlog from '../components/container/ViewBlog';
 export default {
   name: 'Blog',
   components: {
-    BlogDetails
+    ViewBlog
   }
 };
 </script>
