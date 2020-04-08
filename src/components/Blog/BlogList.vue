@@ -1,25 +1,29 @@
 <template>
-  <div class="card-list-container">
-    <h1 class="card-list-container-title">Latest Posts</h1>
-    <BlogListCard />
-    <div class="text-center pagination-container">
-      <v-pagination
-        @input="next"
-        v-model="page"
-        :length="4"
-        circle
-      ></v-pagination>
+  <div>
+    <div class="card-list-container">
+      <h1 class="card-list-container-title">Latest Posts</h1>
+      <BlogListCard />
+      <div class="text-center pagination-container">
+        <v-pagination
+          @input="next"
+          v-model="page"
+          :length="4"
+          circle
+        ></v-pagination>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import BlogListCard from './BlogListCard';
+
 export default {
   name: 'BlogList',
   components: {
     BlogListCard
   },
+
   data() {
     return {
       page: 1
