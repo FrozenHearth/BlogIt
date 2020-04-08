@@ -1,15 +1,11 @@
 <template>
   <v-navigation-drawer
-    height="100%"
+    class="side-nav-drawer"
     v-model="toggleDrawer"
+    app
     fixed
-    temporary
     right
   >
-    <v-list-item> </v-list-item>
-
-    <v-divider></v-divider>
-
     <v-list dense>
       <v-list-item>
         <v-list-item-content>
@@ -41,17 +37,21 @@
 <script>
 export default {
   props: {
+    source: String,
     toggleDrawer: Boolean
   },
   data() {
     return {
-      drawer: this.toggleDrawer
+      drawer: this.toggleDrawer,
+      isClosed: false
     };
   }
 };
 </script>
-
-<style>
+<style lang="scss">
+.side-nav-drawer {
+  top: 6.5em !important;
+}
 .search-icon {
   position: relative;
   top: 1.6em;
