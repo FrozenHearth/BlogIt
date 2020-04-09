@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -16,5 +16,6 @@
   text-align: center;
   color: #2c3e50;
   font-size: 10px;
+  background-color: #fafafa;
 }
 </style>
