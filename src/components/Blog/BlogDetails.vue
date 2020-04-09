@@ -1,6 +1,6 @@
 <template>
   <v-content>
-    <div class="fill-height" fluid>
+    <div class="blog-details-container">
       <img :src="image" alt="" class="feature-image" />
       <div class="blog-header">
         <div class="blog-title-container">
@@ -8,13 +8,7 @@
             Top 10 places to visit in Yoho National Park
           </h2>
         </div>
-        <div class="author-details">
-          <v-avatar color="primary">
-            <span id="author-initials" class="white--text headline ">VS</span>
-          </v-avatar>
-          <span class="author-name">Vishwanath B</span>
-          <p class="blog-posted-date">{{ todaysDate() }}</p>
-        </div>
+        <UserInfo />
         <div class="tags-container">
           <v-chip class="ma-2" outlined>
             Nature
@@ -49,26 +43,36 @@
         </div>
       </div>
     </div>
+    <div class="comment-header-container">
+      <h3 class="comment-header">Comments</h3>
+    </div>
+    <AddComment />
+    <CommentList />
   </v-content>
 </template>
 
 <script>
 import NatureImage from '../../assets/nature.jpeg';
-import moment from 'moment';
+import UserInfo from '../common/UserInfo';
+import CommentList from '../comments/CommentList';
+import AddComment from '../comments/AddComment';
 export default {
   name: 'BlogDetails',
   data: () => ({
     image: NatureImage
   }),
-  methods: {
-    todaysDate() {
-      return moment(new Date()).format('DD/MM/YYYY');
-    }
+  components: {
+    UserInfo,
+    CommentList,
+    AddComment
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.blog-details-container {
+  margin-bottom: 10em;
+}
 .blog-header {
   width: 43em;
   position: relative;
@@ -96,22 +100,6 @@ export default {
 .author-details {
   position: absolute;
 }
-#author-initials {
-  font-size: 1.5em !important;
-}
-.author-name {
-  font-size: 1.5em;
-  font-weight: 500;
-  position: relative;
-  left: 1em;
-  bottom: 0.5em;
-}
-.blog-posted-date {
-  font-size: 1.5em;
-  position: relative;
-  left: 2.1em;
-  bottom: 1.5em;
-}
 .blog-description-container {
   position: relative;
   top: 8em;
@@ -123,5 +111,15 @@ export default {
   line-height: 35px;
   font-weight: 400;
   word-spacing: -2px;
+}
+.comment-header-container {
+  width: 60em;
+  display: flex;
+  margin: 0 auto;
+}
+.comment-header {
+  font-weight: 500;
+  font-size: 1.7em;
+  margin-bottom: 1em;
 }
 </style>

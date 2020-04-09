@@ -48,7 +48,7 @@ export default {
   }
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .side-nav-drawer {
   top: 6.5em !important;
 }
