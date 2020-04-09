@@ -1,5 +1,5 @@
 <template>
-  <div class="author-details">
+  <div>
     <v-avatar color="primary" min-width="36" width="36" height="36">
       <span id="author-initials" class="white--text headline ">VS</span>
     </v-avatar>
