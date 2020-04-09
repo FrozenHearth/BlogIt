@@ -1,6 +1,6 @@
 <template>
   <div class="author-details">
-    <v-avatar color="primary">
+    <v-avatar color="primary" min-width="36" width="36" height="36">
       <span id="author-initials" class="white--text headline ">VS</span>
     </v-avatar>
     <span class="author-name">Vishwanath B</span>
@@ -20,9 +20,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #author-initials {
-  font-size: 1.5em !important;
+  font-size: 1.3em !important;
 }
 .author-name {
   font-size: 1.5em;

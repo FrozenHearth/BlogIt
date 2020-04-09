@@ -1,6 +1,5 @@
 <template>
   <div class="comment-list-wrapper">
-    <h3 class="comment-header">Comments</h3>
     <div class="comment-list" fluid>
       <UserInfo />
       <span class="icon-container">
@@ -60,7 +59,7 @@ export default {
   flex-direction: column;
   align-items: flex-start;
   width: 60em;
-  margin: 0 auto;
+  margin: 0 auto 4em auto;
 }
 .comment-list {
   border: 1px solid rgba(0, 0, 0, 0.09);
@@ -80,11 +79,7 @@ export default {
   right: 2em;
   top: 1.9em;
 }
-.comment-header {
-  font-weight: 500;
-  font-size: 1.7em;
-  margin-bottom: 1em;
-}
+
 .comment-text {
   text-align: justify;
   font-size: 1.6em;

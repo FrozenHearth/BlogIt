@@ -43,6 +43,10 @@
         </div>
       </div>
     </div>
+    <div class="comment-header-container">
+      <h3 class="comment-header">Comments</h3>
+    </div>
+    <AddComment />
     <CommentList />
   </v-content>
 </template>
@@ -51,6 +55,7 @@
 import NatureImage from '../../assets/nature.jpeg';
 import UserInfo from '../common/UserInfo';
 import CommentList from '../comments/CommentList';
+import AddComment from '../comments/AddComment';
 export default {
   name: 'BlogDetails',
   data: () => ({
@@ -58,7 +63,8 @@ export default {
   }),
   components: {
     UserInfo,
-    CommentList
+    CommentList,
+    AddComment
   }
 };
 </script>
@@ -105,5 +111,15 @@ export default {
   line-height: 35px;
   font-weight: 400;
   word-spacing: -2px;
+}
+.comment-header-container {
+  width: 60em;
+  display: flex;
+  margin: 0 auto;
+}
+.comment-header {
+  font-weight: 500;
+  font-size: 1.7em;
+  margin-bottom: 1em;
 }
 </style>
