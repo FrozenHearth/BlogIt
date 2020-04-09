@@ -44,7 +44,7 @@ export default {
 }
 .card-list-container-title {
   position: absolute;
-  left: 2em;
+  left: 3em;
   font-size: 2.5em;
   font-weight: 400;
 }

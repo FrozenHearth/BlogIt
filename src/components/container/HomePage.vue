@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header />
-    <BlogList />
+    <BlogList class="blog-list-wrapper" />
   </div>
 </template>
 
@@ -17,3 +17,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.blog-list-wrapper {
+  margin-top: 5em;
+}
+</style>
