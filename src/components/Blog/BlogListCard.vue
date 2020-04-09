@@ -53,7 +53,7 @@ export default {
   top: 5em;
 }
 .card {
-  margin: 2em 10em 5em auto;
+  margin: 2em 5em 5em 5em;
   max-width: 35em;
   position: relative;
   left: 2em;
