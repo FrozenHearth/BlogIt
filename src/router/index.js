@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Login from '../views/Login.vue';
 import Home from '../views/Home.vue';
 import Blog from '../views/Blog.vue';
+import CreateBlog from '../views/CreateBlog.vue';
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/blog/:id',
     name: 'Blog',
     component: Blog
+  },
+  {
+    path: '/addBlog',
+    name: 'CreateBlog',
+    component: CreateBlog
   }
 ];
 
