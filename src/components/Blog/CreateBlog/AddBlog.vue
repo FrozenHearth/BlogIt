@@ -39,10 +39,10 @@
             </v-chip>
           </div>
         </v-col>
-        <v-btn class="publish-btn" color="primary">
+        <v-btn v-on:click="publishPost" class="publish-btn" color="primary">
           Publish
         </v-btn>
-        <v-btn color="success">
+        <v-btn v-on:click="saveAsDraft" color="success">
           Save as Draft
         </v-btn>
       </v-form>
@@ -62,6 +62,14 @@ export default {
       this.tagname = target.value;
       this.tags.push(this.tagname);
       target.value = '';
+    },
+    publishPost() {
+      // POST API Call to be added later here when backend is ready
+      this.$router.push('/myPublished');
+    },
+    saveAsDraft() {
+      // POST API Call to be added later here when backend is ready
+      this.$router.push('/myDrafts');
     }
   }
 };
