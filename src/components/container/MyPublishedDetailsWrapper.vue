@@ -1,19 +1,19 @@
 <template>
   <div>
     <Header />
-    <BlogDetails />
+    <PublishedDetails />
   </div>
 </template>
 
 <script>
 import Header from '../common/Header';
-import BlogDetails from '../Blog/BlogDetails';
+import PublishedDetails from '../Blog/MyPublishedDetails/PublishedDetails';
 
 export default {
-  name: 'HomePage',
+  name: 'MyPublishedDetailsWrapper',
   components: {
     Header,
-    BlogDetails
+    PublishedDetails
   }
 };
 </script>

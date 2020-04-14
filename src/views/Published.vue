@@ -1,13 +1,13 @@
 <template>
-  <MyPublished />
+  <MyPublishedWrapper />
 </template>
 
 <script>
-import MyPublished from '../components/container/MyPublished';
+import MyPublishedWrapper from '../components/container/MyPublishedWrapper';
 export default {
-  name: 'Blog',
+  name: 'Published',
   components: {
-    MyPublished
+    MyPublishedWrapper
   }
 };
 </script>

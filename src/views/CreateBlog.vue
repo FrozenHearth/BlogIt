@@ -1,13 +1,13 @@
 <template>
-  <NewBlog />
+  <AddBlogWrapper />
 </template>
 
 <script>
-import NewBlog from '../components/container/NewBlog';
+import AddBlogWrapper from '../components/container/AddBlogWrapper';
 export default {
-  name: 'Blog',
+  name: 'CreateBlog',
   components: {
-    NewBlog
+    AddBlogWrapper
   }
 };
 </script>

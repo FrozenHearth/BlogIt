@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Login from '../views/Login.vue';
-import Home from '../views/Home.vue';
-import Blog from '../views/Blog.vue';
+import Blogs from '../views/Blogs.vue';
+import SingleBlog from '../views/SingleBlog.vue';
 import CreateBlog from '../views/CreateBlog.vue';
 import Published from '../views/Published.vue';
-import PublishedView from '../views/PublishedView.vue';
+import PublishedDetails from '../views/PublishedDetails.vue';
 
 Vue.use(VueRouter);
 
@@ -16,14 +16,14 @@ const routes = [
     component: Login
   },
   {
-    path: '/home',
-    name: 'Home',
-    component: Home
+    path: '/blogs',
+    name: 'Blogs',
+    component: Blogs
   },
   {
     path: '/blog/:id',
-    name: 'Blog',
-    component: Blog
+    name: 'SingleBlog',
+    component: SingleBlog
   },
   {
     path: '/addBlog',
@@ -37,8 +37,8 @@ const routes = [
   },
   {
     path: '/myPublished/:id',
-    name: 'PublishedView',
-    component: PublishedView
+    name: 'PublishedDetails',
+    component: PublishedDetails
   }
 ];
 

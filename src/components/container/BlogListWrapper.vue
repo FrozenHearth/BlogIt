@@ -7,10 +7,10 @@
 
 <script>
 import Header from '../common/Header';
-import BlogList from '../Blog/BlogList';
+import BlogList from '../Blog/BlogList/BlogList';
 
 export default {
-  name: 'HomePage',
+  name: 'BlogListWrapper',
   components: {
     Header,
     BlogList

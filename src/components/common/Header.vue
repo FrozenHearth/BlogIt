@@ -17,7 +17,7 @@
 
 <script>
 import ZayaHeaderLogo from '../../assets/Zaya_Header_Logo.png';
-import BlogSidebar from '../Blog/BlogSidebar';
+import BlogSidebar from '../common/BlogSidebar';
 export default {
   name: 'Header',
   data: () => ({
