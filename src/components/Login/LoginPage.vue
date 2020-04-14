@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import ZayaLogo from '../assets/Zaya_Logo.png';
+import ZayaLogo from '../../assets/Zaya_Logo.png';
 export default {
   name: 'Login',
   data: () => ({
@@ -79,7 +79,7 @@ export default {
       if (this.$refs.form.validate() === true) {
         this.formValid = true;
         setTimeout(() => {
-          this.$router.push('/home');
+          this.$router.push('/blogs');
         }, 1000);
       } else {
         this.formValid = false;

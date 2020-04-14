@@ -62,10 +62,10 @@
 </template>
 
 <script>
-import NatureImage from '../../assets/nature.jpeg';
-import UserInfo from '../common/UserInfo';
-import CommentList from '../comments/CommentList';
-import AddComment from '../comments/AddComment';
+import NatureImage from '../../../assets/nature.jpeg';
+import UserInfo from '../../common/UserInfo';
+import CommentList from '../../Comments/CommentList';
+import AddComment from '../../Comments/AddComment';
 export default {
   name: 'PublishedDetails',
   data: () => ({

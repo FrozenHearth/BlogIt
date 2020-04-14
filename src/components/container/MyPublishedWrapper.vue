@@ -7,10 +7,10 @@
 
 <script>
 import Header from '../common/Header';
-import PublishedBlogList from '../Blog/PublishedBlogList';
+import PublishedBlogList from '../Blog/MyPublished/PublishedBlogList';
 
 export default {
-  name: 'MyPublished',
+  name: 'MyPublishedWrapper',
   components: {
     Header,
     PublishedBlogList
