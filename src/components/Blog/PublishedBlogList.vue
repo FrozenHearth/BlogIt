@@ -2,6 +2,9 @@
   <v-content>
     <div class="card-list-container">
       <h1 class="card-list-container-title">My Published</h1>
+      <v-btn v-on:click="goToNewBlog" class="new-blog-btn" color="success"
+        >New Blog</v-btn
+      >
       <MyPublishedCard />
       <div class="text-center pagination-container">
         <v-pagination
@@ -32,12 +35,15 @@ export default {
   methods: {
     next() {
       console.log(this.page);
+    },
+    goToNewBlog() {
+      this.$router.push('/addBlog');
     }
   }
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .card-list-container {
   position: relative;
   top: 5em;
@@ -47,6 +53,11 @@ export default {
   left: 3em;
   font-size: 2.5em;
   font-weight: 400;
+}
+.new-blog-btn {
+  float: right;
+  position: relative;
+  right: 7em;
 }
 .pagination-container {
   margin-top: 5em;
