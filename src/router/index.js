@@ -4,6 +4,8 @@ import Login from '../views/Login.vue';
 import Home from '../views/Home.vue';
 import Blog from '../views/Blog.vue';
 import CreateBlog from '../views/CreateBlog.vue';
+import Published from '../views/Published.vue';
+import PublishedView from '../views/PublishedView.vue';
 
 Vue.use(VueRouter);
 
@@ -27,6 +29,16 @@ const routes = [
     path: '/addBlog',
     name: 'CreateBlog',
     component: CreateBlog
+  },
+  {
+    path: '/myPublished',
+    name: 'Published',
+    component: Published
+  },
+  {
+    path: '/myPublished/:id',
+    name: 'PublishedView',
+    component: PublishedView
   }
 ];
 
