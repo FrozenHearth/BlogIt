@@ -5,7 +5,9 @@ import Blogs from '../views/Blogs.vue';
 import SingleBlog from '../views/SingleBlog.vue';
 import CreateBlog from '../views/CreateBlog.vue';
 import Published from '../views/Published.vue';
+import MyDrafts from '../views/MyDrafts.vue';
 import PublishedDetails from '../views/PublishedDetails.vue';
+import MyDraftsDetails from '../views/MyDraftsDetails.vue';
 
 Vue.use(VueRouter);
 
@@ -39,6 +41,16 @@ const routes = [
     path: '/myPublished/:id',
     name: 'PublishedDetails',
     component: PublishedDetails
+  },
+  {
+    path: '/myDrafts',
+    name: 'MyDrafts',
+    component: MyDrafts
+  },
+  {
+    path: '/myDrafts/:id',
+    name: 'MyDraftsDetails',
+    component: MyDraftsDetails
   }
 ];
 
