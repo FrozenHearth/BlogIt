@@ -11,6 +11,10 @@
       </div>
       <div class="author-details-wrapper">
         <UserInfo />
+        <div class="btn-container">
+          <v-btn class="edit-btn" color="success">Edit</v-btn>
+          <v-btn class="delete-btn" color="error">Delete</v-btn>
+        </div>
       </div>
       <div class="tags-container">
         <v-chip class="ma-2" outlined>
@@ -105,6 +109,13 @@ export default {
   display: flex;
   position: relative;
   top: 2em;
+}
+.btn-container {
+  position: absolute;
+  right: 0;
+}
+.edit-btn {
+  margin-right: 1em;
 }
 .tags-container {
   display: flex;
