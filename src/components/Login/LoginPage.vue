@@ -27,7 +27,7 @@
     <v-form ref="form" v-model="valid">
       <v-col :style="{ margin: '1em auto 0 auto' }" cols="12" sm="6" md="3">
         <v-text-field
-          v-model="name"
+          v-model="username"
           :counter="30"
           :rules="nameRules"
           solo
@@ -54,12 +54,13 @@
 
 <script>
 import ZayaLogo from '../../assets/Zaya_Logo.png';
+import { loginService } from '../../utils/authService';
 export default {
   name: 'Login',
   data: () => ({
     valid: true,
     formValid: '',
-    name: '',
+    username: '',
     nameRules: [
       v => !!v || 'Username cannot be blank',
       v => /^[a-zA-Z ]/.test(v) || 'Username must be valid',
@@ -77,12 +78,17 @@ export default {
     validateLogin() {
       this.$refs.form.validate();
       if (this.$refs.form.validate() === true) {
-        this.formValid = true;
-        setTimeout(() => {
-          this.$router.push('/blogs');
-        }, 1000);
-      } else {
-        this.formValid = false;
+        const { username, password } = this;
+        loginService({ username, password })
+          .then(() => {
+            this.formValid = true;
+            setTimeout(() => {
+              this.$router.push('/blogs');
+            }, 1000);
+          })
+          .catch(() => {
+            this.formValid = false;
+          });
       }
     }
   }
@@ -93,7 +99,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 h3 {
   margin: 40px 0 0;
