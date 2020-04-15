@@ -10,6 +10,7 @@ export const loginService = user =>
       .then(resp => {
         const token = resp.data.token;
         localStorage.setItem('user-token', token);
+        localStorage.setItem('username', user.username);
         resolve(resp);
       })
       .catch(err => {

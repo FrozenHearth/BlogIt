@@ -16,7 +16,11 @@
         <v-menu content-class="avatar-dropdown-menu">
           <template v-slot:activator="{ on }">
             <v-btn v-on="on" class="profile-icon" icon>
-              <v-icon>mdi-account</v-icon>
+              <v-avatar color="primary" min-width="36" width="36" height="36">
+                <span id="user-initials" class="white--text headline ">{{
+                  username.charAt(0).toUpperCase()
+                }}</span>
+              </v-avatar>
             </v-btn>
           </template>
 
@@ -65,7 +69,8 @@ export default {
   data: () => ({
     headerLogo: ZayaHeaderLogo,
     drawer: false,
-    logoutSuccessful: false
+    logoutSuccessful: false,
+    username: localStorage.getItem('username')
   }),
   methods: {
     redirectToHomePage() {
@@ -100,6 +105,9 @@ export default {
 .header-title {
   margin-left: 1em;
   cursor: pointer;
+}
+#user-initials {
+  font-size: 1.2em !important;
 }
 .profile-icon {
   position: absolute;
