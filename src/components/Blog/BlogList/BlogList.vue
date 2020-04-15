@@ -2,7 +2,7 @@
   <v-content>
     <div class="card-list-container">
       <h1 class="card-list-container-title">Latest Posts</h1>
-      <BlogListCard />
+      <BlogListCard v-bind:blogs="blogs" />
       <div class="text-center pagination-container">
         <v-pagination
           @input="next"
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import BlogListCard from './BlogListCard';
 
 export default {
@@ -26,8 +27,14 @@ export default {
 
   data() {
     return {
-      page: 1
+      page: 1,
+      blogs: []
     };
+  },
+  created() {
+    axios.get(`${axios.defaults.baseURL}/blogapp/blogs`).then(res => {
+      this.blogs = res.data.results;
+    });
   },
   methods: {
     next() {
