@@ -4,20 +4,34 @@
       solo
       placeholder="Write a response..."
       height="130"
+      v-model="text"
     ></v-textarea>
-    <v-btn class="post-comment-btn" color="primary">Post</v-btn>
+    <v-btn @click.prevent="addComment" class="post-comment-btn" color="primary"
+      >Post</v-btn
+    >
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: 'AddComment',
   data: () => ({
-    expandCommentBox: false
+    text: ''
   }),
+  props: ['blogId'],
   methods: {
-    expand() {
-      this.expandCommentBox = !this.expandCommentBox;
+    addComment() {
+      axios
+        .post(
+          `${axios.defaults.baseURL}/blogapp/blogs/${this.blogId}/comments`,
+          {
+            text: this.text
+          }
+        )
+        .then(() => {
+          this.text = '';
+        });
     }
   }
 };

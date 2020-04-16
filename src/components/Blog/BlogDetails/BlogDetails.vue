@@ -40,13 +40,12 @@
     <div class="comment-header-container">
       <h3 class="comment-header">Comments</h3>
     </div>
-    <AddComment />
+    <AddComment :blogId="blogId" />
     <CommentList :allComments="blog.commentsList" />
   </v-content>
 </template>
 
 <script>
-// import NatureImage from '../../../assets/nature.jpeg';
 import UserInfo from '../../common/UserInfo';
 import CommentList from '../../Comments/CommentList';
 import AddComment from '../../Comments/AddComment';
@@ -62,10 +61,12 @@ export default {
       blogDetails: '',
       blogTags: [],
       commentsList: []
-    }
+    },
+    blogId: ''
   }),
   mounted() {
     const { id } = this.$route.params;
+    this.blogId = id;
     axios.get(`${axios.defaults.baseURL}/blogapp/blogs/${id}`).then(res => {
       const {
         title,
@@ -82,6 +83,13 @@ export default {
       this.blog.blogDetails = details;
       this.blog.image = picture_url;
       this.blog.blogTags = tag_details;
+      this.blog.commentsList = JSON.parse(JSON.stringify(comment_details));
+    });
+  },
+  updated() {
+    const { id } = this.$route.params;
+    axios.get(`${axios.defaults.baseURL}/blogapp/blogs/${id}`).then(res => {
+      const { comment_details } = res.data;
       this.blog.commentsList = JSON.parse(JSON.stringify(comment_details));
     });
   },
