@@ -19,6 +19,7 @@ export default {
     axios.defaults.baseURL = 'https://blog-api-ver1.herokuapp.com';
     if (this.token) {
       axios.defaults.headers.common = { Authorization: `Token ${this.token}` };
+      if (this.$route.path === '/') this.$router.push('/blogs');
     }
   }
 };

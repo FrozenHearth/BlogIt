@@ -1,7 +1,15 @@
 <template>
   <div class="comment-list-wrapper">
-    <div class="comment-list" fluid>
-      <UserInfo />
+    <div
+      v-for="comment in allComments"
+      :key="comment.id"
+      class="comment-list"
+      fluid
+    >
+      <UserInfo
+        :initials="comment.user_name"
+        :datePosted="comment.updated_date"
+      />
       <span class="icon-container">
         <v-btn text icon>
           <v-icon>mdi-pencil</v-icon>
@@ -11,33 +19,7 @@
         </v-btn>
       </span>
       <p class="comment-text">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit
-        deleniti nesciunt corporis illo delectus qui quidem at repellat dolore
-        quos porro vero, et aliquid id eos officia? Nihil, nisi impedit. Lorem
-        ipsum dolor sit amet consectetur adipisicing elit.
-      </p>
-    </div>
-    <div class="comment-list" fluid>
-      <UserInfo />
-      <span class="icon-container">
-        <v-btn text icon>
-          <v-icon>mdi-pencil</v-icon>
-        </v-btn>
-        <v-btn text icon>
-          <v-icon>mdi-delete</v-icon>
-        </v-btn>
-      </span>
-      <p class="comment-text">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit
-        deleniti nesciunt corporis illo delectus qui quidem at repellat dolore
-        quos porro vero, et aliquid id eos officia? Nihil, nisi impedit. Lorem
-        ipsum dolor sit amet consectetur adipisicing elit. Explicabo,
-        necessitatibus expedita odio quaerat accusantium est fugit, dolorem ea
-        doloremque atque officia corporis ullam reiciendis repellendus neque
-        cum, voluptate animi commodi! Lorem ipsum dolor sit amet consectetur
-        adipisicing elit. Corporis temporibus, libero quam illo, repellat alias
-        fugit blanditiis repellendus in ratione reiciendis? Enim, eum explicabo
-        adipisci nam molestias id quas amet!
+        {{ comment.text }}
       </p>
     </div>
   </div>
@@ -47,6 +29,7 @@
 import UserInfo from '../common/UserInfo';
 export default {
   name: 'CommentList',
+  props: ['allComments'],
   components: {
     UserInfo
   }
@@ -67,6 +50,7 @@ export default {
   border-radius: 3px;
   margin: 0 auto;
   position: relative;
+  width: 60em;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
