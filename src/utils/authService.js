@@ -21,4 +21,5 @@ export const loginService = user =>
 
 export const logoutService = () => {
   localStorage.removeItem('user-token');
+  localStorage.removeItem('username');
 };

@@ -5,9 +5,9 @@
       <BlogListCard v-bind:blogs="blogs" />
       <div class="text-center pagination-container">
         <v-pagination
-          @input="next"
-          v-model="page"
-          :length="4"
+          @input="pageChange"
+          v-model="pagination.current"
+          :length="pageCount / 6"
           circle
         ></v-pagination>
       </div>
@@ -27,18 +27,39 @@ export default {
 
   data() {
     return {
-      page: 1,
-      blogs: []
+      pagination: {
+        current: 1
+      },
+      blogs: [],
+      nextPage: '',
+      previousPage: '',
+      pageCount: 0
     };
   },
   created() {
     axios.get(`${axios.defaults.baseURL}/blogapp/blogs`).then(res => {
       this.blogs = res.data.results;
+      this.pageCount = res.data.count;
     });
   },
   methods: {
-    next() {
-      console.log(this.page);
+    pageChange(event) {
+      if (event > 1) {
+        axios
+          .get(
+            `${axios.defaults.baseURL}/blogapp/blogs?limit=6&offset=${event *
+              6}`
+          )
+          .then(res => {
+            this.blogs = res.data.results;
+            this.pageCount = res.data.count;
+          });
+      } else {
+        axios.get(`${axios.defaults.baseURL}/blogapp/blogs`).then(res => {
+          this.blogs = res.data.results;
+          this.pageCount = res.data.count;
+        });
+      }
     }
   }
 };
