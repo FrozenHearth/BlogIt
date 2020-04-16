@@ -33,7 +33,7 @@
       ></v-img>
 
       <v-card-text>
-        {{ blog.details }}
+        {{ blog.details | truncate(50) }}
       </v-card-text>
 
       <v-card-actions>
@@ -50,7 +50,17 @@
 <script>
 export default {
   name: 'BlogListCard',
-  props: ['blogs']
+  props: ['blogs'],
+  filters: {
+    truncate(value, size) {
+      if (!value) return '';
+      value = value.toString();
+      if (value.length <= size) {
+        return value;
+      }
+      return value.substring(0, size) + '...';
+    }
+  }
 };
 </script>
 
