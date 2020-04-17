@@ -8,7 +8,7 @@
     <span class="author-name">{{
       initials ? initials.charAt(0).toUpperCase() + initials.slice(1) : 'N/A'
     }}</span>
-    <p class="blog-posted-date">{{ todaysDate() }}</p>
+    <p class="posted-date">{{ todaysDate() }}</p>
   </div>
 </template>
 
@@ -40,10 +40,10 @@ export default {
   left: 1em;
   bottom: 0.5em;
 }
-.blog-posted-date {
+.posted-date {
   font-size: 1.3em;
   position: relative;
-  left: 3em;
+  left: 3.4em;
   bottom: 1.5em;
 }
 </style>

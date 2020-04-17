@@ -2,12 +2,12 @@
   <v-content>
     <div class="card-list-container">
       <h1 class="card-list-container-title">Latest Posts</h1>
-      <BlogListCard v-bind:blogs="blogs" />
+      <BlogListCard v-if="blogs.length > 0" v-bind:blogs="blogs" />
       <div class="text-center pagination-container">
         <v-pagination
           @input="pageChange"
           v-model="pagination.current"
-          :length="pageCount / 6"
+          :length="pageCount"
           circle
         ></v-pagination>
       </div>
@@ -39,7 +39,7 @@ export default {
   created() {
     axios.get(`${axios.defaults.baseURL}/blogapp/blogs`).then(res => {
       this.blogs = res.data.results;
-      this.pageCount = res.data.count;
+      this.pageCount = Math.ceil(res.data.count / 6);
     });
   },
   methods: {
@@ -52,12 +52,12 @@ export default {
           )
           .then(res => {
             this.blogs = res.data.results;
-            this.pageCount = res.data.count;
+            // this.pageCount = Math.ceil(res.data.count / 6);
           });
       } else {
         axios.get(`${axios.defaults.baseURL}/blogapp/blogs`).then(res => {
           this.blogs = res.data.results;
-          this.pageCount = res.data.count;
+          // this.pageCount = Math.ceil(res.data.count / 6);
         });
       }
     }
