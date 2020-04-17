@@ -2,20 +2,36 @@
   <v-content>
     <div class="add-blog-container">
       <v-alert
+        class="alert-banner"
         width="300"
-        :style="{ position: 'absolute', right: '2em' }"
         v-if="blogPublished === true"
         type="success"
       >
         Blog successfully published!
       </v-alert>
       <v-alert
+        class="alert-banner"
         width="300"
-        :style="{ position: 'absolute', right: '2em' }"
         v-if="blogPublished === false"
         type="error"
       >
         Failed to publish blog! Please check the entered details.
+      </v-alert>
+      <v-alert
+        class="alert-banner"
+        width="300"
+        v-if="blogDeleted === true"
+        type="success"
+      >
+        Successfully Deleted Blog!
+      </v-alert>
+      <v-alert
+        class="alert-banner"
+        width="300"
+        v-if="blogDeleted === false"
+        type="error"
+      >
+        Failed to Delete Blog!
       </v-alert>
       <v-form ref="form">
         <v-col :style="{ margin: '1em auto 0 auto' }" cols="12" sm="6" md="4">
@@ -41,8 +57,6 @@
             :rules="fileRules"
             @change="onImageUpload"
             v-model="file"
-            clearable
-            ref="myFile"
             accept="image/*"
             label="Upload an image"
             solo
@@ -73,17 +87,51 @@
           </v-alert>
 
           <div class="entered-tags-list">
-            <v-chip v-for="(tag, index) in tagNames" :key="index" class="ma-2">
-              {{ tag }}
+            <v-chip
+              close
+              @click="removeTag(singleTag.id)"
+              v-for="singleTag in tagNames"
+              :key="singleTag.id"
+              class="tag ma-2"
+            >
+              {{ singleTag.tag }}
             </v-chip>
           </div>
         </v-col>
-        <v-btn v-on:click="publishPost" class="publish-btn" color="primary">
-          Publish
-        </v-btn>
-        <v-btn v-on:click="saveAsDraft" color="success">
-          Save as Draft
-        </v-btn>
+        <div class="btn-container">
+          <v-btn
+            v-if="mode === 'create'"
+            v-on:click="publishPost"
+            class="publish-btn"
+            color="primary"
+          >
+            Publish
+          </v-btn>
+          <v-btn
+            v-if="mode === 'edit'"
+            @click="updateBlog"
+            class="publish-btn"
+            color="primary"
+          >
+            Update
+          </v-btn>
+          <v-btn
+            @click="deleteBlog"
+            v-if="mode === 'edit'"
+            class="delete-btn"
+            color="error"
+          >
+            Delete
+          </v-btn>
+
+          <v-btn
+            v-on:click="saveAsDraft"
+            class="save-as-draft-btn"
+            color="success"
+          >
+            Save as Draft
+          </v-btn>
+        </div>
       </v-form>
     </div>
   </v-content>
@@ -97,14 +145,17 @@ export default {
     file: null,
     title: '',
     details: '',
+    mode: 'create',
     pic: '',
-    user: 0,
     tag: 0,
     tagNames: [],
+    user: null,
     tagIds: [],
     uploadedPic: '',
     blogPublished: null,
+    blogDeleted: null,
     imageUploaded: false,
+    imageUpdated: false,
     isLoading: false,
     tagExists: false,
     titleRules: [
@@ -125,6 +176,35 @@ export default {
       v => /^[a-zA-Z0-9 ]/.test(v) || 'Tag names must be valid'
     ]
   }),
+  mounted() {
+    if (this.$route.params.id) {
+      this.mode = 'edit';
+      const { id } = this.$route.params;
+      axios
+        .get(`${axios.defaults.baseURL}/blogapp/blogs/${id}`)
+        .then(res => {
+          console.log(JSON.parse(JSON.stringify(res.data)));
+          const {
+            title,
+            details,
+            picture_url,
+            tag_details,
+            user,
+            pic
+          } = res.data;
+          this.title = title;
+          this.details = details;
+          this.uploadedPic = picture_url;
+          this.tagNames = tag_details;
+          this.imageUploaded = true;
+          this.user = user;
+          this.pic = pic;
+        })
+        .catch(err => console.log(err));
+    } else {
+      this.mode = 'create';
+    }
+  },
   methods: {
     onImageUpload() {
       this.isLoading = true;
@@ -136,7 +216,6 @@ export default {
         axios
           .post(`${axios.defaults.baseURL}/blogapp/picture`, fd)
           .then(res => {
-            console.log(res.data);
             this.uploadedPic = res.data.pic;
             this.pic = res.data.id;
             this.isLoading = false;
@@ -156,7 +235,7 @@ export default {
           })
           .then(res => {
             this.tag = res.data.id;
-            this.tagNames.push(res.data.tag);
+            this.tagNames.push(res.data);
             this.tagIds.push(this.tag);
             target.value = '';
             this.tagExists = false;
@@ -169,17 +248,56 @@ export default {
     },
     publishPost() {
       this.$refs.form.validate();
+      if (
+        this.title !== '' &&
+        this.details !== '' &&
+        this.pic !== '' &&
+        this.tags !== ''
+      ) {
+        axios
+          .post(`${axios.defaults.baseURL}/blogapp/blogs`, {
+            title: this.title,
+            details: this.details,
+            pic: this.pic,
+            tags: this.tagNames
+          })
+          .then(() => {
+            this.blogPublished = true;
+            setTimeout(() => {
+              window.scrollTo(0, 0);
+              this.$router.push('/myPublished');
+            }, 1000);
+          })
+          .catch(err => {
+            console.log(err);
+            this.blogPublished = false;
+          });
+      }
+    },
+    saveAsDraft() {
+      // POST API Call to be added later here when backend is ready
+      this.$router.push('/myDrafts');
+    },
+    removeTag(id) {
+      this.tagNames = this.tagNames.filter(el => el.id !== id);
+    },
+    updateBlog() {
+      const { id } = this.$route.params;
+      this.$refs.form.validate();
+      const tagIds = JSON.parse(JSON.stringify(this.tagNames.map(el => el.id)));
       axios
-        .post(`${axios.defaults.baseURL}/blogapp/blogs`, {
+        .put(`${axios.defaults.baseURL}/blogapp/blogs/${id}`, {
           title: this.title,
           details: this.details,
           pic: this.pic,
-          tags: this.tagIds
+          tags: tagIds,
+          user: this.user
         })
         .then(() => {
           this.blogPublished = true;
+          window.scrollTo(0, 0);
           setTimeout(() => {
-            this.$router.push('/myPublished');
+            this.$router.push(`/myPublished/${id}`);
           }, 1000);
         })
         .catch(err => {
@@ -187,9 +305,21 @@ export default {
           this.blogPublished = false;
         });
     },
-    saveAsDraft() {
-      // POST API Call to be added later here when backend is ready
-      this.$router.push('/myDrafts');
+    deleteBlog() {
+      const { id } = this.$route.params;
+      axios
+        .delete(`${axios.defaults.baseURL}/blogapp/blogs/${id}`)
+        .then(() => {
+          window.scrollTo(0, 0);
+          this.blogDeleted = true;
+          setTimeout(() => {
+            this.$router.push('/myPublished');
+          }, 1000);
+        })
+        .catch(() => {
+          window.scrollTo(0, 0);
+          this.blogDeleted = false;
+        });
     }
   }
 };
@@ -201,10 +331,22 @@ export default {
   top: 10em;
   margin-bottom: 5em;
 }
+.alert-banner {
+  position: absolute;
+  right: 2em;
+}
 .entered-tags-list {
   display: flex;
+  flex-wrap: wrap;
 }
-.publish-btn {
+.btn-container {
+  display: flex;
+  margin: 0 auto;
+  width: 45em;
+}
+.publish-btn,
+.delete-btn,
+.save-as-draft-btn {
   margin-right: 1em;
 }
 .v-input__icon {
@@ -230,8 +372,5 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-.publish-btn {
-  margin-left: -13em;
 }
 </style>
