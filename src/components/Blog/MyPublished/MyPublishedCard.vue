@@ -1,33 +1,47 @@
 <template>
   <v-container fluid class="card-container">
-    <v-card v-for="n in 6" :key="n" class="card">
-      <!-- Repeat the card 6 times. Later will be replaced by dynamic rendering -->
+    <v-card v-for="blog in publishedBlogs" :key="blog.id" class="card">
       <v-list-item>
-        <v-list-item-avatar color="grey"></v-list-item-avatar>
+        <v-list-item-avatar
+          color="primary"
+          min-width="36"
+          width="36"
+          height="36"
+        >
+          <span id="author-initials" class="white--text headline ">{{
+            blog.author_name.charAt(0).toUpperCase()
+          }}</span>
+        </v-list-item-avatar>
         <v-list-item-content>
-          <v-list-item-title class="headline">Blog Title</v-list-item-title>
-          <v-list-item-subtitle>by Vishwanath</v-list-item-subtitle>
+          <v-list-item-title class="headline">{{
+            blog.title
+          }}</v-list-item-title>
+          <v-list-item-subtitle
+            >by
+            {{
+              blog.author_name.charAt(0).toUpperCase() +
+                blog.author_name.slice(1)
+            }}</v-list-item-subtitle
+          >
         </v-list-item-content>
       </v-list-item>
 
       <v-img
+        v-if="blog.picture_url"
         class="blog-image"
-        src="https://cdn.vuetifyjs.com/images/cards/mountain.jpg"
+        :src="blog.picture_url"
       ></v-img>
 
       <v-card-text>
-        This is the blog description. 50 characters.
+        {{ blog.details | truncate(50) }}
       </v-card-text>
 
       <v-card-actions>
-        <v-btn
-          v-on:click="redirect"
-          class="read-more-btn"
-          text
-          color="deep-purple accent-4"
-        >
-          Read More
-        </v-btn>
+        <router-link class="read-more-link" :to="`/myPublished/${blog.id}`">
+          <v-btn class="read-more-btn" text color="deep-purple accent-4">
+            Read More
+          </v-btn>
+        </router-link>
       </v-card-actions>
     </v-card>
   </v-container>
@@ -36,10 +50,15 @@
 <script>
 export default {
   name: 'MyPublishedCard',
-  methods: {
-    redirect() {
-      this.$router.push('/myPublished/123');
-      // 123 will be replaced with blog id generated from the backend
+  props: ['publishedBlogs'],
+  filters: {
+    truncate(value, size) {
+      if (!value) return '';
+      value = value.toString();
+      if (value.length <= size) {
+        return value;
+      }
+      return value.substring(0, size) + '...';
     }
   }
 };
@@ -78,6 +97,9 @@ export default {
   position: relative;
   bottom: 4em;
   left: -3em;
+}
+.read-more-link {
+  text-decoration: none;
 }
 .read-more-btn {
   margin: 0 auto;
