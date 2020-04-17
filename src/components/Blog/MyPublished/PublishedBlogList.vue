@@ -2,15 +2,12 @@
   <v-content>
     <div class="card-list-container">
       <h1 class="card-list-container-title">My Published</h1>
-      <v-btn v-on:click="goToNewBlog" class="new-blog-btn" color="success"
-        >New Blog</v-btn
-      >
-      <MyPublishedCard />
+      <MyPublishedCard v-bind:publishedBlogs="publishedBlogs" />
       <div class="text-center pagination-container">
         <v-pagination
-          @input="next"
-          v-model="page"
-          :length="4"
+          @input="pageChange"
+          v-model="pagination.current"
+          :length="pageCount"
           circle
         ></v-pagination>
       </div>
@@ -20,7 +17,7 @@
 
 <script>
 import MyPublishedCard from './MyPublishedCard';
-
+import axios from 'axios';
 export default {
   name: 'PublishedBlogList',
   components: {
@@ -29,12 +26,41 @@ export default {
 
   data() {
     return {
-      page: 1
+      pagination: {
+        current: 1
+      },
+      publishedBlogs: [],
+      nextPage: '',
+      previousPage: '',
+      pageCount: 0
     };
   },
+  created() {
+    axios.get(`${axios.defaults.baseURL}/blogapp/my-published`).then(res => {
+      console.log(res.data);
+      this.publishedBlogs = res.data.results;
+      this.pageCount = Math.ceil(res.data.count / 6);
+    });
+  },
   methods: {
-    next() {
-      console.log(this.page);
+    pageChange(event) {
+      if (event > 1) {
+        axios
+          .get(
+            `${
+              axios.defaults.baseURL
+            }/blogapp/my-published?limit=6&offset=${event * 6}`
+          )
+          .then(res => {
+            this.publishedBlogs = res.data.results;
+          });
+      } else {
+        axios
+          .get(`${axios.defaults.baseURL}/blogapp/my-published`)
+          .then(res => {
+            this.publishedBlogs = res.data.results;
+          });
+      }
     },
     goToNewBlog() {
       this.$router.push('/addBlog');
