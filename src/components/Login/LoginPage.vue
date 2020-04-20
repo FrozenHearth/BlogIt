@@ -92,10 +92,6 @@ export default {
       }
     }
   }
-  // props: {
-  //   msg: String,
-  //   title: String
-  // }
 };
 </script>
 

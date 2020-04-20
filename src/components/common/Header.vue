@@ -63,7 +63,6 @@
 <script>
 import ZayaHeaderLogo from '../../assets/Zaya_Header_Logo.png';
 import BlogSidebar from '../common/BlogSidebar';
-import { logoutService } from '../../utils/authService';
 export default {
   name: 'Header',
   data: () => ({
@@ -83,11 +82,12 @@ export default {
       this.$router.push('/myPublished');
     },
     logout() {
-      logoutService();
+      localStorage.removeItem('user-token');
+      localStorage.removeItem('username');
       this.logoutSuccessful = true;
       setTimeout(() => {
         this.$router.push('/');
-      }, 500);
+      }, 1000);
     }
   },
   components: {
