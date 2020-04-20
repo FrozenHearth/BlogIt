@@ -2,30 +2,19 @@
   <v-container>
     <v-alert
       width="300"
-      :style="{ position: 'absolute', right: '2em' }"
+      class="alert-banner"
       v-if="formValid === false"
       type="error"
     >
       Login Failed. Please enter valid credentials.
     </v-alert>
-    <v-alert
-      width="300"
-      :style="{ position: 'absolute', right: '2em' }"
-      v-if="formValid === true"
-      type="success"
-    >
+    <v-alert width="300" v-if="formValid === true" type="success">
       Login Successful.
     </v-alert>
-    <v-img
-      :style="{ margin: '0 auto' }"
-      :src="logo"
-      alt="logo"
-      width="200"
-      height="150"
-    />
+    <v-img class="logo" :src="logo" alt="logo" width="200" height="150" />
 
     <v-form ref="form" v-model="valid">
-      <v-col :style="{ margin: '1em auto 0 auto' }" cols="12" sm="6" md="3">
+      <v-col class="username-container" cols="12" sm="6" md="3">
         <v-text-field
           v-model="username"
           :counter="30"
@@ -35,7 +24,7 @@
           label="Username"
         ></v-text-field>
       </v-col>
-      <v-col :style="{ margin: '0 auto' }" cols="12" sm="6" md="3">
+      <v-col class="password-container" cols="12" sm="6" md="3">
         <v-text-field
           v-model="password"
           :counter="15"
@@ -102,18 +91,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h3 {
-  margin: 40px 0 0;
+.alert-banner {
+  position: absolute;
+  right: 2em;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+.logo {
+  margin: 0 auto;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+.username-container {
+  margin: 1em auto 0 auto;
 }
-a {
-  color: #42b983;
+.password-container {
+  margin: 0 auto;
 }
 </style>

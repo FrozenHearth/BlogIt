@@ -46,11 +46,7 @@
     </v-card>
     <v-alert
       width="300"
-      :style="{
-        position: 'absolute',
-        right: '6em',
-        top: '5em'
-      }"
+      class="alert-banner-logout"
       v-if="logoutSuccessful === true"
       type="success"
     >
@@ -108,6 +104,11 @@ export default {
 }
 #user-initials {
   font-size: 1.2em !important;
+}
+.alert-banner-logout {
+  position: absolute;
+  right: 6em;
+  top: 5em;
 }
 .profile-icon {
   position: absolute;

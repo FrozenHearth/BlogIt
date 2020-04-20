@@ -4,7 +4,6 @@
       class="alert-banner"
       width="300"
       v-if="commentUpdated === true"
-      :style="{ position: 'absolute', top: '5em', right: '2em' }"
       type="success"
     >
       Comment successfully updated!
@@ -13,7 +12,6 @@
       class="alert-banner"
       width="300"
       v-if="commentUpdated === false"
-      :style="{ position: 'absolute', top: '5em', right: '2em' }"
       type="error"
     >
       Failed to update comment!
@@ -22,7 +20,6 @@
       class="alert-banner"
       width="300"
       v-if="commentDeleted === true"
-      :style="{ position: 'absolute', top: '5em', right: '2em' }"
       type="success"
     >
       Comment successfully deleted!
@@ -31,7 +28,6 @@
       class="alert-banner"
       width="300"
       v-if="commentDeleted === false"
-      :style="{ position: 'absolute', top: '5em', right: '2em' }"
       type="error"
     >
       Failed to deleted comment!
@@ -135,6 +131,11 @@ export default {
   display: flex;
   flex-direction: column;
   position: relative;
+}
+.alert-banner {
+  position: absolute;
+  top: 5em;
+  right: 2em;
 }
 .title {
   display: flex;
