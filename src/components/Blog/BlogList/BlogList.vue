@@ -31,16 +31,21 @@ export default {
         current: 1
       },
       blogs: [],
+      tag_details: [],
       nextPage: '',
       previousPage: '',
       pageCount: 0
     };
   },
   created() {
-    axios.get(`${axios.defaults.baseURL}/blogapp/blogs`).then(res => {
-      this.blogs = res.data.results;
-      this.pageCount = Math.ceil(res.data.count / 6);
-    });
+    axios
+      .get(`${axios.defaults.baseURL}/blogapp/blogs`)
+      .then(res => {
+        this.blogs = res.data.results;
+        this.tag_details = res.data.tag_details;
+        this.pageCount = Math.ceil(res.data.count / 6);
+      })
+      .catch(err => console.log(err));
   },
   methods: {
     pageChange(event) {
