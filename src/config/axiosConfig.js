@@ -7,7 +7,7 @@ const instance = axios.create({
 });
 
 if (token) {
-  instance.defaults.headers.common = { Authorization: `Token ${this.token}` };
+  instance.defaults.headers.common = { Authorization: `Token ${token}` };
 }
 
 export default instance;

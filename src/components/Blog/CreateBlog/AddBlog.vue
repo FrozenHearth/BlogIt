@@ -109,14 +109,14 @@
           </v-btn>
           <v-btn
             v-if="mode === 'edit'"
-            @click="updateBlog"
+            @click="onUpdateBlog"
             class="publish-btn"
             color="primary"
           >
             Update
           </v-btn>
           <v-btn
-            @click="deleteBlog"
+            @click="onDeleteBlog"
             v-if="mode === 'edit'"
             class="delete-btn"
             color="error"
@@ -139,6 +139,13 @@
 
 <script>
 import axios from 'axios';
+import {
+  imageUpload,
+  addTags,
+  createBlog,
+  updateBlog,
+  deleteBlog
+} from '../../../apis/api';
 export default {
   name: 'AddBlog',
   data: () => ({
@@ -183,7 +190,6 @@ export default {
       axios
         .get(`${axios.defaults.baseURL}/blogapp/blogs/${id}`)
         .then(res => {
-          console.log(JSON.parse(JSON.stringify(res.data)));
           const {
             title,
             details,
@@ -213,14 +219,12 @@ export default {
 
         fd.append('pic', this.file, this.file.name);
 
-        axios
-          .post(`${axios.defaults.baseURL}/blogapp/picture`, fd)
-          .then(res => {
-            this.uploadedPic = res.data.pic;
-            this.pic = res.data.id;
-            this.isLoading = false;
-            this.imageUploaded = true;
-          });
+        imageUpload(fd).then(res => {
+          this.uploadedPic = res.data.pic;
+          this.pic = res.data.id;
+          this.isLoading = false;
+          this.imageUploaded = true;
+        });
       } else {
         this.imageUploaded = false;
         this.isLoading = false;
@@ -229,10 +233,10 @@ export default {
     submitTags({ target }) {
       this.tag = target.value;
       if (this.tag !== '') {
-        axios
-          .post(`${axios.defaults.baseURL}/blogapp/tags`, {
-            tag: this.tag
-          })
+        const data = {
+          tag: this.tag
+        };
+        addTags(data)
           .then(res => {
             this.tag = res.data.id;
             this.tagNames.push(res.data);
@@ -254,13 +258,15 @@ export default {
         this.pic !== '' &&
         this.tags !== ''
       ) {
-        axios
-          .post(`${axios.defaults.baseURL}/blogapp/blogs`, {
-            title: this.title,
-            details: this.details,
-            pic: this.pic,
-            tags: this.tagNames
-          })
+        const tagIds = this.tagNames.map(el => el.id);
+
+        const data = {
+          title: this.title,
+          details: this.details,
+          pic: this.pic,
+          tags: tagIds
+        };
+        createBlog(data)
           .then(() => {
             this.blogPublished = true;
             setTimeout(() => {
@@ -275,24 +281,23 @@ export default {
       }
     },
     saveAsDraft() {
-      // POST API Call to be added later here when backend is ready
       this.$router.push('/myDrafts');
     },
     removeTag(id) {
       this.tagNames = this.tagNames.filter(el => el.id !== id);
     },
-    updateBlog() {
+    onUpdateBlog() {
       const { id } = this.$route.params;
       this.$refs.form.validate();
       const tagIds = JSON.parse(JSON.stringify(this.tagNames.map(el => el.id)));
-      axios
-        .put(`${axios.defaults.baseURL}/blogapp/blogs/${id}`, {
-          title: this.title,
-          details: this.details,
-          pic: this.pic,
-          tags: tagIds,
-          user: this.user
-        })
+      const data = {
+        title: this.title,
+        details: this.details,
+        pic: this.pic,
+        tags: tagIds,
+        user: this.user
+      };
+      updateBlog(id, data)
         .then(() => {
           this.blogPublished = true;
           window.scrollTo(0, 0);
@@ -305,10 +310,9 @@ export default {
           this.blogPublished = false;
         });
     },
-    deleteBlog() {
+    onDeleteBlog() {
       const { id } = this.$route.params;
-      axios
-        .delete(`${axios.defaults.baseURL}/blogapp/blogs/${id}`)
+      deleteBlog(id)
         .then(() => {
           window.scrollTo(0, 0);
           this.blogDeleted = true;
