@@ -55,8 +55,8 @@
 
 <script>
 import UserInfo from '../../common/UserInfo';
-import CommentList from '../../Comments/CommentList';
-import AddComment from '../../Comments/AddComment';
+import CommentList from '../../comments/CommentList';
+import AddComment from '../../comments/AddComment';
 import axios from 'axios';
 export default {
   name: 'BlogDetails',
