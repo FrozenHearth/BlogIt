@@ -60,3 +60,10 @@ export const addTags = payload => {
     data: payload
   });
 };
+
+export const getMyPublishedBlogs = () => {
+  return axiosConfig({
+    url: `/blogapp/my-published`,
+    method: 'GET'
+  });
+};

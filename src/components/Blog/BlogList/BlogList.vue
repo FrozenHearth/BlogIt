@@ -2,7 +2,7 @@
   <v-content>
     <div class="card-list-container">
       <h1 class="card-list-container-title">Latest Posts</h1>
-      <BlogListCard v-if="blogs.length > 0" v-bind:blogs="blogs" />
+      <CardView v-if="blogs.length > 0" v-bind:blogs="blogs" />
       <div class="text-center pagination-container">
         <v-pagination
           @input="pageChange"
@@ -18,12 +18,12 @@
 <script>
 // import axios from 'axios';
 import { getBlogList } from '../../../apis/api';
-import BlogListCard from './BlogListCard';
+import CardView from '../../common/CardView';
 
 export default {
   name: 'BlogList',
   components: {
-    BlogListCard
+    CardView
   },
 
   data() {

@@ -2,7 +2,10 @@
   <v-content>
     <div class="card-list-container">
       <h1 class="card-list-container-title">My Published</h1>
-      <MyPublishedCard v-bind:publishedBlogs="publishedBlogs" />
+      <v-btn @click="goToNewBlog" class="new-blog-btn" color="success"
+        >Create Blog</v-btn
+      >
+      <CardView :publishedBlogs="publishedBlogs" />
       <div class="text-center pagination-container">
         <v-pagination
           @input="pageChange"
@@ -16,12 +19,12 @@
 </template>
 
 <script>
-import MyPublishedCard from './MyPublishedCard';
-import axios from 'axios';
+import CardView from '../../common/CardView';
+import { getMyPublishedBlogs } from '../../../apis/api';
 export default {
   name: 'PublishedBlogList',
   components: {
-    MyPublishedCard
+    CardView
   },
 
   data() {
@@ -36,31 +39,31 @@ export default {
     };
   },
   created() {
-    axios.get(`${axios.defaults.baseURL}/blogapp/my-published`).then(res => {
-      console.log(res.data);
+    getMyPublishedBlogs().then(res => {
       this.publishedBlogs = res.data.results;
       this.pageCount = Math.ceil(res.data.count / 6);
     });
   },
   methods: {
     pageChange(event) {
-      if (event > 1) {
-        axios
-          .get(
-            `${
-              axios.defaults.baseURL
-            }/blogapp/my-published?limit=6&offset=${event * 6}`
-          )
-          .then(res => {
-            this.publishedBlogs = res.data.results;
-          });
-      } else {
-        axios
-          .get(`${axios.defaults.baseURL}/blogapp/my-published`)
-          .then(res => {
-            this.publishedBlogs = res.data.results;
-          });
-      }
+      console.log(event);
+      // if (event > 1) {
+      //   axios
+      //     .get(
+      //       `${
+      //         axios.defaults.baseURL
+      //       }/blogapp/my-published?limit=6&offset=${event * 6}`
+      //     )
+      //     .then(res => {
+      //       this.publishedBlogs = res.data.results;
+      //     });
+      // } else {
+      //   axios
+      //     .get(`${axios.defaults.baseURL}/blogapp/my-published`)
+      //     .then(res => {
+      //       this.publishedBlogs = res.data.results;
+      //     });
+      // }
     },
     goToNewBlog() {
       this.$router.push('/addBlog');
@@ -83,7 +86,7 @@ export default {
 .new-blog-btn {
   float: right;
   position: relative;
-  right: 7em;
+  right: 6.5em;
 }
 .pagination-container {
   margin-top: 5em;

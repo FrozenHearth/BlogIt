@@ -8,7 +8,12 @@
     >
       Login Failed. Please enter valid credentials.
     </v-alert>
-    <v-alert width="300" v-if="formValid === true" type="success">
+    <v-alert
+      class="alert-banner"
+      width="300"
+      v-if="formValid === true"
+      type="success"
+    >
       Login Successful.
     </v-alert>
     <v-img class="logo" :src="logo" alt="logo" width="200" height="150" />
@@ -32,8 +37,9 @@
           solo
           type="password"
           label="Password"
+          @keyup.enter="validateLogin"
         ></v-text-field>
-        <v-btn color="primary" @click.prevent="validateLogin" class="mr-4">
+        <v-btn color="primary" @click="validateLogin" class="mr-4">
           Login
         </v-btn>
       </v-col>
