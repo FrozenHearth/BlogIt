@@ -7,7 +7,7 @@
 
 <script>
 import Header from '../common/Header';
-import ModifyComment from '../Comments/ModifyComment';
+import ModifyComment from '../comments/ModifyComment';
 
 export default {
   name: 'ModifyCommentsWrapper',
