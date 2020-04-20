@@ -16,7 +16,8 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
+import { getBlogList } from '../../../apis/api';
 import BlogListCard from './BlogListCard';
 
 export default {
@@ -38,8 +39,7 @@ export default {
     };
   },
   created() {
-    axios
-      .get(`${axios.defaults.baseURL}/blogapp/blogs`)
+    getBlogList()
       .then(res => {
         this.blogs = res.data.results;
         this.tag_details = res.data.tag_details;
@@ -49,23 +49,26 @@ export default {
   },
   methods: {
     pageChange(event) {
-      if (event > 1) {
-        axios
-          .get(
-            `${axios.defaults.baseURL}/blogapp/blogs?limit=6&offset=${event *
-              6}`
-          )
-          .then(res => {
-            this.blogs = res.data.results;
-            // this.pageCount = Math.ceil(res.data.count / 6);
-          });
-      } else {
-        axios.get(`${axios.defaults.baseURL}/blogapp/blogs`).then(res => {
-          this.blogs = res.data.results;
-          // this.pageCount = Math.ceil(res.data.count / 6);
-        });
-      }
+      console.log(event);
     }
+    // pageChange(event) {
+    //   if (event > 1) {
+    //     axios
+    //       .get(
+    //         `${axios.defaults.baseURL}/blogapp/blogs?limit=6&offset=${event *
+    //           6}`
+    //       )
+    //       .then(res => {
+    //         this.blogs = res.data.results;
+    //         // this.pageCount = Math.ceil(res.data.count / 6);
+    //       });
+    //   } else {
+    //     axios.get(`${axios.defaults.baseURL}/blogapp/blogs`).then(res => {
+    //       this.blogs = res.data.results;
+    //       // this.pageCount = Math.ceil(res.data.count / 6);
+    //     });
+    //   }
+    // }
   }
 };
 </script>

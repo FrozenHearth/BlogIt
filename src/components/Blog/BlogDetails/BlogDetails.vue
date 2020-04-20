@@ -49,7 +49,7 @@
 import UserInfo from '../../common/UserInfo';
 import CommentList from '../../comments/CommentList';
 import AddComment from '../../comments/AddComment';
-import axios from 'axios';
+import { getBlogDetails } from '../../../apis/api';
 export default {
   name: 'BlogDetails',
   data: () => ({
@@ -67,7 +67,7 @@ export default {
   mounted() {
     const { id } = this.$route.params;
     this.blogId = id;
-    axios.get(`${axios.defaults.baseURL}/blogapp/blogs/${id}`).then(res => {
+    getBlogDetails(id).then(res => {
       const {
         title,
         author_name,
@@ -83,13 +83,6 @@ export default {
       this.blog.blogDetails = details;
       this.blog.image = picture_url;
       this.blog.blogTags = tag_details;
-      this.blog.commentsList = JSON.parse(JSON.stringify(comment_details));
-    });
-  },
-  updated() {
-    const { id } = this.$route.params;
-    axios.get(`${axios.defaults.baseURL}/blogapp/blogs/${id}`).then(res => {
-      const { comment_details } = res.data;
       this.blog.commentsList = JSON.parse(JSON.stringify(comment_details));
     });
   },

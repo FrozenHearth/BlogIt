@@ -7,15 +7,12 @@
 </template>
 
 <script>
-import axiosConfig from './config/axiosConfig';
 export default {
   data: () => ({
     token: localStorage.getItem('user-token')
   }),
   created() {
     if (this.token) {
-      axiosConfig();
-
       if (this.$route.path === '/') this.$router.push('/blogs');
     }
   }
