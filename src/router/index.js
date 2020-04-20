@@ -8,6 +8,7 @@ import Published from '../views/Published.vue';
 import MyDrafts from '../views/MyDrafts.vue';
 import PublishedDetails from '../views/PublishedDetails.vue';
 import MyDraftsDetails from '../views/MyDraftsDetails.vue';
+import ModifyComment from '../views/ModifyComment.vue';
 
 Vue.use(VueRouter);
 
@@ -51,6 +52,11 @@ const routes = [
     path: '/myDrafts/:id',
     name: 'MyDraftsDetails',
     component: MyDraftsDetails
+  },
+  {
+    path: '/:id/comments/:commentId',
+    name: 'ModifyComment',
+    component: ModifyComment
   }
 ];
 

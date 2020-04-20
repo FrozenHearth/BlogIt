@@ -11,12 +11,14 @@
         :datePosted="comment.updated_date"
       />
       <span class="icon-container">
-        <v-btn text icon>
-          <v-icon>mdi-pencil</v-icon>
-        </v-btn>
-        <v-btn text icon>
+        <router-link :to="`/${blogId}/comments/${comment.id}`">
+          <v-btn text icon>
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+        </router-link>
+        <!-- <v-btn @click="deleteComment(comment.id)" text icon>
           <v-icon>mdi-delete</v-icon>
-        </v-btn>
+        </v-btn> -->
       </span>
       <p class="comment-text">
         {{ comment.text }}
@@ -29,7 +31,7 @@
 import UserInfo from '../common/UserInfo';
 export default {
   name: 'CommentList',
-  props: ['allComments'],
+  props: ['allComments', 'blogId'],
   components: {
     UserInfo
   }

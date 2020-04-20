@@ -49,7 +49,7 @@
       <h3 class="comment-header">Comments</h3>
     </div>
     <AddComment :blogId="blogId" />
-    <CommentList :allComments="blog.commentsList" />
+    <CommentList :blogId="blogId" :allComments="blog.commentsList" />
   </v-content>
 </template>
 
@@ -76,6 +76,7 @@ export default {
   mounted() {
     const { id } = this.$route.params;
     this.blogId = id;
+
     axios.get(`${axios.defaults.baseURL}/blogapp/blogs/${id}`).then(res => {
       const {
         title,
@@ -101,13 +102,22 @@ export default {
       }
     });
   },
-  updated() {
-    const { id } = this.$route.params;
-    axios.get(`${axios.defaults.baseURL}/blogapp/blogs/${id}`).then(res => {
-      const { comment_details } = res.data;
-      this.blog.commentsList = JSON.parse(JSON.stringify(comment_details));
-    });
-  },
+  // updated() {
+  //   this.$nextTick(() => {
+  //     const { id } = this.$route.params;
+  //     axios.get(`${axios.defaults.baseURL}/blogapp/blogs/${id}`).then(res => {
+  //       console.log(res.data);
+  //       const { comment_details } = res.data;
+  //       this.blog.commentsList = JSON.parse(JSON.stringify(comment_details));
+  //     });
+  //   });
+
+  //   // axios.get(`${axios.defaults.baseURL}/blogapp/blogs/${id}`).then(res => {
+  //   //   const { comment_details } = res.data;
+  //   //   this.blog.commentsList = JSON.parse(JSON.stringify(comment_details));
+  //   // });
+  // },
+
   components: {
     CommentList,
     AddComment,
