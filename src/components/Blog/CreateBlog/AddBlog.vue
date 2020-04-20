@@ -34,7 +34,7 @@
         Failed to Delete Blog!
       </v-alert>
       <v-form ref="form">
-        <v-col :style="{ margin: '1em auto 0 auto' }" cols="12" sm="6" md="4">
+        <v-col class="add-title-container" cols="12" sm="6" md="4">
           <v-text-field
             solo
             :rules="titleRules"
@@ -43,7 +43,7 @@
             v-model="title"
           ></v-text-field>
         </v-col>
-        <v-col :style="{ margin: '0 auto' }" cols="12" sm="6" md="4">
+        <v-col class="blog-description-container" cols="12" sm="6" md="4">
           <v-textarea
             minlength="50"
             solo
@@ -79,7 +79,7 @@
           >
           </v-text-field>
           <v-alert
-            :style="{ width: '100%' }"
+            class="tag-alert-error"
             v-if="tagExists === true"
             type="error"
           >
@@ -335,6 +335,12 @@ export default {
   top: 10em;
   margin-bottom: 5em;
 }
+.add-title-container {
+  margin: 1em auto 0 auto;
+}
+.blog-description-container {
+  margin: 0 auto;
+}
 .alert-banner {
   position: absolute;
   right: 2em;
@@ -342,6 +348,9 @@ export default {
 .entered-tags-list {
   display: flex;
   flex-wrap: wrap;
+}
+.tag-alert-error {
+  width: 100%;
 }
 .btn-container {
   display: flex;
