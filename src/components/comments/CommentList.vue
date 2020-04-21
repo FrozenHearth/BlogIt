@@ -43,7 +43,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 60em;
+  width: 68em;
   margin: 0 auto 4em auto;
 }
 .comment-list {
@@ -52,7 +52,7 @@ export default {
   border-radius: 3px;
   margin: 0 auto;
   position: relative;
-  width: 60em;
+  width: 68em;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

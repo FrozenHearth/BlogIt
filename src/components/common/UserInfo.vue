@@ -1,11 +1,11 @@
 <template>
   <div>
-    <v-avatar default color="primary" min-width="36" width="36" height="36">
-      <span id="author-initials" class="white--text headline ">{{
+    <v-avatar class="user-avatar" default color="teal">
+      <span id="user-initials" class="white--text headline ">{{
         initials ? initials.substring(0, 2).toUpperCase() : 'N/A'
       }}</span>
     </v-avatar>
-    <span class="author-name">{{
+    <span class="user-name">{{
       initials ? initials.charAt(0).toUpperCase() + initials.slice(1) : 'N/A'
     }}</span>
     <p class="posted-date">{{ todaysDate() }}</p>
@@ -20,7 +20,7 @@ export default {
   methods: {
     todaysDate() {
       if (this.datePosted) {
-        return moment(this.datePosted).format('DD/MM/YYYY');
+        return moment(this.datePosted).format('LL');
       } else {
         return 'N/A';
       }
@@ -30,20 +30,22 @@ export default {
 </script>
 
 <style lang="scss">
-#author-initials {
-  font-size: 1.3em !important;
+#user-initials {
+  font-size: 1.5em !important;
 }
-.author-name {
-  font-size: 1.5em;
-  font-weight: 500;
+.user-name {
+  font-size: 1.45em;
+  line-height: 20px;
+  color: rgba(0, 0, 0, 0.84);
   position: relative;
-  left: 1em;
-  bottom: 0.5em;
+  left: 0.7em;
+  bottom: 0.7em;
 }
 .posted-date {
-  font-size: 1.3em;
+  font-size: 1.35em;
   position: relative;
-  left: 3.4em;
-  bottom: 1.5em;
+  left: 4.2em;
+  bottom: 1.9em;
+  color: rgba(0, 0, 0, 0.54);
 }
 </style>

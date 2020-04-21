@@ -40,7 +40,7 @@ export default {
 <style lang="scss" scoped>
 .addCommentWrapper {
   margin: 0 auto 2em auto;
-  width: 60em;
+  width: 68em;
   display: flex;
   flex-direction: column;
   position: relative;
