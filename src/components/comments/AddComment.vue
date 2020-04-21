@@ -6,14 +6,17 @@
       height="130"
       v-model="text"
     ></v-textarea>
-    <v-btn @click.prevent="addComment" class="post-comment-btn" color="primary"
+    <v-btn
+      @click.prevent="addNewComment"
+      class="post-comment-btn"
+      color="primary"
       >Post</v-btn
     >
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import { addComment } from '../../apis/api';
 export default {
   name: 'AddComment',
   data: () => ({
@@ -21,17 +24,15 @@ export default {
   }),
   props: ['blogId'],
   methods: {
-    addComment() {
-      axios
-        .post(
-          `${axios.defaults.baseURL}/blogapp/blogs/${this.blogId}/comments`,
-          {
-            text: this.text
-          }
-        )
+    addNewComment() {
+      const data = {
+        text: this.text
+      };
+      addComment(this.blogId, data)
         .then(() => {
           this.text = '';
-        });
+        })
+        .catch(err => console.log(err));
     }
   }
 };
