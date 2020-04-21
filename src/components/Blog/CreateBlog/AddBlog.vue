@@ -138,13 +138,13 @@
 </template>
 
 <script>
-import axios from 'axios';
 import {
   imageUpload,
   addTags,
   createBlog,
   updateBlog,
-  deleteBlog
+  deleteBlog,
+  getBlogDetails
 } from '../../../apis/api';
 export default {
   name: 'AddBlog',
@@ -165,6 +165,7 @@ export default {
     imageUpdated: false,
     isLoading: false,
     tagExists: false,
+    published: null,
     titleRules: [
       v => !!v || 'Title cannot be blank',
       v => /^[a-zA-Z ]/.test(v) || 'Title must be valid',
@@ -187,8 +188,7 @@ export default {
     if (this.$route.params.id) {
       this.mode = 'edit';
       const { id } = this.$route.params;
-      axios
-        .get(`${axios.defaults.baseURL}/blogapp/blogs/${id}`)
+      getBlogDetails(id)
         .then(res => {
           const {
             title,
@@ -259,12 +259,13 @@ export default {
         this.tags !== ''
       ) {
         const tagIds = this.tagNames.map(el => el.id);
-
+        this.published = true;
         const data = {
           title: this.title,
           details: this.details,
           pic: this.pic,
-          tags: tagIds
+          tags: tagIds,
+          published: this.published
         };
         createBlog(data)
           .then(() => {
