@@ -29,15 +29,17 @@
         </div>
         <div class="tags-container">
           <v-chip
+            class="tag-description ma-2"
             ripple
             label
             v-for="tagName of blog.blogTags"
             :key="tagName.id"
-            class="ma-2"
           >
             {{ tagName.tag.charAt(0).toUpperCase() + tagName.tag.slice(1) }}
           </v-chip>
         </div>
+        <v-divider class="blog-details-divider"></v-divider>
+        <footer class="blog-details-footer"></footer>
       </div>
       <div class="comment-header-container">
         <h3 class="comment-header">Comments</h3>
@@ -91,11 +93,13 @@
             label
             v-for="tagName of blog.blogTags"
             :key="tagName.id"
-            class="ma-2"
+            class="tag-description ma-2"
           >
             {{ tagName.tag.charAt(0).toUpperCase() + tagName.tag.slice(1) }}
           </v-chip>
         </div>
+        <footer class="blog-details-footer"></footer>
+        <v-divider dark></v-divider>
       </div>
       <div class="comment-header-container">
         <h3 class="comment-header">Comments</h3>
@@ -170,27 +174,30 @@ export default {
   align-items: center;
 }
 .blog-title-container {
-  width: 60em;
+  width: 68em;
   margin-top: 10em;
 }
 .blog-title {
-  font-size: 3.5em;
-  font-weight: 300;
+  font-size: 3.4em;
+  font-weight: 400;
   text-align: justify;
-  line-height: 66px;
-  letter-spacing: -1.5px;
-  word-spacing: -2px;
+  line-height: 48px;
+  font-family: 'Merriweather', serif;
+}
+.user-avatar {
+  min-width: 48px;
+  height: 48px;
+  width: 48px;
 }
 .image-container {
-  width: 60em;
-  height: 60em;
+  width: 68em;
+  height: 45em;
   background-size: cover;
   background-position: top right;
-  margin-top: 5em;
-  border-radius: 4px;
+  margin-top: 3em;
 }
 .author-details-wrapper {
-  width: 60em;
+  width: 68em;
   display: flex;
   position: relative;
   justify-content: space-between;
@@ -204,24 +211,39 @@ export default {
 }
 .tags-container {
   display: flex;
-  width: 60em;
+  width: 68em;
+}
+.tag-description {
+  font-size: 1.35em;
+  line-height: 22px;
+  margin-top: 1.5em !important;
+  position: relative;
+  left: -0.5em;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.54) !important;
+  background: #f2f2f2 !important;
+}
+.blog-details-divider {
+  width: 68em;
+  margin-top: 3em;
 }
 .blog-description-container {
   position: relative;
   margin-top: 5em;
-  width: 60em;
+  width: 68em;
   margin-bottom: 2em;
 }
 .blog-description {
-  font-size: 2em;
+  font-size: 1.8em;
   text-align: justify;
-  line-height: 35px;
+  line-height: 33px;
   font-weight: 400;
-  word-spacing: -2px;
+  color: rgba(0, 0, 0, 0.84);
   word-wrap: break-word;
+  font-family: 'Merriweather', serif;
 }
 .comment-header-container {
-  width: 60em;
+  width: 68em;
   display: flex;
   margin: 0 auto;
 }
