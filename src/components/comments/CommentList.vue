@@ -10,6 +10,7 @@
         :userCommentAvatarWidth="48"
         :userCommentAvatarHeight="48"
         :userCommentAvatarMinWidth="48"
+        :userNameColor="userNameColor"
         :initials="comment.user_name"
         :datePosted="comment.updated_date"
       />
@@ -37,7 +38,10 @@ export default {
   props: ['allComments', 'blogId', 'isOwner'],
   components: {
     UserInfo
-  }
+  },
+  data: () => ({
+    userNameColor: '#018f69'
+  })
 };
 </script>
 
@@ -71,11 +75,12 @@ export default {
 
 .comment-text {
   text-align: justify;
-  font-size: 1.6em;
+  font-size: 1.7em;
   font-family: 'PT Serif', serif;
   line-height: 28px;
   bottom: 1.2em;
   left: 0.3em;
+  margin-right: 1.4em;
   position: relative;
   color: rgba(0, 0, 0, 0.84);
 }
