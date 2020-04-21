@@ -39,7 +39,33 @@
           </v-chip>
         </div>
         <v-divider class="blog-details-divider"></v-divider>
-        <footer class="blog-details-footer"></footer>
+        <footer class="blog-details-footer-wrapper">
+          <div class="blog-details-footer-container">
+            <v-avatar
+              width="80"
+              height="80"
+              class="user-avatar-footer"
+              default
+              color="primary"
+            >
+              <span id="user-initials-footer" class="white--text headline ">{{
+                blog.authorName
+                  ? blog.authorName.substring(0, 2).toUpperCase()
+                  : 'N/A'
+              }}</span>
+            </v-avatar>
+            <div class="author-details-footer">
+              <p class="author-details-title">WRITTEN BY</p>
+              <h2 class="author-name">
+                {{
+                  blog.authorName.charAt(0).toUpperCase() +
+                    blog.authorName.slice(1)
+                }}
+              </h2>
+            </div>
+          </div>
+        </footer>
+        <v-divider class="blog-details-divider-second"></v-divider>
       </div>
       <div class="comment-header-container">
         <h3 class="comment-header">Comments</h3>
@@ -98,8 +124,9 @@
             {{ tagName.tag.charAt(0).toUpperCase() + tagName.tag.slice(1) }}
           </v-chip>
         </div>
-        <footer class="blog-details-footer"></footer>
         <v-divider dark></v-divider>
+
+        <footer class="blog-details-footer"></footer>
       </div>
       <div class="comment-header-container">
         <h3 class="comment-header">Comments</h3>
@@ -167,6 +194,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#user-initials-footer {
+  font-size: 2.5em !important;
+}
 .blog-details-container {
   margin: 0 auto 3em auto;
   display: flex;
@@ -226,6 +256,36 @@ export default {
 .blog-details-divider {
   width: 68em;
   margin-top: 3em;
+}
+.blog-details-divider-second {
+  width: 68em;
+  margin-top: 1em;
+}
+.blog-details-footer-wrapper {
+  width: 68em;
+}
+.blog-details-footer-container {
+  padding-top: 2.5em;
+}
+.user-avatar-footer {
+  position: relative;
+  bottom: 1.9em;
+}
+.author-details-title {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 1.35em;
+  line-height: 20px;
+  letter-spacing: 0.7px;
+}
+.author-details-footer {
+  display: inline-block;
+  padding: 0.3em 2em 2em 2em;
+}
+.author-name {
+  font-size: 2.5em;
+  position: relative;
+  bottom: 0.6em;
+  line-height: 36px;
 }
 .blog-description-container {
   position: relative;
