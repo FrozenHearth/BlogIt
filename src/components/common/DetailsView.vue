@@ -92,15 +92,6 @@
           :allComments="blog.commentsList"
         />
       </div>
-      <!-- <div class="comment-header-container">
-        <h3 class="comment-header">Comments</h3>
-      </div>
-      <AddComment :blogId="blogId" />
-      <CommentList
-        :isOwner="isOwner"
-        :blogId="blogId"
-        :allComments="blog.commentsList"
-      /> -->
     </v-container>
 
     <!--  -->
