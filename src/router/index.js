@@ -2,12 +2,12 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Login from '../views/Login.vue';
 import Blogs from '../views/Blogs.vue';
-import SingleBlog from '../views/SingleBlog.vue';
+import Details from '../views/Details.vue';
 import CreateBlog from '../views/CreateBlog.vue';
 import Published from '../views/Published.vue';
 import MyDrafts from '../views/MyDrafts.vue';
-import PublishedDetails from '../views/PublishedDetails.vue';
-import MyDraftsDetails from '../views/MyDraftsDetails.vue';
+// import PublishedDetails from '../views/PublishedDetails.vue';
+// import MyDraftsDetails from '../views/MyDraftsDetails.vue';
 import ModifyComment from '../views/ModifyComment.vue';
 
 Vue.use(VueRouter);
@@ -25,8 +25,18 @@ const routes = [
   },
   {
     path: '/blog/:id',
-    name: 'SingleBlog',
-    component: SingleBlog
+    name: 'BlogDetails',
+    component: Details
+  },
+  {
+    path: '/myPublished/:id',
+    name: 'PublishedDetails',
+    component: Details
+  },
+  {
+    path: '/myDrafts/:id',
+    name: 'MyDraftsDetails',
+    component: Details
   },
   {
     path: '/addBlog',
@@ -38,21 +48,13 @@ const routes = [
     name: 'Published',
     component: Published
   },
-  {
-    path: '/myPublished/:id',
-    name: 'PublishedDetails',
-    component: PublishedDetails
-  },
+
   {
     path: '/myDrafts',
     name: 'MyDrafts',
     component: MyDrafts
   },
-  {
-    path: '/myDrafts/:id',
-    name: 'MyDraftsDetails',
-    component: MyDraftsDetails
-  },
+
   {
     path: '/:id/comments/:commentId',
     name: 'ModifyComment',
