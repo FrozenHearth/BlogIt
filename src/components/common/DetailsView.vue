@@ -66,7 +66,7 @@
           </div>
         </footer>
         <v-divider class="blog-details-divider-second"></v-divider>
-        <div class="responses-container">
+        <div class="responses-container" @click="toggleCommentSection">
           <p
             v-if="blog.commentsList.length > 0"
             class="text-center response-content-msg"
@@ -81,7 +81,18 @@
           </p>
         </div>
       </div>
-      <div class="comment-header-container">
+      <div v-if="showComments">
+        <div class="comment-header-container">
+          <h3 class="comment-header">Comments</h3>
+        </div>
+        <AddComment :blogId="blogId" />
+        <CommentList
+          :isOwner="isOwner"
+          :blogId="blogId"
+          :allComments="blog.commentsList"
+        />
+      </div>
+      <!-- <div class="comment-header-container">
         <h3 class="comment-header">Comments</h3>
       </div>
       <AddComment :blogId="blogId" />
@@ -89,7 +100,7 @@
         :isOwner="isOwner"
         :blogId="blogId"
         :allComments="blog.commentsList"
-      />
+      /> -->
     </v-container>
 
     <!--  -->
@@ -167,7 +178,7 @@
           </div>
         </footer>
         <v-divider class="blog-details-divider-second"></v-divider>
-        <div class="responses-container">
+        <div class="responses-container" @click="toggleCommentSection">
           <p
             v-if="blog.commentsList.length > 0"
             class="text-center response-content-msg"
@@ -182,11 +193,13 @@
           </p>
         </div>
       </div>
-      <div class="comment-header-container">
-        <h3 class="comment-header">Comments</h3>
+      <div v-if="showComments">
+        <div class="comment-header-container">
+          <h3 class="comment-header">Comments</h3>
+        </div>
+        <AddComment :blogId="blogId" />
+        <CommentList :blogId="blogId" :allComments="blog.commentsList" />
       </div>
-      <AddComment :blogId="blogId" />
-      <CommentList :blogId="blogId" :allComments="blog.commentsList" />
     </v-container>
   </v-content>
 </template>
@@ -211,8 +224,14 @@ export default {
     blogId: '',
     activeComponent: '',
     isOwner: null,
-    showComments: null
+    showComments: false
   }),
+  methods: {
+    toggleCommentSection() {
+      this.showComments = !this.showComments;
+      console.log(this.showComments);
+    }
+  },
   mounted() {
     const { name } = this.$route;
     this.activeComponent = name;
