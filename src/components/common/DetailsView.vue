@@ -14,10 +14,9 @@
           />
         </div>
 
-        <div
-          :style="{ backgroundImage: `url(${blog.image})` }"
-          class="image-container"
-        ></div>
+        <div class="image-container">
+          <img class="blog-details-image" :src="blog.image" alt="" />
+        </div>
 
         <div class="blog-description-container">
           <p class="blog-description">
@@ -83,7 +82,7 @@
       </div>
       <div v-if="showComments">
         <div class="comment-header-container">
-          <h3 class="comment-header">Comments</h3>
+          <h3 class="comment-header">Responses</h3>
         </div>
         <AddComment :blogId="blogId" />
         <CommentList
@@ -120,10 +119,9 @@
           </router-link>
         </div>
 
-        <div
-          :style="{ backgroundImage: `url(${blog.image})` }"
-          class="image-container"
-        ></div>
+        <div class="image-container">
+          <img class="blog-details-image" :src="blog.image" alt="" />
+        </div>
 
         <div class="blog-description-container">
           <p class="blog-description">
@@ -171,10 +169,16 @@
         <v-divider class="blog-details-divider-second"></v-divider>
         <div class="responses-container" @click="toggleCommentSection">
           <p
-            v-if="blog.commentsList.length > 0"
+            v-if="blog.commentsList.length > 0 && showComments === false"
             class="text-center response-content-msg"
           >
             See responses ({{ blog.commentsList.length }})
+          </p>
+          <p
+            v-if="blog.commentsList.length > 0 && showComments === true"
+            class="text-center response-content-msg"
+          >
+            Hide responses ({{ blog.commentsList.length }})
           </p>
           <p
             v-if="blog.commentsList.length === 0"
@@ -186,10 +190,14 @@
       </div>
       <div v-if="showComments">
         <div class="comment-header-container">
-          <h3 class="comment-header">Comments</h3>
+          <h3 class="comment-header">Responses</h3>
         </div>
         <AddComment :blogId="blogId" />
-        <CommentList :blogId="blogId" :allComments="blog.commentsList" />
+        <CommentList
+          :isOwner="isOwner"
+          :blogId="blogId"
+          :allComments="blog.commentsList"
+        />
       </div>
     </v-container>
   </v-content>
@@ -287,9 +295,12 @@ export default {
 .image-container {
   width: 68em;
   height: 45em;
-  background-size: cover;
-  background-position: top right;
   margin-top: 3em;
+}
+.blog-details-image {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
 }
 .author-details-wrapper {
   width: 68em;
@@ -391,7 +402,8 @@ export default {
 }
 .comment-header {
   font-weight: 500;
-  font-size: 1.7em;
+  color: rgba(0, 0, 0, 0.68);
+  font-size: 1.4em;
   margin-bottom: 1em;
 }
 </style>
