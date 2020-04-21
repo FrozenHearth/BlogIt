@@ -6,13 +6,13 @@
       :min-width="userCommentAvatarMinWidth"
       class="user-avatar"
       default
-      color="teal"
+      color="primary"
     >
       <span id="user-initials" class="white--text headline ">{{
         initials ? initials.substring(0, 2).toUpperCase() : 'N/A'
       }}</span>
     </v-avatar>
-    <span class="user-name">{{
+    <span :style="{ color: `${this.userNameColor}` }" class="user-name">{{
       initials ? initials.charAt(0).toUpperCase() + initials.slice(1) : 'N/A'
     }}</span>
     <p class="posted-date">{{ todaysDate() }}</p>
@@ -28,7 +28,8 @@ export default {
     'datePosted',
     'userCommentAvatarWidth',
     'userCommentAvatarHeight',
-    'userCommentAvatarMinWidth'
+    'userCommentAvatarMinWidth',
+    'userNameColor'
   ],
   methods: {
     todaysDate() {
