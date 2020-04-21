@@ -41,12 +41,14 @@ export default {
 <style lang="scss" scoped>
 .addCommentWrapper {
   margin: 0 auto 2em auto;
+  font-family: 'PT Serif', serif;
   width: 68em;
   display: flex;
   flex-direction: column;
   position: relative;
 }
 .post-comment-btn {
+  font-family: 'Roboto', serif;
   width: 6em;
   align-self: flex-end;
   margin-bottom: 2em;

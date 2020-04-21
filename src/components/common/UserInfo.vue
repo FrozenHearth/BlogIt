@@ -1,6 +1,13 @@
 <template>
   <div>
-    <v-avatar class="user-avatar" default color="teal">
+    <v-avatar
+      :width="userCommentAvatarWidth"
+      :height="userCommentAvatarHeight"
+      :min-width="userCommentAvatarMinWidth"
+      class="user-avatar"
+      default
+      color="teal"
+    >
       <span id="user-initials" class="white--text headline ">{{
         initials ? initials.substring(0, 2).toUpperCase() : 'N/A'
       }}</span>
@@ -16,7 +23,13 @@
 import moment from 'moment';
 export default {
   name: 'UserInfo',
-  props: ['initials', 'datePosted'],
+  props: [
+    'initials',
+    'datePosted',
+    'userCommentAvatarWidth',
+    'userCommentAvatarHeight',
+    'userCommentAvatarMinWidth'
+  ],
   methods: {
     todaysDate() {
       if (this.datePosted) {

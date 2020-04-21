@@ -7,6 +7,9 @@
       fluid
     >
       <UserInfo
+        :userCommentAvatarWidth="48"
+        :userCommentAvatarHeight="48"
+        :userCommentAvatarMinWidth="48"
         :initials="comment.user_name"
         :datePosted="comment.updated_date"
       />
@@ -69,6 +72,12 @@ export default {
 .comment-text {
   text-align: justify;
   font-size: 1.6em;
+  font-family: 'PT Serif', serif;
+  line-height: 28px;
+  bottom: 1.2em;
+  left: 0.3em;
+  position: relative;
+  color: rgba(0, 0, 0, 0.84);
 }
 .edit-link {
   text-decoration: none;
