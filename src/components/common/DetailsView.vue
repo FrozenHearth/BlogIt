@@ -66,12 +66,30 @@
           </div>
         </footer>
         <v-divider class="blog-details-divider-second"></v-divider>
+        <div class="responses-container">
+          <p
+            v-if="blog.commentsList.length > 0"
+            class="text-center response-content-msg"
+          >
+            See responses ({{ blog.commentsList.length }})
+          </p>
+          <p
+            v-if="blog.commentsList.length === 0"
+            class="text-center response-content-msg"
+          >
+            Write the first response
+          </p>
+        </div>
       </div>
       <div class="comment-header-container">
         <h3 class="comment-header">Comments</h3>
       </div>
       <AddComment :blogId="blogId" />
-      <CommentList :allComments="blog.commentsList" />
+      <CommentList
+        :isOwner="isOwner"
+        :blogId="blogId"
+        :allComments="blog.commentsList"
+      />
     </v-container>
 
     <!--  -->
@@ -94,8 +112,8 @@
             class="edit-link"
             :to="{ name: 'CreateBlog', params: { id: `${blogId}` } }"
           >
-            <v-btn class="edit-blog-btn" color="primary">
-              Edit Blog
+            <v-btn text icon>
+              <v-icon>mdi-pencil</v-icon>
             </v-btn>
           </router-link>
         </div>
@@ -124,9 +142,45 @@
             {{ tagName.tag.charAt(0).toUpperCase() + tagName.tag.slice(1) }}
           </v-chip>
         </div>
-        <v-divider dark></v-divider>
-
-        <footer class="blog-details-footer"></footer>
+        <v-divider class="blog-details-divider"></v-divider>
+        <footer class="blog-details-footer-wrapper">
+          <div class="blog-details-footer-container">
+            <v-avatar
+              width="80"
+              height="80"
+              class="user-avatar-footer"
+              default
+              color="primary"
+            >
+              <span id="user-initials-footer" class="white--text headline ">{{
+                blog.authorName
+                  ? blog.authorName.substring(0, 2).toUpperCase()
+                  : 'N/A'
+              }}</span>
+            </v-avatar>
+            <div class="author-details-footer">
+              <p class="author-details-title">WRITTEN BY</p>
+              <h2 class="author-name">
+                You
+              </h2>
+            </div>
+          </div>
+        </footer>
+        <v-divider class="blog-details-divider-second"></v-divider>
+        <div class="responses-container">
+          <p
+            v-if="blog.commentsList.length > 0"
+            class="text-center response-content-msg"
+          >
+            See responses ({{ blog.commentsList.length }})
+          </p>
+          <p
+            v-if="blog.commentsList.length === 0"
+            class="text-center response-content-msg"
+          >
+            Write the first response
+          </p>
+        </div>
       </div>
       <div class="comment-header-container">
         <h3 class="comment-header">Comments</h3>
@@ -156,7 +210,8 @@ export default {
     },
     blogId: '',
     activeComponent: '',
-    isOwner: null
+    isOwner: null,
+    showComments: null
   }),
   mounted() {
     const { name } = this.$route;
@@ -294,13 +349,30 @@ export default {
   margin-bottom: 2em;
 }
 .blog-description {
-  font-size: 1.8em;
+  font-size: 2em;
+  margin-top: 1em;
   text-align: justify;
   line-height: 33px;
   font-weight: 400;
+  word-spacing: -1.8px;
   color: rgba(0, 0, 0, 0.84);
   word-wrap: break-word;
-  font-family: 'Merriweather', serif;
+  font-family: 'PT Serif', serif;
+  letter-spacing: 0.2px;
+}
+.responses-container {
+  border: 1px solid rgba(3, 168, 124, 1);
+  padding: 2em;
+  width: 68em;
+  margin-top: 2.2em;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.response-content-msg {
+  color: #029e74;
+  font-size: 1.4em;
+  font-weight: 400;
+  margin: 0 auto;
 }
 .comment-header-container {
   width: 68em;
