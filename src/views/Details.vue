@@ -1,13 +1,18 @@
 <template>
-  <DetailsWrapper />
+  <div>
+    <Header />
+    <DetailsView />
+  </div>
 </template>
 
 <script>
-import DetailsWrapper from '../components/container/DetailsWrapper';
+import Header from '../components/common/Header';
+import DetailsView from '../components/common/DetailsView';
 export default {
   name: 'Details',
   components: {
-    DetailsWrapper
+    Header,
+    DetailsView
   }
 };
 </script>
