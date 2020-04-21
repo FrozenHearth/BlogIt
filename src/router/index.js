@@ -6,8 +6,6 @@ import Details from '../views/Details.vue';
 import CreateBlog from '../views/CreateBlog.vue';
 import Published from '../views/Published.vue';
 import MyDrafts from '../views/MyDrafts.vue';
-// import PublishedDetails from '../views/PublishedDetails.vue';
-// import MyDraftsDetails from '../views/MyDraftsDetails.vue';
 import ModifyComment from '../views/ModifyComment.vue';
 
 Vue.use(VueRouter);

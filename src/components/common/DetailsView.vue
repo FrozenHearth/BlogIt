@@ -192,7 +192,11 @@
         <div class="comment-header-container">
           <h3 class="comment-header">Responses</h3>
         </div>
-        <AddComment :blogId="blogId" />
+        <AddComment
+          @updated="updatedComment"
+          :allComments="blog.commentsList"
+          :blogId="blogId"
+        />
         <CommentList
           :isOwner="isOwner"
           :blogId="blogId"
@@ -228,7 +232,9 @@ export default {
   methods: {
     toggleCommentSection() {
       this.showComments = !this.showComments;
-      console.log(this.showComments);
+    },
+    updatedComment(addedComment) {
+      this.blog.commentsList.push(addedComment);
     }
   },
   mounted() {

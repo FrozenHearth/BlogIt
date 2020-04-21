@@ -145,7 +145,7 @@ import {
   updateBlog,
   deleteBlog,
   getBlogDetails
-} from '../../../apis/api';
+} from '../../apis/api';
 export default {
   name: 'AddBlog',
   data: () => ({
