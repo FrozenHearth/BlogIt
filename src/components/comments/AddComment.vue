@@ -18,7 +18,7 @@
       }}</span>
     </v-avatar>
     <v-btn outlined @click.prevent="addNewComment" class="post-comment-btn"
-      >Post</v-btn
+      >Publish</v-btn
     >
   </div>
 </template>
