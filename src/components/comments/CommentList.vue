@@ -10,15 +10,15 @@
         :initials="comment.user_name"
         :datePosted="comment.updated_date"
       />
-      <span class="icon-container">
-        <router-link :to="`/${blogId}/comments/${comment.id}`">
+      <span v-if="isOwner === true" class="icon-container">
+        <router-link
+          class="edit-link"
+          :to="`/${blogId}/comments/${comment.id}`"
+        >
           <v-btn text icon>
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
         </router-link>
-        <!-- <v-btn @click="deleteComment(comment.id)" text icon>
-          <v-icon>mdi-delete</v-icon>
-        </v-btn> -->
       </span>
       <p class="comment-text">
         {{ comment.text }}
@@ -31,7 +31,7 @@
 import UserInfo from '../common/UserInfo';
 export default {
   name: 'CommentList',
-  props: ['allComments', 'blogId'],
+  props: ['allComments', 'blogId', 'isOwner'],
   components: {
     UserInfo
   }
@@ -69,5 +69,8 @@ export default {
 .comment-text {
   text-align: justify;
   font-size: 1.6em;
+}
+.edit-link {
+  text-decoration: none;
 }
 </style>

@@ -67,3 +67,33 @@ export const getMyPublishedBlogs = () => {
     method: 'GET'
   });
 };
+
+export const addComment = (blogId, payload) => {
+  return axiosConfig({
+    url: `/blogapp/blogs/${blogId}/comments`,
+    method: 'POST',
+    data: payload
+  });
+};
+
+export const updateComment = (blogId, commentId, payload) => {
+  return axiosConfig({
+    url: `/blogapp/blogs/${blogId}/comments/${commentId}`,
+    method: 'PUT',
+    data: payload
+  });
+};
+
+export const deleteComment = (blogId, commentId) => {
+  return axiosConfig({
+    url: `/blogapp/blogs/${blogId}/comments/${commentId}`,
+    method: 'DELETE'
+  });
+};
+
+export const getCommentDetails = (blogId, commentId) => {
+  return axiosConfig({
+    url: `/blogapp/blogs/${blogId}/comments/${commentId}`,
+    method: 'GET'
+  });
+};

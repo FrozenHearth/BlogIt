@@ -42,13 +42,13 @@
       ></v-textarea>
       <div class="btn-container">
         <v-btn
-          @click.prevent="updateComment"
+          @click.prevent="onUpdateComment"
           class="update-comment-btn"
           color="success"
           >Update</v-btn
         >
         <v-btn
-          @click.prevent="deleteComment"
+          @click.prevent="onDeleteComment"
           class="delete-comment-btn"
           color="error"
           >Delete</v-btn
@@ -59,7 +59,11 @@
 </template>
 
 <script>
-import axios from 'axios';
+import {
+  updateComment,
+  getCommentDetails,
+  deleteComment
+} from '../../apis/api';
 export default {
   name: 'ModifyComment',
   data: () => ({
@@ -69,26 +73,21 @@ export default {
   }),
   mounted() {
     const { id, commentId } = this.$route.params;
-    axios
-      .get(
-        `${axios.defaults.baseURL}/blogapp/blogs/${id}/comments/${commentId}`
-      )
+    getCommentDetails(id, commentId)
       .then(res => {
         const { text } = res.data;
         this.text = text;
-      });
+      })
+      .catch(err => console.log(err));
   },
   methods: {
-    updateComment() {
+    onUpdateComment() {
       const { id, commentId } = this.$route.params;
       if (this.text !== '') {
-        axios
-          .put(
-            `${axios.defaults.baseURL}/blogapp/blogs/${id}/comments/${commentId}`,
-            {
-              text: this.text
-            }
-          )
+        const data = {
+          text: this.text
+        };
+        updateComment(id, commentId, data)
           .then(() => {
             this.commentUpdated = true;
             this.text = '';
@@ -102,13 +101,9 @@ export default {
           });
       }
     },
-    deleteComment() {
+    onDeleteComment() {
       const { id, commentId } = this.$route.params;
-
-      axios
-        .delete(
-          `${axios.defaults.baseURL}/blogapp/blogs/${id}/comments/${commentId}`
-        )
+      deleteComment(id, commentId)
         .then(() => {
           this.commentDeleted = true;
           setTimeout(() => {
