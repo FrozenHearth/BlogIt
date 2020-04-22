@@ -42,11 +42,6 @@
         </v-text-field>
       </v-list-item>
 
-      <v-list-item v-else class="side-nav-items">
-        <v-icon class="search-icon">mdi-magnify</v-icon>
-        <v-text-field disabled type="text" label="Search" solo> </v-text-field>
-      </v-list-item>
-
       <v-list-item>
         <div class="tags-list">
           <v-chip
