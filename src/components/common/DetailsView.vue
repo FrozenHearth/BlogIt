@@ -277,7 +277,7 @@ export default {
       this.blog.blogDetails = details;
       this.blog.image = picture_url;
       this.blog.blogTags = tag_details;
-      this.blog.commentsList = JSON.parse(JSON.stringify(comment_details));
+      this.blog.commentsList = JSON.parse(JSON.stringify(comment_details)).sort((a, b) => a.id - b.id);
       this.isOwner = is_owner;
     });
   },
