@@ -15,7 +15,13 @@
           <router-link
             v-if="isOwner"
             class="edit-link"
-            :to="{ name: 'CreateBlog', params: { id: `${blogId}` } }"
+            :to="{
+              name: 'CreateBlog',
+              params: { id: `${blogId}` },
+              query: {
+                prevComponent: activeComponent
+              }
+            }"
           >
             <v-btn text icon>
               <v-icon>mdi-pencil</v-icon>
@@ -126,7 +132,13 @@
           />
           <router-link
             class="edit-link"
-            :to="{ name: 'CreateBlog', params: { id: `${blogId}` } }"
+            :to="{
+              name: 'CreateBlog',
+              params: { id: `${blogId}` },
+              query: {
+                prevComponent: activeComponent
+              }
+            }"
           >
             <v-btn text icon>
               <v-icon>mdi-pencil</v-icon>
@@ -219,6 +231,89 @@
         />
       </div>
     </v-container>
+
+    <!-- Drafts Details -->
+
+    <v-container
+      v-if="isOwner === true && activeComponent === 'MyDraftsDetails'"
+    >
+      <div class="blog-details-container">
+        <div class="blog-title-container">
+          <h2 class="blog-title">
+            {{ blog.blogTitle }}
+          </h2>
+        </div>
+        <div class="author-details-wrapper">
+          <UserInfo
+            :initials="blog.authorName"
+            :datePosted="blog.publishedDate"
+          />
+          <router-link
+            class="edit-link"
+            :to="{
+              name: 'CreateBlog',
+              params: { id: `${blogId}` },
+              query: {
+                prevComponent: activeComponent
+              }
+            }"
+          >
+            <v-btn text icon>
+              <v-icon>mdi-pencil</v-icon>
+            </v-btn>
+          </router-link>
+        </div>
+
+        <div class="image-container">
+          <img class="blog-details-image" :src="blog.image" alt="" />
+        </div>
+
+        <div class="blog-description-container">
+          <p class="blog-description">
+            {{
+              blog.blogDetails.charAt(0).toUpperCase() +
+                blog.blogDetails.slice(1)
+            }}
+          </p>
+        </div>
+        <div class="tags-container">
+          <v-chip
+            ripple
+            label
+            v-for="tagName of blog.blogTags"
+            :key="tagName.id"
+            class="tag-description ma-2"
+          >
+            {{ tagName.tag.charAt(0).toUpperCase() + tagName.tag.slice(1) }}
+          </v-chip>
+        </div>
+        <v-divider class="blog-details-divider"></v-divider>
+        <footer class="blog-details-footer-wrapper">
+          <div class="blog-details-footer-container">
+            <v-avatar
+              width="80"
+              height="80"
+              class="user-avatar-footer"
+              default
+              color="primary"
+            >
+              <span id="user-initials-footer" class="white--text headline ">{{
+                blog.authorName
+                  ? blog.authorName.substring(0, 2).toUpperCase()
+                  : 'N/A'
+              }}</span>
+            </v-avatar>
+            <div class="author-details-footer">
+              <p class="author-details-title">WRITTEN BY</p>
+              <h2 class="author-name">
+                You
+              </h2>
+            </div>
+          </div>
+        </footer>
+        <v-divider class="blog-details-divider-second"></v-divider>
+      </div>
+    </v-container>
   </v-content>
 </template>
 
@@ -257,7 +352,6 @@ export default {
   mounted() {
     const { name } = this.$route;
     this.activeComponent = name;
-    console.log(this.activeComponent);
     const { id } = this.$route.params;
     this.blogId = id;
     getBlogDetails(id).then(res => {

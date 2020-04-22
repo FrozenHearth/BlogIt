@@ -229,7 +229,7 @@ export default {
 .list-card-container {
   position: relative;
   margin: 0 auto;
-  top: 5em;
+  top: 2em;
 }
 .list-card {
   margin: 2em auto 5em auto;
