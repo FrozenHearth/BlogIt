@@ -12,6 +12,15 @@
             :initials="blog.authorName"
             :datePosted="blog.publishedDate"
           />
+          <router-link
+            v-if="isOwner"
+            class="edit-link"
+            :to="{ name: 'CreateBlog', params: { id: `${blogId}` } }"
+          >
+            <v-btn text icon>
+              <v-icon>mdi-pencil</v-icon>
+            </v-btn>
+          </router-link>
         </div>
 
         <div class="image-container">
@@ -67,10 +76,16 @@
         <v-divider class="blog-details-divider-second"></v-divider>
         <div class="responses-container" @click="toggleCommentSection">
           <p
-            v-if="blog.commentsList.length > 0"
+            v-if="blog.commentsList.length > 0 && showComments === false"
             class="text-center response-content-msg"
           >
             See responses ({{ blog.commentsList.length }})
+          </p>
+          <p
+            v-if="blog.commentsList.length > 0 && showComments === true"
+            class="text-center response-content-msg"
+          >
+            Hide responses ({{ blog.commentsList.length }})
           </p>
           <p
             v-if="blog.commentsList.length === 0"
@@ -84,7 +99,7 @@
         <div class="comment-header-container">
           <h3 class="comment-header">Responses</h3>
         </div>
-        <AddComment :blogId="blogId" />
+        <AddComment v-on:updated="updatedComment" :blogId="blogId" />
         <CommentList
           :isOwner="isOwner"
           :blogId="blogId"
@@ -193,7 +208,7 @@
           <h3 class="comment-header">Responses</h3>
         </div>
         <AddComment
-          @updated="updatedComment"
+          v-on:updated="updatedComment"
           :allComments="blog.commentsList"
           :blogId="blogId"
         />
@@ -233,8 +248,10 @@ export default {
     toggleCommentSection() {
       this.showComments = !this.showComments;
     },
-    updatedComment(addedComment) {
-      this.blog.commentsList.push(addedComment);
+    updatedComment(payload) {
+      const { newComment } = payload;
+      this.blog.commentsList.push(newComment);
+      this.showComments = true;
     }
   },
   mounted() {
