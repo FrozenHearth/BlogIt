@@ -165,6 +165,7 @@ export default {
     tagIds: [],
     uploadedPic: '',
     blogPublished: null,
+    draftPublished: null,
     blogDeleted: null,
     imageUploaded: false,
     imageUpdated: false,
@@ -287,7 +288,35 @@ export default {
       }
     },
     saveAsDraft() {
-      this.$router.push('/myDrafts');
+      this.$refs.form.validate();
+      if (
+        this.title !== '' &&
+        this.details !== '' &&
+        this.pic !== '' &&
+        this.tags !== ''
+      ) {
+        const tagIds = this.tagNames.map(el => el.id);
+        this.published = false;
+        const data = {
+          title: this.title,
+          details: this.details,
+          pic: this.pic,
+          tags: tagIds,
+          published: this.published
+        };
+        createBlog(data)
+          .then(() => {
+            this.draftPublished = true;
+            setTimeout(() => {
+              window.scrollTo(0, 0);
+              this.$router.push('/myDrafts');
+            }, 1000);
+          })
+          .catch(err => {
+            console.log(err);
+            this.draftPublished = false;
+          });
+      }
     },
     removeTag(id) {
       this.tagNames = this.tagNames.filter(el => el.id !== id);

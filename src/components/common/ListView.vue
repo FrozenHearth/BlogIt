@@ -2,6 +2,9 @@
   <v-content>
     <div class="card-list-container" v-if="activePath === '/blogs'">
       <h1 class="card-list-container-title">Latest Posts</h1>
+      <div class="empty-list-msg text-center" v-if="blogs.length === 0">
+        No one has created any blogs.
+      </div>
       <CardView v-if="blogs.length > 0" v-bind:blogs="blogs" />
       <div class="text-center pagination-container">
         <v-pagination
@@ -15,12 +18,38 @@
 
     <div class="card-list-container" v-if="activePath === '/myPublished'">
       <h1 class="card-list-container-title">My Published</h1>
+      <div
+        class="empty-list-msg text-center"
+        v-if="publishedBlogs.length === 0"
+      >
+        No Blogs Published.
+      </div>
       <v-btn icon @click="goToNewBlog" class="new-blog-btn"
         ><v-icon> mdi-plus-circle-outline</v-icon></v-btn
       >
 
       <CardView :publishedBlogs="publishedBlogs" />
       <div class="text-center pagination-container">
+        <v-pagination
+          @input="pageChange"
+          v-model="pagination.currentPage"
+          :length="pageCount"
+          circle
+        ></v-pagination>
+      </div>
+    </div>
+
+    <div class="card-list-container" v-if="activePath === '/myDrafts'">
+      <h1 class="card-list-container-title">My Drafts</h1>
+      <div class="empty-list-msg text-center" v-if="myDrafts.length === 0">
+        No Drafts created.
+      </div>
+      <v-btn icon @click="goToNewBlog" class="new-blog-btn"
+        ><v-icon> mdi-plus-circle-outline</v-icon></v-btn
+      >
+
+      <CardView :myDrafts="myDrafts" />
+      <div v-if="count > 6" class="text-center pagination-container">
         <v-pagination
           @input="pageChange"
           v-model="pagination.currentPage"
@@ -36,7 +65,9 @@
 import {
   getBlogList,
   getNextBlogList,
-  getNextPublishedBlogsList
+  getNextPublishedBlogsList,
+  getMyDrafts,
+  getNextDraftsList
 } from '../../apis/api';
 import { getMyPublishedBlogs } from '../../apis/api';
 import CardView from './CardView';
@@ -56,6 +87,8 @@ export default {
       activePath: '',
       tag_details: [],
       publishedBlogs: [],
+      myDrafts: [],
+      count: 0,
       nextPage: '',
       previousPage: '',
       pageCount: 0
@@ -63,11 +96,12 @@ export default {
   },
   mounted() {
     this.activePath = this.$route.path;
-    const { currentPage } = this.pagination;
-    if (this.activePath === '/blogs' && currentPage === 1) {
+    if (this.activePath === '/blogs') {
       this.getAllBlogs();
-    } else if (this.activePath === '/myPublished' && currentPage === 1) {
+    } else if (this.activePath === '/myPublished') {
       this.getPublishedBlogs();
+    } else if (this.activePath === '/myDrafts') {
+      this.getAllDrafts();
     }
   },
   methods: {
@@ -77,6 +111,7 @@ export default {
           this.blogs = res.data.results.sort((a, b) => a.id - b.id).reverse();
           this.tag_details = res.data.tag_details;
           this.pageCount = Math.ceil(res.data.count / 6);
+          this.count = res.data.count;
         })
         .catch(err => console.log(err));
     },
@@ -87,6 +122,18 @@ export default {
             .sort((a, b) => a.id - b.id)
             .reverse();
           this.pageCount = Math.ceil(res.data.count / 6);
+          this.count = res.data.count;
+        })
+        .catch(err => console.log(err));
+    },
+    getAllDrafts() {
+      getMyDrafts()
+        .then(res => {
+          this.myDrafts = res.data.results
+            .sort((a, b) => a.id - b.id)
+            .reverse();
+          this.pageCount = Math.ceil(res.data.count / 6);
+          this.count = res.data.count;
         })
         .catch(err => console.log(err));
     },
@@ -106,10 +153,29 @@ export default {
           this.publishedBlogs = res.data.results;
           this.tag_details = res.data.tag_details;
         });
-      } else if (currentPage === 1 && this.activePath === '/blogs') {
+      } else if (currentPage > 1 && this.activePath === '/myDrafts') {
+        getNextDraftsList((currentPage - 1) * 6).then(res => {
+          this.myDrafts = res.data.results;
+          this.tag_details = res.data.tag_details;
+        });
+      } else if (
+        this.count > 6 &&
+        currentPage === 1 &&
+        this.activePath === '/blogs'
+      ) {
         this.getAllBlogs();
-      } else if (currentPage === 1 && this.activePath === '/myPublished') {
+      } else if (
+        this.count > 6 &&
+        currentPage === 1 &&
+        this.activePath === '/myPublished'
+      ) {
         this.getPublishedBlogs();
+      } else if (
+        this.count > 6 &&
+        currentPage === 1 &&
+        this.activePath === '/myDrafts'
+      ) {
+        this.getAllDrafts();
       }
     },
     goToNewBlog() {
@@ -140,5 +206,10 @@ export default {
 .pagination-container {
   margin-top: 5em;
   margin-bottom: 5em;
+}
+.empty-list-msg {
+  font-size: 1.5em;
+  position: relative;
+  top: 2.5em;
 }
 </style>
