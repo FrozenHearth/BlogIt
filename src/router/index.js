@@ -4,7 +4,6 @@ import Login from '../views/Login.vue';
 import List from '../views/List.vue';
 import Details from '../views/Details.vue';
 import AddBlog from '../views/AddBlog.vue';
-import MyDrafts from '../views/MyDrafts.vue';
 import ModifyComments from '../views/ModifyComments.vue';
 
 Vue.use(VueRouter);
@@ -45,13 +44,11 @@ const routes = [
     name: 'Published',
     component: List
   },
-
   {
     path: '/myDrafts',
     name: 'MyDrafts',
-    component: MyDrafts
+    component: List
   },
-
   {
     path: '/:id/comments/:commentId',
     name: 'ModifyComments',

@@ -124,6 +124,72 @@
         </v-card-actions>
       </v-card>
     </template>
+
+    <!-- My Drafts List -->
+
+    <template v-if="activePath === '/myDrafts'">
+      <v-card
+        v-for="draft in myDrafts"
+        :key="draft.id"
+        max-width="800"
+        class="list-card"
+      >
+        <v-img
+          v-if="draft.picture_url"
+          class="blog-image"
+          :src="draft.picture_url"
+        ></v-img>
+
+        <v-list-item>
+          <v-list-item-content>
+            <v-tooltip left>
+              <template v-slot:activator="{ on }">
+                <router-link
+                  class="read-more-link"
+                  :to="`/myDrafts/${draft.id}`"
+                >
+                  <v-list-item-title v-on="on" class="blog-title">{{
+                    draft.title.charAt(0).toUpperCase() + draft.title.slice(1)
+                  }}</v-list-item-title>
+                </router-link>
+              </template>
+              <span>Read More</span>
+            </v-tooltip>
+
+            <v-list-item-subtitle
+              >by
+              {{
+                draft.author_name.charAt(0).toUpperCase() +
+                  draft.author_name.slice(1)
+              }}</v-list-item-subtitle
+            >
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-card-text>
+          {{ draft.details | truncate(200) }}
+        </v-card-text>
+
+        <div class="tags-list">
+          <v-chip
+            v-for="(draft, index) in draft.tag_details"
+            :key="index"
+            outlined
+            class="tags-container ma-2"
+          >
+            {{ draft.tag }}
+          </v-chip>
+        </div>
+
+        <v-divider class="list-card-divider"></v-divider>
+
+        <v-card-actions>
+          <v-chip outlined class="posted-date-btn">
+            {{ moment(draft.pub_date).fromNow() }}
+          </v-chip>
+        </v-card-actions>
+      </v-card>
+    </template>
   </v-container>
 </template>
 
@@ -131,7 +197,7 @@
 import moment from 'moment';
 export default {
   name: 'CardView',
-  props: ['blogs', 'publishedBlogs'],
+  props: ['blogs', 'publishedBlogs', 'myDrafts'],
   data() {
     return {
       activePath: '',
@@ -161,8 +227,6 @@ export default {
 
 <style lang="scss" scoped>
 .list-card-container {
-  // display: flex;
-  // flex-wrap: wrap;
   position: relative;
   margin: 0 auto;
   top: 5em;
@@ -209,6 +273,8 @@ export default {
 }
 .blog-image {
   width: 100%;
+  max-height: 30em;
+  height: auto;
 }
 .blog-short-desc {
   color: white;

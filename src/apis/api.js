@@ -22,9 +22,30 @@ export const getNextBlogList = offset => {
   });
 };
 
+export const getMyPublishedBlogs = () => {
+  return axiosConfig({
+    url: `/blogapp/my-published`,
+    method: 'GET'
+  });
+};
+
 export const getNextPublishedBlogsList = offset => {
   return axiosConfig({
     url: `/blogapp/my-published?limit=6&offset=${offset}`,
+    method: 'GET'
+  });
+};
+
+export const getMyDrafts = () => {
+  return axiosConfig({
+    url: `/blogapp/my-drafts`,
+    method: 'GET'
+  });
+};
+
+export const getNextDraftsList = offset => {
+  return axiosConfig({
+    url: `/blogapp/my-drafts?limit=6&offset=${offset}`,
     method: 'GET'
   });
 };
@@ -72,13 +93,6 @@ export const addTags = payload => {
     url: `/blogapp/tags`,
     method: 'POST',
     data: payload
-  });
-};
-
-export const getMyPublishedBlogs = () => {
-  return axiosConfig({
-    url: `/blogapp/my-published`,
-    method: 'GET'
   });
 };
 
