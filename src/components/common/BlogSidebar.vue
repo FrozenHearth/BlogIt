@@ -120,6 +120,7 @@ export default {
     const { path } = this.$route;
     const { id } = this.$route.params;
     this.activePath = path;
+    console.log(this.activePath);
 
     if (this.activePath === '/blogs') {
       bus.$on('tagList', tags => {
@@ -134,12 +135,13 @@ export default {
         this.tags = tags;
       });
     } else if (
-      this.activePath === `/blogs/${id}` ||
+      this.activePath === `/blog/${id}` ||
       this.activePath === `/myPublished/${id}` ||
       this.activePath === `/myDrafts/${id}`
     ) {
       bus.$on('detailsTagList', tags => {
         this.tags = tags;
+        console.log(this.tags);
       });
     }
 
