@@ -1,13 +1,19 @@
 <template>
   <div>
-    <v-card color="grey lighten-4" flat tile>
-      <v-toolbar class="header-toolbar">
-        <img :src="headerLogo" alt="Header Logo" width="75" height="50" />
+    <v-card color="grey lighten-4">
+      <v-toolbar class="header-toolbar" flat tile>
+        <img
+          class="header-logo"
+          :src="headerLogo"
+          alt="Header Logo"
+          width="70"
+          height="50"
+        />
 
         <v-toolbar-title
           v-ripple
           class="header-title"
-          v-on:click="redirectToHomePage"
+          @click="redirectToHomePage"
           >Blog It</v-toolbar-title
         >
 
@@ -97,9 +103,14 @@ export default {
   position: fixed;
   width: 100%;
   z-index: 2;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
+}
+.header-logo {
+  position: relative;
+  left: 8em;
 }
 .header-title {
-  margin-left: 1em;
+  margin-left: 5em;
   cursor: pointer;
 }
 #user-initials-header {
