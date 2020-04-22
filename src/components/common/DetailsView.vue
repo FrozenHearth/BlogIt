@@ -352,7 +352,6 @@ export default {
   mounted() {
     const { name } = this.$route;
     this.activeComponent = name;
-    console.log(this.activeComponent);
     const { id } = this.$route.params;
     this.blogId = id;
     getBlogDetails(id).then(res => {

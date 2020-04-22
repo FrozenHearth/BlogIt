@@ -61,6 +61,7 @@ import {
 } from '../../apis/api';
 import { getMyPublishedBlogs } from '../../apis/api';
 import CardView from './CardView';
+import { bus } from '../../main';
 
 export default {
   name: 'ListView',
@@ -102,7 +103,13 @@ export default {
             .filter(el => el.published === true)
             .sort((a, b) => a.id - b.id)
             .reverse();
-          this.tag_details = res.data.tag_details;
+          this.tag_details = res.data.results.map(el => el.tag_details);
+          // Get tags for displayed blogs, and then flatten the result
+          const allTags = [].concat(
+            ...this.tag_details.map(el => el.map(x => x.tag))
+          );
+
+          bus.$emit('tagList', allTags);
           this.pageCount = Math.ceil(res.data.count / 6);
           this.count = res.data.count;
         })
@@ -139,17 +146,32 @@ export default {
       if (currentPage > 1 && this.activePath === '/blogs') {
         getNextBlogList((currentPage - 1) * 6).then(res => {
           this.blogs = res.data.results;
-          this.tag_details = res.data.tag_details;
+          this.tag_details = res.data.results.map(el => el.tag_details);
+          // Get tags for displayed blogs, and then flatten the result
+          const allTags = [].concat(
+            ...this.tag_details.map(el => el.map(x => x.tag))
+          );
+          bus.$emit('tagList', allTags);
         });
       } else if (currentPage > 1 && this.activePath === '/myPublished') {
         getNextPublishedBlogsList((currentPage - 1) * 6).then(res => {
           this.publishedBlogs = res.data.results;
-          this.tag_details = res.data.tag_details;
+          this.tag_details = res.data.results.map(el => el.tag_details);
+          // Get tags for displayed blogs, and then flatten the result
+          const allTags = [].concat(
+            ...this.tag_details.map(el => el.map(x => x.tag))
+          );
+          bus.$emit('tagList', allTags);
         });
       } else if (currentPage > 1 && this.activePath === '/myDrafts') {
         getNextDraftsList((currentPage - 1) * 6).then(res => {
           this.myDrafts = res.data.results;
-          this.tag_details = res.data.tag_details;
+          this.tag_details = res.data.results.map(el => el.tag_details);
+          // Get tags for displayed blogs, and then flatten the result
+          const allTags = [].concat(
+            ...this.tag_details.map(el => el.map(x => x.tag))
+          );
+          bus.$emit('tagList', allTags);
         });
       } else if (
         this.count > 6 &&
