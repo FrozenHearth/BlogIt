@@ -48,7 +48,7 @@ export default {
 <style lang="scss" scoped>
 .comment-list-wrapper {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: flex-start;
   width: 68em;
   margin: 0 auto 4em auto;
