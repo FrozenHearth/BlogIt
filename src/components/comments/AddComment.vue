@@ -18,7 +18,7 @@
         initials ? initials.substring(0, 2).toUpperCase() : 'N/A'
       }}</span>
     </v-avatar>
-    <v-btn outlined @click.prevent="addNewComment" class="post-comment-btn"
+    <v-btn outlined @click="addNewComment" class="post-comment-btn"
       >Publish</v-btn
     >
   </div>
@@ -46,7 +46,7 @@ export default {
         .then(res => {
           this.text = '';
           this.addedComment = res.data;
-          this.$emit('updated', this.addedComment);
+          this.$emit('updated', { newComment: this.addedComment });
         })
         .catch(err => console.log(err));
     }
