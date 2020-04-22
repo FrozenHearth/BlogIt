@@ -1,18 +1,18 @@
 <template>
   <div>
     <Header />
-    <AddBlog />
+    <ModifyComment />
   </div>
 </template>
 
 <script>
 import Header from '../components/common/Header';
-import AddBlog from './Blogs/AddBlog';
+import ModifyComment from '../components/comments/ModifyComment';
 export default {
-  name: 'CreateBlog',
+  name: 'ModifyComments',
   components: {
     Header,
-    AddBlog
+    ModifyComment
   }
 };
 </script>

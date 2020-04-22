@@ -1,5 +1,6 @@
 <template>
   <v-content>
+    <Header />
     <div class="add-blog-container">
       <v-alert
         class="alert-banner"
@@ -145,9 +146,13 @@ import {
   updateBlog,
   deleteBlog,
   getBlogDetails
-} from '../../apis/api';
+} from '../apis/api';
+import Header from '../components/common/Header';
 export default {
   name: 'AddBlog',
+  components: {
+    Header
+  },
   data: () => ({
     file: null,
     title: '',

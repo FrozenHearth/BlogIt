@@ -1,12 +1,11 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Login from '../views/Login.vue';
-import Blogs from '../views/Blogs.vue';
+import List from '../views/List.vue';
 import Details from '../views/Details.vue';
-import CreateBlog from '../views/CreateBlog.vue';
-import Published from '../views/Published.vue';
+import AddBlog from '../views/AddBlog.vue';
 import MyDrafts from '../views/MyDrafts.vue';
-import ModifyComment from '../views/ModifyComment.vue';
+import ModifyComments from '../views/ModifyComments.vue';
 
 Vue.use(VueRouter);
 
@@ -19,7 +18,7 @@ const routes = [
   {
     path: '/blogs',
     name: 'Blogs',
-    component: Blogs
+    component: List
   },
   {
     path: '/blog/:id',
@@ -39,12 +38,12 @@ const routes = [
   {
     path: '/addBlog',
     name: 'CreateBlog',
-    component: CreateBlog
+    component: AddBlog
   },
   {
     path: '/myPublished',
     name: 'Published',
-    component: Published
+    component: List
   },
 
   {
@@ -55,8 +54,8 @@ const routes = [
 
   {
     path: '/:id/comments/:commentId',
-    name: 'ModifyComment',
-    component: ModifyComment
+    name: 'ModifyComments',
+    component: ModifyComments
   }
 ];
 
