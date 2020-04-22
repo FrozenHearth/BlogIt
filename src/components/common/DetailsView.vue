@@ -318,6 +318,7 @@
 </template>
 
 <script>
+import { bus } from '../../main'
 import UserInfo from './UserInfo';
 import CommentList from '../comments/CommentList';
 import AddComment from '../comments/AddComment';
@@ -371,6 +372,8 @@ export default {
       this.blog.blogDetails = details;
       this.blog.image = picture_url;
       this.blog.blogTags = tag_details;
+      const allTags = this.blog.blogTags.map(el => el.tag);
+      bus.$emit('detailsTagList', allTags);
       this.blog.commentsList = JSON.parse(JSON.stringify(comment_details)).sort(
         (a, b) => a.id - b.id
       );
