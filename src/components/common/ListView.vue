@@ -15,9 +15,10 @@
 
     <div class="card-list-container" v-if="activePath === '/myPublished'">
       <h1 class="card-list-container-title">My Published</h1>
-      <v-btn @click="goToNewBlog" class="new-blog-btn" color="success"
-        >Create Blog</v-btn
+      <v-btn icon @click="goToNewBlog" class="new-blog-btn"
+        ><v-icon> mdi-plus-circle-outline</v-icon></v-btn
       >
+
       <CardView :publishedBlogs="publishedBlogs" />
       <div class="text-center pagination-container">
         <v-pagination
@@ -125,15 +126,16 @@ export default {
 }
 .card-list-container-title {
   position: absolute;
-  left: 30em;
   font-size: 2.2em;
+  left: 30em;
   font-weight: 600;
   color: rgba(0, 0, 0, 0.84);
 }
 .new-blog-btn {
-  float: right;
   position: relative;
-  right: 6.5em;
+  margin: 0 auto;
+  display: block;
+  top: 3em;
 }
 .pagination-container {
   margin-top: 5em;
