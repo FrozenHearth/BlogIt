@@ -21,6 +21,22 @@
       <v-alert
         class="alert-banner"
         width="300"
+        v-if="blogUpdated === true"
+        type="success"
+      >
+        Blog successfully updated!
+      </v-alert>
+      <v-alert
+        class="alert-banner"
+        width="300"
+        v-if="blogUpdated === false"
+        type="error"
+      >
+        Failed to update blog! Please check the entered details.
+      </v-alert>
+      <v-alert
+        class="alert-banner"
+        width="300"
         v-if="blogDeleted === true"
         type="success"
       >
@@ -114,10 +130,18 @@
             class="publish-btn"
             color="primary"
           >
-            Update
+            Publish Blog
           </v-btn>
           <v-btn
-            @click="onDeleteBlog"
+            v-if="mode === 'edit'"
+            @click="onUpdateDraft"
+            class="publish-btn"
+            color="success"
+          >
+            Update Draft
+          </v-btn>
+          <v-btn
+            @click="onDelete"
             v-if="mode === 'edit'"
             class="delete-btn"
             color="error"
@@ -126,6 +150,7 @@
           </v-btn>
 
           <v-btn
+            v-if="previousComponent !== 'MyDraftsDetails'"
             v-on:click="saveAsDraft"
             class="save-as-draft-btn"
             color="success"
@@ -165,6 +190,7 @@ export default {
     tagIds: [],
     uploadedPic: '',
     blogPublished: null,
+    blogUpdated: null,
     draftPublished: null,
     blogDeleted: null,
     imageUploaded: false,
@@ -172,6 +198,7 @@ export default {
     isLoading: false,
     tagExists: false,
     published: null,
+    previousComponent: '',
     titleRules: [
       v => !!v || 'Title cannot be blank',
       v => /^[a-zA-Z ]/.test(v) || 'Title must be valid',
@@ -191,6 +218,8 @@ export default {
     ]
   }),
   mounted() {
+    const { prevComponent } = this.$route.query;
+    this.previousComponent = prevComponent;
     if (this.$route.params.id) {
       this.mode = 'edit';
       const { id } = this.$route.params;
@@ -321,39 +350,83 @@ export default {
     removeTag(id) {
       this.tagNames = this.tagNames.filter(el => el.id !== id);
     },
-    onUpdateBlog() {
+    onUpdateDraft() {
       const { id } = this.$route.params;
       this.$refs.form.validate();
       const tagIds = JSON.parse(JSON.stringify(this.tagNames.map(el => el.id)));
+
+      this.published = false;
+
       const data = {
         title: this.title,
         details: this.details,
         pic: this.pic,
         tags: tagIds,
-        user: this.user
+        user: this.user,
+        published: this.published
       };
       updateBlog(id, data)
         .then(() => {
-          this.blogPublished = true;
+          this.blogUpdated = true;
           window.scrollTo(0, 0);
+
+          setTimeout(() => {
+            this.$router.push(`/myDrafts/${id}`);
+          }, 1000);
+        })
+        .catch(err => {
+          console.log(err);
+          this.blogUpdated = false;
+        });
+    },
+    onUpdateBlog() {
+      const { id } = this.$route.params;
+      this.$refs.form.validate();
+      const tagIds = JSON.parse(JSON.stringify(this.tagNames.map(el => el.id)));
+
+      this.published = true;
+
+      const data = {
+        title: this.title,
+        details: this.details,
+        pic: this.pic,
+        tags: tagIds,
+        user: this.user,
+        published: this.published
+      };
+      updateBlog(id, data)
+        .then(() => {
+          this.blogUpdated = true;
+          window.scrollTo(0, 0);
+
           setTimeout(() => {
             this.$router.push(`/myPublished/${id}`);
           }, 1000);
         })
         .catch(err => {
           console.log(err);
-          this.blogPublished = false;
+          this.blogUpdated = false;
         });
     },
-    onDeleteBlog() {
+    onDelete() {
       const { id } = this.$route.params;
+      const { previousComponent } = this;
       deleteBlog(id)
         .then(() => {
           window.scrollTo(0, 0);
           this.blogDeleted = true;
-          setTimeout(() => {
-            this.$router.push('/myPublished');
-          }, 1000);
+          if (
+            previousComponent === 'BlogDetails' ||
+            previousComponent === 'PublishedDetails'
+          ) {
+            setTimeout(() => {
+              this.$router.push('/myPublished');
+            }, 1000);
+          } else if (previousComponent === 'MyDraftsDetails') {
+            setTimeout(() => {
+              this.$router.push('/myDrafts');
+            }, 1000);
+          }
         })
         .catch(() => {
           window.scrollTo(0, 0);
