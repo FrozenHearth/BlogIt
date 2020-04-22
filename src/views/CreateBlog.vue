@@ -1,13 +1,18 @@
 <template>
-  <AddBlogWrapper />
+  <div>
+    <Header />
+    <AddBlog />
+  </div>
 </template>
 
 <script>
-import AddBlogWrapper from '../components/container/AddBlogWrapper';
+import Header from '../components/common/Header';
+import AddBlog from './Blogs/AddBlog';
 export default {
   name: 'CreateBlog',
   components: {
-    AddBlogWrapper
+    Header,
+    AddBlog
   }
 };
 </script>

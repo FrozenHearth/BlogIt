@@ -1,6 +1,7 @@
 <template>
   <div class="addCommentWrapper">
     <v-textarea
+      class="add-comment-textarea"
       solo
       placeholder="Write a response..."
       v-model="text"
@@ -29,9 +30,10 @@ export default {
   name: 'AddComment',
   data: () => ({
     text: '',
-    initials: ''
+    initials: '',
+    addedComment: {}
   }),
-  props: ['blogId'],
+  props: ['blogId', 'allComments'],
   mounted() {
     this.initials = localStorage.getItem('username');
   },
@@ -41,8 +43,10 @@ export default {
         text: this.text
       };
       addComment(this.blogId, data)
-        .then(() => {
+        .then(res => {
           this.text = '';
+          this.addedComment = res.data;
+          this.$emit('updated', this.addedComment);
         })
         .catch(err => console.log(err));
     }
@@ -59,22 +63,17 @@ export default {
   flex-direction: column;
   position: relative;
 }
-.v-application--is-ltr
-  .v-textarea.v-text-field--enclosed
-  .v-text-field__slot
-  textarea {
-  padding-right: 12px;
-  padding-left: 4em;
-  padding-top: 0.6em;
-  font-size: 1.15em;
-  color: rgba(0, 0, 0, 0.54);
-  font-weight: 400;
+.add-comment-textarea textarea {
+  padding-right: 12px !important;
+  padding-left: 4em !important;
+  padding-top: 0.6em !important;
+  font-size: 1.15em !important;
+  color: rgba(0, 0, 0, 0.54) !important;
+  font-weight: 400 !important;
 }
-.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)
-  > .v-input__control
-  > .v-input__slot {
-  border: 1px solid rgba(0, 0, 0, 0.09);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+.add-comment-textarea .v-input__slot {
+  border: 1px solid rgba(0, 0, 0, 0.09) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
   height: 5em;
 }
 #user-initials-comment-avatar {
