@@ -306,12 +306,12 @@ export default {
   margin-top: 10em;
 }
 .blog-title {
-  font-size: 3.4em;
+  font-size: 3.6em;
   font-weight: 400;
   word-spacing: -2px;
   text-align: justify;
   line-height: 48px;
-  font-family: 'Merriweather', serif;
+  font-family: 'PT Serif', serif;
 }
 .user-avatar {
   min-width: 48px;
@@ -396,7 +396,7 @@ export default {
   margin-bottom: 2em;
 }
 .blog-description {
-  font-size: 2em;
+  font-size: 1.9em;
   margin-top: 1em;
   text-align: justify;
   line-height: 33px;
