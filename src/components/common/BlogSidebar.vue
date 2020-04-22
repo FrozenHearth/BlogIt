@@ -8,10 +8,40 @@
     right
   >
     <v-list dense>
-      <v-list-item class="side-nav-items">
+      <v-list-item v-if="activePath === '/blogs'" class="side-nav-items">
         <v-icon class="search-icon">mdi-magnify</v-icon>
-        <v-text-field type="text" label="Search" solo> </v-text-field>
+        <v-text-field
+          v-model="searchTerm"
+          @keyup="searchBlogs"
+          type="text"
+          label="Search"
+          solo
+        >
+        </v-text-field>
       </v-list-item>
+      <v-list-item v-if="activePath === '/myPublished'" class="side-nav-items">
+        <v-icon class="search-icon">mdi-magnify</v-icon>
+        <v-text-field
+          v-model="searchTermPublished"
+          @keyup="searchPublishedBlogs"
+          type="text"
+          label="Search"
+          solo
+        >
+        </v-text-field>
+      </v-list-item>
+      <v-list-item v-if="activePath === '/myDrafts'" class="side-nav-items">
+        <v-icon class="search-icon">mdi-magnify</v-icon>
+        <v-text-field
+          v-model="searchTermDrafts"
+          @keyup="searchMyDrafts"
+          type="text"
+          label="Search"
+          solo
+        >
+        </v-text-field>
+      </v-list-item>
+
       <v-list-item>
         <div class="tags-list">
           <v-chip
@@ -30,19 +60,91 @@
 
 <script>
 import { bus } from '../../main';
+import _ from 'lodash';
 export default {
   props: ['source', 'toggleDrawer'],
   data() {
     return {
       drawer: this.toggleDrawer,
       isClosed: false,
-      tags: []
+      tags: [],
+      searchTerm: '',
+      searchTermPublished: '',
+      searchTermDrafts: '',
+      blogs: [],
+      publishedBlogs: [],
+      filteredBlogs: [],
+      filteredMyDrafts: [],
+      filteredPublishedBlogs: [],
+      myDrafts: [],
+      activePath: ''
     };
   },
+
+  methods: {
+    searchBlogs: _.debounce(function() {
+      if (this.searchTerm.trim() !== '') {
+        const result = this.blogs.filter(blog =>
+          blog.title.toLowerCase().match(this.searchTerm.toLowerCase())
+        );
+        this.filteredBlogs = result;
+        bus.$emit('filteredBlogs', this.filteredBlogs);
+      }
+    }, 2000),
+    searchPublishedBlogs: _.debounce(function() {
+      if (this.searchTermPublished.trim() !== '') {
+        const result = this.publishedBlogs.filter(blog =>
+          blog.title.toLowerCase().match(this.searchTermPublished.toLowerCase())
+        );
+        this.filteredPublishedBlogs = result;
+        bus.$emit('filteredPublishedBlogs', this.filteredPublishedBlogs);
+      }
+    }, 2000),
+    searchMyDrafts: _.debounce(function() {
+      if (this.searchTermDrafts.trim() !== '') {
+        const result = this.myDrafts.filter(blog =>
+          blog.title.toLowerCase().match(this.searchTermDrafts.toLowerCase())
+        );
+        console.log(JSON.parse(JSON.stringify(result)));
+        this.filteredMyDrafts = result;
+        bus.$emit('filteredMyDrafts', this.filteredMyDrafts);
+      }
+    }, 2000)
+  },
   mounted() {
-    bus.$on('tagList', tags => {
-      this.tags = tags;
-    });
+    const { path } = this.$route;
+    const { id } = this.$route.params;
+    this.activePath = path;
+    console.log(this.activePath);
+
+    if (this.activePath === '/blogs') {
+      bus.$on('tagList', tags => {
+        this.tags = tags;
+      });
+    } else if (this.activePath === '/myPublished') {
+      bus.$on('publishedBlogTags', tags => {
+        this.tags = tags;
+      });
+    } else if (this.activePath === '/myDrafts') {
+      bus.$on('myDraftsBlogTags', tags => {
+        this.tags = tags;
+      });
+    } else if (
+      this.activePath === `/blog/${id}` ||
+      this.activePath === `/myPublished/${id}` ||
+      this.activePath === `/myDrafts/${id}`
+    ) {
+      bus.$on('detailsTagList', tags => {
+        this.tags = tags;
+        console.log(this.tags);
+      });
+    }
+
+    this.blogs = JSON.parse(localStorage.getItem('blogList'));
+    this.publishedBlogs = JSON.parse(
+      localStorage.getItem('publishedBlogsList')
+    );
+    this.myDrafts = JSON.parse(localStorage.getItem('myDrafts'));
   }
 };
 </script>

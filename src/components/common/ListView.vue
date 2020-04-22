@@ -3,7 +3,7 @@
     <div class="card-list-container" v-if="activePath === '/blogs'">
       <h1 class="card-list-container-title text-center">Latest Posts</h1>
       <div class="empty-list-msg text-center" v-if="blogs.length === 0">
-        No one has created any blogs.
+        No blogs found.
       </div>
       <CardView v-if="blogs.length > 0" v-bind:blogs="blogs" />
       <div class="text-center pagination-container">
@@ -103,6 +103,7 @@ export default {
             .filter(el => el.published === true)
             .sort((a, b) => a.id - b.id)
             .reverse();
+          localStorage.setItem('blogList', JSON.stringify(this.blogs));
           this.tag_details = res.data.results.map(el => el.tag_details);
           // Get tags for displayed blogs, and then flatten the result
           const allTags = [].concat(
@@ -121,6 +122,15 @@ export default {
           this.publishedBlogs = res.data.results
             .sort((a, b) => a.id - b.id)
             .reverse();
+          localStorage.setItem(
+            'publishedBlogsList',
+            JSON.stringify(this.publishedBlogs)
+          );
+          this.tag_details = res.data.results.map(el => el.tag_details);
+          const publishedBlogTags = [].concat(
+            ...this.tag_details.map(el => el.map(x => x.tag))
+          );
+          bus.$emit('publishedBlogTags', publishedBlogTags);
           this.pageCount = Math.ceil(res.data.count / 6);
           this.count = res.data.count;
         })
@@ -132,6 +142,12 @@ export default {
           this.myDrafts = res.data.results
             .sort((a, b) => a.id - b.id)
             .reverse();
+          localStorage.setItem('myDrafts', JSON.stringify(this.myDrafts));
+          this.tag_details = res.data.results.map(el => el.tag_details);
+          const myDraftsBlogTags = [].concat(
+            ...this.tag_details.map(el => el.map(x => x.tag))
+          );
+          bus.$emit('myDraftsBlogTags', myDraftsBlogTags);
           this.pageCount = Math.ceil(res.data.count / 6);
           this.count = res.data.count;
         })
@@ -195,6 +211,23 @@ export default {
     },
     goToNewBlog() {
       this.$router.push('/addBlog');
+    }
+  },
+  watch: {
+    blogs() {
+      bus.$on('filteredBlogs', filteredBlogs => {
+        this.blogs = filteredBlogs;
+      });
+    },
+    publishedBlogs() {
+      bus.$on('filteredPublishedBlogs', filteredPublishedBlogs => {
+        this.publishedBlogs = filteredPublishedBlogs;
+      });
+    },
+    myDrafts() {
+      bus.$on('filteredMyDrafts', filteredMyDrafts => {
+        this.myDrafts = filteredMyDrafts;
+      });
     }
   }
 };
