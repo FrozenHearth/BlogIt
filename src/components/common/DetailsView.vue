@@ -277,7 +277,9 @@ export default {
       this.blog.blogDetails = details;
       this.blog.image = picture_url;
       this.blog.blogTags = tag_details;
-      this.blog.commentsList = JSON.parse(JSON.stringify(comment_details)).sort((a, b) => a.id - b.id);
+      this.blog.commentsList = JSON.parse(JSON.stringify(comment_details)).sort(
+        (a, b) => a.id - b.id
+      );
       this.isOwner = is_owner;
     });
   },
@@ -306,6 +308,7 @@ export default {
 .blog-title {
   font-size: 3.4em;
   font-weight: 400;
+  word-spacing: -2px;
   text-align: justify;
   line-height: 48px;
   font-family: 'Merriweather', serif;
