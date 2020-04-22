@@ -1,24 +1,24 @@
 <template>
   <div>
     <Header />
-    <BlogList class="blog-list-wrapper" />
+    <ListView class="list-wrapper" />
   </div>
 </template>
 
 <script>
 import Header from '../components/common/Header';
-import BlogList from './Blogs/BlogList';
+import ListView from '../components/common/ListView';
 export default {
   name: 'Blogs',
   components: {
     Header,
-    BlogList
+    ListView
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.blog-list-wrapper {
+.list-wrapper {
   margin-top: 5em;
 }
 </style>
