@@ -17,8 +17,8 @@
           <template v-slot:activator="{ on }">
             <v-btn v-on="on" class="profile-icon" icon>
               <v-avatar color="primary" min-width="36" width="36" height="36">
-                <span id="user-initials" class="white--text headline ">{{
-                  username.charAt(0).toUpperCase()
+                <span id="user-initials-header" class="white--text headline ">{{
+                  username.substring(0, 2).toUpperCase()
                 }}</span>
               </v-avatar>
             </v-btn>
@@ -92,7 +92,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .header-toolbar {
   position: fixed;
   width: 100%;
@@ -102,8 +102,8 @@ export default {
   margin-left: 1em;
   cursor: pointer;
 }
-#user-initials {
-  font-size: 1.2em !important;
+#user-initials-header {
+  font-size: 0.8em !important;
 }
 .alert-banner-logout {
   position: absolute;

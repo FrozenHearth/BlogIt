@@ -88,8 +88,11 @@ export default {
         .catch(err => console.log(err));
     },
     pageChange() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
       const { currentPage } = this.pagination;
-      console.log(currentPage);
       if (currentPage > 1 && this.activePath === '/blogs') {
         getNextBlogList((currentPage - 1) * 6).then(res => {
           this.blogs = res.data.results;
@@ -120,9 +123,10 @@ export default {
 }
 .card-list-container-title {
   position: absolute;
-  left: 3em;
-  font-size: 2.5em;
-  font-weight: 400;
+  left: 30em;
+  font-size: 2.2em;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.84);
 }
 .new-blog-btn {
   float: right;
