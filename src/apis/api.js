@@ -15,6 +15,20 @@ export const getBlogList = () => {
   });
 };
 
+export const getNextBlogList = offset => {
+  return axiosConfig({
+    url: `/blogapp/blogs?limit=6&offset=${offset}`,
+    method: 'GET'
+  });
+};
+
+export const getNextPublishedBlogsList = offset => {
+  return axiosConfig({
+    url: `/blogapp/my-published?limit=6&offset=${offset}`,
+    method: 'GET'
+  });
+};
+
 export const getBlogDetails = id => {
   return axiosConfig({
     url: `/blogapp/blogs/${id}`,
