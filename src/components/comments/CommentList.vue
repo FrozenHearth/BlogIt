@@ -75,7 +75,7 @@ export default {
 
 .comment-text {
   text-align: justify;
-  font-size: 1.7em;
+  font-size: 1.68em;
   font-family: 'PT Serif', serif;
   line-height: 28px;
   bottom: 1.2em;
