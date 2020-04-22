@@ -73,7 +73,7 @@ export default {
     getAllBlogs() {
       getBlogList()
         .then(res => {
-          this.blogs = res.data.results;
+          this.blogs = res.data.results.sort((a, b) => a.id - b.id).reverse();
           this.tag_details = res.data.tag_details;
           this.pageCount = Math.ceil(res.data.count / 6);
         })
@@ -82,7 +82,9 @@ export default {
     getPublishedBlogs() {
       getMyPublishedBlogs()
         .then(res => {
-          this.publishedBlogs = res.data.results;
+          this.publishedBlogs = res.data.results
+            .sort((a, b) => a.id - b.id)
+            .reverse();
           this.pageCount = Math.ceil(res.data.count / 6);
         })
         .catch(err => console.log(err));
