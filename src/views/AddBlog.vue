@@ -490,7 +490,6 @@ export default {
   position: relative;
   top: 5em;
   margin-bottom: 5em;
-  font-family: 'PT Serif', serif;
 }
 .add-blog-form-wrapper {
   position: relative;
@@ -524,7 +523,7 @@ export default {
   word-spacing: -2px;
   overflow: visible !important;
   text-align: justify;
-  font-family: 'PT Serif', serif;
+  font-family: 'Roboto', serif;
   color: #b3b3b1 !important;
 }
 
@@ -536,7 +535,7 @@ export default {
   word-spacing: -2px;
   overflow: visible !important;
   text-align: justify;
-  font-family: 'PT Serif', serif;
+  font-family: 'Roboto', serif;
   color: #b3b3b1 !important;
 }
 
@@ -552,6 +551,8 @@ export default {
 
 .blog-title textarea {
   font-size: 2.2em;
+  font-family: 'PT Serif', serif;
+
   line-height: 48px;
   font-weight: 400;
   word-spacing: -2px;
@@ -570,6 +571,7 @@ export default {
 .blog-description textarea {
   line-height: 33px;
   font-size: 1.17em;
+  font-family: 'PT Serif', serif;
   width: 680px;
   word-spacing: -1.8px;
   overflow-wrap: break-word;
