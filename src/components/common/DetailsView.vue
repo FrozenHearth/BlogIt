@@ -1,9 +1,9 @@
 <template>
   <v-content>
     <v-container v-if="activeComponent === 'BlogDetails'">
-      <div class="blog-details-container">
-        <div class="blog-title-container">
-          <h2 class="blog-title">
+      <div class="details-container">
+        <div class="title-container">
+          <h2 class="blog-header">
             {{ blog.blogTitle }}
           </h2>
         </div>
@@ -33,15 +33,15 @@
           <img class="blog-details-image" :src="blog.image" alt="" />
         </div>
 
-        <div class="blog-description-container">
-          <p class="blog-description">
+        <div class="description-container">
+          <p class="short-description">
             {{
               blog.blogDetails.charAt(0).toUpperCase() +
                 blog.blogDetails.slice(1)
             }}
           </p>
         </div>
-        <div class="tags-container">
+        <div class="tag-chips-container">
           <v-chip
             class="tag-description ma-2"
             ripple
@@ -119,9 +119,9 @@
     <v-container
       v-if="isOwner === true && activeComponent === 'PublishedDetails'"
     >
-      <div class="blog-details-container">
-        <div class="blog-title-container">
-          <h2 class="blog-title">
+      <div class="details-container">
+        <div class="title-container">
+          <h2 class="blog-header">
             {{ blog.blogTitle }}
           </h2>
         </div>
@@ -150,15 +150,15 @@
           <img class="blog-details-image" :src="blog.image" alt="" />
         </div>
 
-        <div class="blog-description-container">
-          <p class="blog-description">
+        <div class="description-container">
+          <p class="short-description">
             {{
               blog.blogDetails.charAt(0).toUpperCase() +
                 blog.blogDetails.slice(1)
             }}
           </p>
         </div>
-        <div class="tags-container">
+        <div class="tag-chips-container">
           <v-chip
             ripple
             label
@@ -237,9 +237,9 @@
     <v-container
       v-if="isOwner === true && activeComponent === 'MyDraftsDetails'"
     >
-      <div class="blog-details-container">
-        <div class="blog-title-container">
-          <h2 class="blog-title">
+      <div class="details-container">
+        <div class="title-container">
+          <h2 class="blog-header">
             {{ blog.blogTitle }}
           </h2>
         </div>
@@ -268,15 +268,15 @@
           <img class="blog-details-image" :src="blog.image" alt="" />
         </div>
 
-        <div class="blog-description-container">
-          <p class="blog-description">
+        <div class="description-container">
+          <p class="short-description">
             {{
               blog.blogDetails.charAt(0).toUpperCase() +
                 blog.blogDetails.slice(1)
             }}
           </p>
         </div>
-        <div class="tags-container">
+        <div class="tag-chips-container">
           <v-chip
             ripple
             label
@@ -318,7 +318,7 @@
 </template>
 
 <script>
-import { bus } from '../../main'
+import { bus } from '../../main';
 import UserInfo from './UserInfo';
 import CommentList from '../comments/CommentList';
 import AddComment from '../comments/AddComment';
@@ -392,17 +392,17 @@ export default {
 #user-initials-footer {
   font-size: 2.5em !important;
 }
-.blog-details-container {
+.details-container {
   margin: 0 auto 3em auto;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.blog-title-container {
+.title-container {
   width: 68em;
   margin-top: 10em;
 }
-.blog-title {
+.blog-header {
   font-size: 3.6em;
   font-weight: 400;
   word-spacing: -2px;
@@ -438,7 +438,7 @@ export default {
 .edit-blog-btn {
   margin-left: auto;
 }
-.tags-container {
+.tag-chips-container {
   display: flex;
   width: 68em;
 }
@@ -486,13 +486,15 @@ export default {
   bottom: 0.6em;
   line-height: 36px;
 }
-.blog-description-container {
+.description-container {
   position: relative;
   margin-top: 5em;
   width: 68em;
   margin-bottom: 2em;
 }
-.blog-description {
+.short-description {
+  white-space: pre-line;
+
   font-size: 1.9em;
   margin-top: 1em;
   text-align: justify;
