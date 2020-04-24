@@ -50,49 +50,77 @@
       >
         Failed to Delete Blog!
       </v-alert>
-      <v-form ref="form">
-        <v-col class="add-title-container" cols="12" sm="6" md="4">
-          <v-text-field
-            solo
-            :rules="titleRules"
-            type="text"
-            label="Add Blog Title"
-            v-model="title"
-          ></v-text-field>
-        </v-col>
-        <v-col class="blog-description-container" cols="12" sm="6" md="4">
-          <v-textarea
-            minlength="50"
-            solo
-            :rules="descriptionRules"
-            type="text"
-            label="Blog Description"
-            v-model="details"
-          ></v-textarea>
 
+      <v-form class="add-blog-form-wrapper" ref="form">
+        <v-col class="add-title-container" cols="12" sm="6">
+          <v-textarea
+            ref="addBlogTitle"
+            auto-grow
+            maxlength="150"
+            class="customTextField blog-title"
+            type="text"
+            :rules="titleRules"
+            width="680"
+            solo
+            label="Title"
+            v-model="title"
+          ></v-textarea>
+        </v-col>
+        <v-col class="blog-image-details-container" cols="12" sm="6">
+          <template>
+            <div
+              v-if="hideImageUploadBox === false"
+              v-ripple
+              class="image-upload-container"
+            >
+              <v-btn icon>
+                <v-icon>mdi-camera-outline</v-icon>
+              </v-btn>
+
+              <p class="image-upload-container-content">ADD IMAGE</p>
+            </div>
+          </template>
           <v-file-input
+            class="customFileInput blog-file-input"
+            solo
             :rules="fileRules"
             @change="onImageUpload"
             v-model="file"
             accept="image/*"
-            label="Upload an image"
-            solo
             :loading="isLoading"
-            counter
           >
           </v-file-input>
-          <div
-            v-if="imageUploaded"
-            :style="{ backgroundImage: `url(${uploadedPic})` }"
-            class="uploaded-image-container"
-          ></div>
+          <div v-if="imageUploaded" class="uploaded-image-container">
+            <div
+              :style="{ backgroundImage: `url(${uploadedPic})` }"
+              class="uploaded-image"
+            ></div>
+            <v-btn @click="removeImage" class="remove-image-btn" icon>
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </div>
+        </v-col>
+        <v-col class="blog-description-container" cols="12" sm="6">
+          <v-textarea
+            minlength="50"
+            solo
+            :rules="descriptionRules"
+            auto-grow
+            class="customTextField blog-description"
+            type="text"
+            label="Start your story..."
+            v-model="details"
+          ></v-textarea>
+        </v-col>
+
+        <v-col class="tag-details-container" cols="12" sm="6">
           <v-text-field
             :rules="tagNamesRules"
             v-on:keyup.enter="submitTags"
-            label="Add Tag Name and hit Enter"
-            solo
+            label="Add a tag name and hit Enter"
+            class="customTextField blog-tags"
             min="1"
-            max="15"
+            solo
           >
           </v-text-field>
           <v-alert
@@ -102,25 +130,27 @@
           >
             Tag already exists! Please enter another tag name.
           </v-alert>
-
-          <div class="entered-tags-list">
-            <v-chip
-              close
-              @click="removeTag(singleTag.id)"
-              v-for="singleTag in tagNames"
-              :key="singleTag.id"
-              class="tag ma-2"
-            >
-              {{ singleTag.tag }}
-            </v-chip>
-          </div>
         </v-col>
-        <div class="btn-container">
+
+        <div class="entered-tags-list">
+          <v-chip
+            close
+            ripple
+            label
+            @click="removeTag(singleTag.id)"
+            v-for="singleTag in tagNames"
+            :key="singleTag.id"
+            class="tag-description ma-2"
+          >
+            {{ singleTag.tag }}
+          </v-chip>
+        </div>
+        <div class="btn-container col-sm-6 col-12">
           <v-btn
+            outlined
             v-if="mode === 'create'"
             v-on:click="publishPost"
             class="publish-btn"
-            color="primary"
           >
             Publish
           </v-btn>
@@ -153,9 +183,9 @@
             v-if="previousComponent !== 'MyDraftsDetails'"
             v-on:click="saveAsDraft"
             class="save-as-draft-btn"
-            color="success"
+            outlined
           >
-            Save as Draft
+            Save As Draft
           </v-btn>
         </div>
       </v-form>
@@ -180,6 +210,7 @@ export default {
   },
   data: () => ({
     file: null,
+    text: '',
     title: '',
     details: '',
     mode: 'create',
@@ -198,13 +229,12 @@ export default {
     isLoading: false,
     tagExists: false,
     published: null,
+    hideImageUploadBox: false,
     previousComponent: '',
     titleRules: [
       v => !!v || 'Title cannot be blank',
       v => /^[a-zA-Z ]/.test(v) || 'Title must be valid',
-      v => (v && v.length > 10) || 'Title must be atleast 10 characters',
-      v =>
-        (v && v.length <= 150) || 'Title should not be more than 150 characters'
+      v => (v && v.length > 10) || 'Title must be atleast 10 characters'
     ],
     descriptionRules: [
       v => !!v || 'Description cannot be blank',
@@ -218,6 +248,7 @@ export default {
     ]
   }),
   mounted() {
+    this.$refs.addBlogTitle.focus();
     const { prevComponent } = this.$route.query;
     this.previousComponent = prevComponent;
     if (this.$route.params.id) {
@@ -258,10 +289,12 @@ export default {
           this.uploadedPic = res.data.pic;
           this.pic = res.data.id;
           this.isLoading = false;
+          this.hideImageUploadBox = true;
           this.imageUploaded = true;
         });
       } else {
         this.imageUploaded = false;
+        this.hideImageUploadBox = false;
         this.isLoading = false;
       }
     },
@@ -350,6 +383,10 @@ export default {
     removeTag(id) {
       this.tagNames = this.tagNames.filter(el => el.id !== id);
     },
+    removeImage() {
+      this.imageUploaded = false;
+      this.hideImageUploadBox = false;
+    },
     onUpdateDraft() {
       const { id } = this.$route.params;
       this.$refs.form.validate();
@@ -437,17 +474,125 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .add-blog-container {
   position: relative;
-  top: 10em;
+  top: 5em;
   margin-bottom: 5em;
+  font-family: 'PT Serif', serif;
 }
+.add-blog-form-wrapper {
+  position: relative;
+  top: 4em;
+}
+.image-upload-container {
+  position: relative;
+  padding: 2em 0;
+  top: 6em;
+  border: 2px dashed #b3b3b1;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.remove-image-btn {
+  margin-left: 2em;
+}
+.image-upload-container-content {
+  font-size: 1.4em;
+  color: #b3b3b1;
+  font-weight: 700;
+}
+.customTextField {
+  caret-color: #b3b3b1 !important;
+}
+.blog-title label {
+  font-size: 2em;
+  font-weight: 400;
+  word-spacing: -2px;
+  overflow: visible !important;
+  text-align: justify;
+  font-family: 'PT Serif', serif;
+  color: #b3b3b1 !important;
+}
+
+.blog-file-input label,
+.blog-description label,
+.blog-tags label {
+  font-size: 1.2em;
+  font-weight: 400;
+  word-spacing: -2px;
+  overflow: visible !important;
+  text-align: justify;
+  font-family: 'PT Serif', serif;
+  color: #b3b3b1 !important;
+}
+
+.blog-file-input label {
+  left: -0.5em !important;
+}
+
+.blog-file-input .v-text-field__slot {
+  bottom: 0.5em;
+  height: 7em;
+  position: relative;
+}
+
+.blog-title textarea {
+  font-size: 2.2em;
+  line-height: 48px;
+  font-weight: 400;
+  word-spacing: -2px;
+  text-align: justify;
+  color: rgba(0, 0, 0, 0.84);
+}
+.blog-description {
+  width: 68em;
+  margin-left: -1em !important;
+  margin-top: 3em !important;
+}
+.blog-tags {
+  width: 68em;
+  margin-left: -1em !important;
+}
+.blog-description textarea {
+  line-height: 33px;
+  font-size: 1.17em;
+  width: 680px;
+  word-spacing: -1.8px;
+  overflow-wrap: break-word;
+  letter-spacing: 0.2px;
+  text-align: justify;
+  color: rgba(0, 0, 0, 0.84);
+}
+.customTextField .v-input__slot,
+.customFileInput .v-input__slot {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+.blog-image-details-container .v-input {
+  position: relative;
+  bottom: 5.4em;
+  padding: 2em 0;
+}
+
 .add-title-container {
   margin: 1em auto 0 auto;
 }
+
+.blog-image-details-container {
+  margin: -8em auto 0 auto;
+  width: 68em;
+}
 .blog-description-container {
-  margin: 0 auto;
+  margin: -17em auto 8em auto;
+  width: 68em;
+}
+.tag-details-container {
+  width: 68em;
+  margin: -10em auto 0 auto;
 }
 .alert-banner {
   position: absolute;
@@ -455,15 +600,47 @@ export default {
 }
 .entered-tags-list {
   display: flex;
+  width: 68em;
   flex-wrap: wrap;
+  margin: 0 auto;
+}
+.tag-description {
+  font-size: 1.35em;
+  font-family: 'Roboto', serif;
+  line-height: 22px;
+  margin-top: 1.5em !important;
+  position: relative;
+  left: -0.5em;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.54) !important;
+  background: #f2f2f2 !important;
 }
 .tag-alert-error {
   width: 100%;
 }
 .btn-container {
-  display: flex;
-  margin: 0 auto;
-  width: 45em;
+  margin: 2em auto 0 auto;
+  width: 68em;
+}
+.publish-btn {
+  margin-left: -1em;
+  font-family: 'Roboto', serif;
+  width: 6em;
+  margin-bottom: 2em;
+  background: #1976d2;
+  color: white !important;
+  text-transform: capitalize;
+  font-size: 1.4em;
+  font-weight: 400;
+}
+.save-as-draft-btn {
+  font-family: 'Roboto', serif;
+  margin-bottom: 2em;
+  background: #4ca97c;
+  color: white !important;
+  text-transform: capitalize;
+  font-size: 1.4em;
+  font-weight: 400;
 }
 .publish-btn,
 .delete-btn,
@@ -474,17 +651,27 @@ export default {
   display: none;
 }
 .uploaded-image-container {
-  width: inherit;
-  height: 50em;
+  width: 73em;
+  height: 45em;
+  display: flex;
+  margin-top: -13em;
+  margin-bottom: 13em;
+}
+.uploaded-image {
+  width: 68em;
+  height: 45em;
   margin-bottom: 4em;
   background-size: cover;
 }
-.uploaded-image {
-  width: 100%;
-  height: 100%;
-  border-radius: 3px;
-  object-fit: cover;
+.v-file-input__text {
+  display: none !important;
 }
+// .uploaded-image {
+//   width: 100%;
+//   height: 100%;
+//   border-radius: 3px;
+//   object-fit: cover;
+// }
 .banner {
   width: 50em;
   height: 30em;
