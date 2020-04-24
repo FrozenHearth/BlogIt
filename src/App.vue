@@ -14,6 +14,8 @@ export default {
   created() {
     if (this.token) {
       if (this.$route.path === '/') this.$router.push('/blogs');
+    } else {
+      this.$router.push('/login');
     }
   }
 };

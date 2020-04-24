@@ -88,7 +88,7 @@ export default {
       localStorage.removeItem('username');
       this.logoutSuccessful = true;
       setTimeout(() => {
-        this.$router.push('/');
+        this.$router.push('/login');
       }, 1000);
     }
   },

@@ -82,7 +82,7 @@ export default {
             localStorage.setItem('username', username);
             this.formValid = true;
             setTimeout(() => {
-              this.$router.push('/blogs');
+              this.$router.push('/blogs', () => this.$router.go(0));
             }, 1000);
           })
           .catch(err => {
