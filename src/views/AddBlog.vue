@@ -155,32 +155,41 @@
             Publish
           </v-btn>
           <v-btn
-            v-if="mode === 'edit'"
+            v-if="mode === 'edit' && previousComponent !== 'MyDraftsDetails'"
             @click="onUpdateBlog"
-            class="publish-btn"
-            color="primary"
+            class="update-blog-btn"
+            outlined
           >
-            Publish Blog
+            Update
           </v-btn>
           <v-btn
-            v-if="mode === 'edit'"
-            @click="onUpdateDraft"
+            outlined
+            v-if="mode === 'edit' && previousComponent === 'MyDraftsDetails'"
+            v-on:click="onUpdateBlog"
             class="publish-btn"
-            color="success"
+          >
+            Publish
+          </v-btn>
+          <v-btn
+            v-if="mode === 'edit' && previousComponent === 'MyDraftsDetails'"
+            @click="onUpdateDraft"
+            class="save-as-draft-btn"
+            outlined
           >
             Update Draft
           </v-btn>
+
           <v-btn
             @click="onDelete"
-            v-if="mode === 'edit'"
-            class="delete-btn"
-            color="error"
+            v-if="mode === 'edit' && previousComponent !== 'MyDraftsDetails'"
+            class="delete-blog-btn"
+            outlined
           >
             Delete
           </v-btn>
 
           <v-btn
-            v-if="previousComponent !== 'MyDraftsDetails'"
+            v-if="mode === 'create'"
             v-on:click="saveAsDraft"
             class="save-as-draft-btn"
             outlined
@@ -253,6 +262,7 @@ export default {
     this.previousComponent = prevComponent;
     if (this.$route.params.id) {
       this.mode = 'edit';
+      this.hideImageUploadBox = true;
       const { id } = this.$route.params;
       getBlogDetails(id)
         .then(res => {
@@ -633,6 +643,26 @@ export default {
   font-size: 1.4em;
   font-weight: 400;
 }
+.update-blog-btn {
+  margin-left: -1em;
+  margin-right: 0.5em;
+  font-family: 'Roboto', serif;
+  margin-bottom: 2em;
+  background: #4ca97c;
+  color: white !important;
+  text-transform: capitalize;
+  font-size: 1.4em;
+  font-weight: 400;
+}
+.delete-blog-btn {
+  font-family: 'Roboto', serif;
+  margin-bottom: 2em;
+  background: #ff5252;
+  color: white !important;
+  text-transform: capitalize;
+  font-size: 1.4em;
+  font-weight: 400;
+}
 .save-as-draft-btn {
   font-family: 'Roboto', serif;
   margin-bottom: 2em;
@@ -666,12 +696,6 @@ export default {
 .v-file-input__text {
   display: none !important;
 }
-// .uploaded-image {
-//   width: 100%;
-//   height: 100%;
-//   border-radius: 3px;
-//   object-fit: cover;
-// }
 .banner {
   width: 50em;
   height: 30em;
