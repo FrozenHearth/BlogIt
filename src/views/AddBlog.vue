@@ -115,8 +115,9 @@
 
         <v-col class="tag-details-container" cols="12" sm="6">
           <v-text-field
+            autocomplete="off"
             :rules="tagNamesRules"
-            v-on:keyup.enter="submitTags"
+            v-on:keydown.enter.prevent="submitTags"
             label="Add a tag name and hit Enter"
             class="customTextField blog-tags"
             min="1"
