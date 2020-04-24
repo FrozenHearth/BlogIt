@@ -103,7 +103,7 @@
       </div>
       <div v-if="showComments">
         <div class="comment-header-container">
-          <h3 class="comment-header">Responses</h3>
+          <h3 class="comment-header">Comments</h3>
         </div>
         <AddComment v-on:updated="updatedComment" :blogId="blogId" />
         <CommentList
@@ -217,7 +217,7 @@
       </div>
       <div v-if="showComments">
         <div class="comment-header-container">
-          <h3 class="comment-header">Responses</h3>
+          <h3 class="comment-header">Comments</h3>
         </div>
         <AddComment
           v-on:updated="updatedComment"

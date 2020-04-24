@@ -132,14 +132,4 @@ export default {
   font-weight: 400;
   word-spacing: -2px;
 }
-.comment-header-container {
-  width: 60em;
-  display: flex;
-  margin: 0 auto;
-}
-.comment-header {
-  font-weight: 500;
-  font-size: 1.7em;
-  margin-bottom: 1em;
-}
 </style>
