@@ -3,6 +3,9 @@
     <v-textarea
       class="add-comment-textarea"
       solo
+      dense
+      row-height="14"
+      auto-grow
       placeholder="Write a response..."
       v-model="text"
     ></v-textarea>
@@ -18,6 +21,14 @@
         initials ? initials.substring(0, 2).toUpperCase() : 'N/A'
       }}</span>
     </v-avatar>
+    <v-alert
+      class="alert-banner-comment"
+      width="300"
+      v-if="commentError"
+      type="error"
+    >
+      Comment cannot be empty!
+    </v-alert>
     <v-btn outlined @click="addNewComment" class="post-comment-btn"
       >Publish</v-btn
     >
@@ -31,7 +42,8 @@ export default {
   data: () => ({
     text: '',
     initials: '',
-    addedComment: {}
+    addedComment: {},
+    commentError: false
   }),
   props: ['blogId', 'allComments'],
   mounted() {
@@ -44,11 +56,21 @@ export default {
       };
       addComment(this.blogId, data)
         .then(res => {
+          if (this.text !== '') {
+            this.addedComment = res.data;
+          }
           this.text = '';
-          this.addedComment = res.data;
+          this.commentError = false;
           this.$emit('updated', { newComment: this.addedComment });
         })
-        .catch(err => console.log(err));
+        .catch(() => {
+          if (this.text === '') {
+            this.commentError = true;
+            setTimeout(() => {
+              this.commentError = false;
+            }, 2000);
+          }
+        });
     }
   }
 };
@@ -67,14 +89,17 @@ export default {
   padding-right: 12px !important;
   padding-left: 4em !important;
   padding-top: 0.6em !important;
-  font-size: 1.15em !important;
-  color: rgba(0, 0, 0, 0.54) !important;
+  font-size: 1.1em !important;
+  color: rgba(0, 0, 0, 0.84) !important;
   font-weight: 400 !important;
 }
 .add-comment-textarea .v-input__slot {
   border: 1px solid rgba(0, 0, 0, 0.09) !important;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
-  height: 5em;
+}
+.alert-banner-comment {
+  position: absolute;
+  right: 2em;
 }
 #user-initials-comment-avatar {
   font-size: 1em !important;
