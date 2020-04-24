@@ -38,6 +38,12 @@
 
         <v-card-text>
           {{ blog.details | truncate(200) }}
+          <router-link
+            class="card-text-read-more-link"
+            :to="`/blog/${blog.id}`"
+          >
+            <span> ...read more </span>
+          </router-link>
         </v-card-text>
 
         <div class="tags-list">
@@ -51,10 +57,12 @@
           </v-chip>
         </div>
 
-        <v-divider class="list-card-divider"></v-divider>
+        <!-- <v-divider class="list-card-divider"></v-divider> -->
 
         <v-card-actions>
-          <v-chip outlined class="posted-date-btn">
+          <v-chip class="posted-date-btn">
+            <v-icon class="clock-icon"> mdi-clock-outline</v-icon>
+
             {{ moment(blog.pub_date).fromNow() }}
           </v-chip>
         </v-card-actions>
@@ -102,6 +110,12 @@
 
         <v-card-text>
           {{ blog.details | truncate(200) }}
+          <router-link
+            class="card-textread-more-link"
+            :to="`/myPublished/${blog.id}`"
+          >
+            <span>...read more </span>
+          </router-link>
         </v-card-text>
 
         <div class="tags-list">
@@ -168,6 +182,12 @@
 
         <v-card-text>
           {{ draft.details | truncate(200) }}
+          <router-link
+            class="card-textread-more-link"
+            :to="`/myDrafts/${blog.id}`"
+          >
+            <span>...read more </span>
+          </router-link>
         </v-card-text>
 
         <div class="tags-list">
@@ -211,7 +231,7 @@ export default {
       if (value.length <= size) {
         return value;
       }
-      return value.substring(0, size) + '...';
+      return value.substring(0, size);
     }
   },
   mounted() {
@@ -276,14 +296,6 @@ export default {
   max-height: 30em;
   height: auto;
 }
-.blog-short-desc {
-  color: white;
-  font-size: 1.6em;
-  position: relative;
-  bottom: 4em;
-  left: -1em;
-  font-weight: 800;
-}
 .list-card-divider {
   margin-left: 4.8em;
   width: 68em;
@@ -296,8 +308,11 @@ export default {
   bottom: 4em;
   left: -3em;
 }
+.card-text-read-more-link,
 .read-more-link {
   text-decoration: none !important;
+  position: relative;
+  right: 0.2em;
 }
 .read-more-link:hover {
   text-decoration: underline !important;
@@ -308,10 +323,14 @@ export default {
   border-radius: 0;
   cursor: pointer;
 }
+.clock-icon {
+  margin-right: 0.2em;
+}
 .posted-date-btn {
-  margin: 0.5em 0 0.5em 2.8em;
+  margin: 0.5em 0 0.5em 2.2em;
   border-radius: 0;
-  text-transform: capitalize;
+  background: none !important;
+  line-height: 17px;
   color: rgba(0, 0, 0, 0.54);
   font-size: 1.4em;
 }

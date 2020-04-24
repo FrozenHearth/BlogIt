@@ -103,7 +103,7 @@ export default {
             .filter(el => el.published === true)
             .sort((a, b) => a.id - b.id)
             .reverse();
-          localStorage.setItem('blogList', JSON.stringify(this.blogs));
+          bus.$emit('blogList', this.blogs);
           this.tag_details = res.data.results.map(el => el.tag_details);
           // Get tags for displayed blogs, and then flatten the result
           const allTags = [].concat(
@@ -122,10 +122,8 @@ export default {
           this.publishedBlogs = res.data.results
             .sort((a, b) => a.id - b.id)
             .reverse();
-          localStorage.setItem(
-            'publishedBlogsList',
-            JSON.stringify(this.publishedBlogs)
-          );
+          bus.$emit('publishedBlogs', this.publishedBlogs);
+
           this.tag_details = res.data.results.map(el => el.tag_details);
           const publishedBlogTags = [].concat(
             ...this.tag_details.map(el => el.map(x => x.tag))
@@ -142,7 +140,7 @@ export default {
           this.myDrafts = res.data.results
             .sort((a, b) => a.id - b.id)
             .reverse();
-          localStorage.setItem('myDrafts', JSON.stringify(this.myDrafts));
+          bus.$emit('myDrafts', this.myDrafts);
           this.tag_details = res.data.results.map(el => el.tag_details);
           const myDraftsBlogTags = [].concat(
             ...this.tag_details.map(el => el.map(x => x.tag))
@@ -154,14 +152,12 @@ export default {
         .catch(err => console.log(err));
     },
     pageChange() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
+      window.scrollTo(0, 0);
       const { currentPage } = this.pagination;
       if (currentPage > 1 && this.activePath === '/blogs') {
         getNextBlogList((currentPage - 1) * 6).then(res => {
           this.blogs = res.data.results;
+          bus.$emit('blogList', this.blogs);
           this.tag_details = res.data.results.map(el => el.tag_details);
           // Get tags for displayed blogs, and then flatten the result
           const allTags = [].concat(
@@ -172,6 +168,7 @@ export default {
       } else if (currentPage > 1 && this.activePath === '/myPublished') {
         getNextPublishedBlogsList((currentPage - 1) * 6).then(res => {
           this.publishedBlogs = res.data.results;
+          bus.$emit('publishedBlogs', this.publishedBlogs);
           this.tag_details = res.data.results.map(el => el.tag_details);
           // Get tags for displayed blogs, and then flatten the result
           const allTags = [].concat(
@@ -183,6 +180,7 @@ export default {
         getNextDraftsList((currentPage - 1) * 6).then(res => {
           this.myDrafts = res.data.results;
           this.tag_details = res.data.results.map(el => el.tag_details);
+          bus.$emit('myDrafts', this.myDrafts);
           // Get tags for displayed blogs, and then flatten the result
           const allTags = [].concat(
             ...this.tag_details.map(el => el.map(x => x.tag))

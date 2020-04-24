@@ -14,7 +14,7 @@
           v-model="searchTerm"
           @keyup="searchBlogs"
           type="text"
-          label="Search"
+          label="Search Blogs"
           solo
         >
         </v-text-field>
@@ -83,34 +83,39 @@ export default {
 
   methods: {
     searchBlogs: _.debounce(function() {
-      if (this.searchTerm.trim() !== '' && this.blogs.length > 0) {
+      if (this.searchTerm !== '' && this.blogs.length > 0) {
         const result = this.blogs.filter(blog =>
           blog.title.toLowerCase().match(this.searchTerm.toLowerCase())
         );
         this.filteredBlogs = result;
-        bus.$emit('filteredBlogs', this.filteredBlogs);
+        // Return search results
+      } else if (this.searchTerm === '') {
+        this.filteredBlogs = this.blogs;
+        // If search term is empty or is resetted, then return the original list
       }
+      bus.$emit('filteredBlogs', this.filteredBlogs);
     }, 2000),
     searchPublishedBlogs: _.debounce(function() {
-      if (
-        this.searchTermPublished.trim() !== '' &&
-        this.publishedBlogs.length > 0
-      ) {
+      if (this.searchTermPublished !== '' && this.publishedBlogs.length > 0) {
         const result = this.publishedBlogs.filter(blog =>
           blog.title.toLowerCase().match(this.searchTermPublished.toLowerCase())
         );
         this.filteredPublishedBlogs = result;
-        bus.$emit('filteredPublishedBlogs', this.filteredPublishedBlogs);
+      } else if (this.searchTerm === '') {
+        this.filteredPublishedBlogs = this.publishedBlogs;
       }
+      bus.$emit('filteredPublishedBlogs', this.filteredPublishedBlogs);
     }, 2000),
     searchMyDrafts: _.debounce(function() {
-      if (this.searchTermDrafts.trim() !== '' && this.myDrafts.length > 0) {
+      if (this.searchTermDrafts !== '' && this.myDrafts.length > 0) {
         const result = this.myDrafts.filter(blog =>
           blog.title.toLowerCase().match(this.searchTermDrafts.toLowerCase())
         );
         this.filteredMyDrafts = result;
-        bus.$emit('filteredMyDrafts', this.filteredMyDrafts);
+      } else if (this.searchTerm === '') {
+        this.filteredMyDrafts = this.myDrafts;
       }
+      bus.$emit('filteredMyDrafts', this.filteredMyDrafts);
     }, 2000)
   },
   mounted() {
@@ -122,13 +127,22 @@ export default {
       bus.$on('tagList', tags => {
         this.tags = tags;
       });
+      bus.$on('blogList', blogList => {
+        this.blogs = blogList;
+      });
     } else if (this.activePath === '/myPublished') {
       bus.$on('publishedBlogTags', tags => {
         this.tags = tags;
       });
+      bus.$on('publishedBlogs', publishedBlogs => {
+        this.publishedBlogs = publishedBlogs;
+      });
     } else if (this.activePath === '/myDrafts') {
       bus.$on('myDraftsBlogTags', tags => {
         this.tags = tags;
+      });
+      bus.$on('myDrafts', myDrafts => {
+        this.myDrafts = myDrafts;
       });
     } else if (
       this.activePath === `/blog/${id}` ||
@@ -139,12 +153,6 @@ export default {
         this.tags = tags;
       });
     }
-
-    this.blogs = JSON.parse(localStorage.getItem('blogList'));
-    this.publishedBlogs = JSON.parse(
-      localStorage.getItem('publishedBlogsList')
-    );
-    this.myDrafts = JSON.parse(localStorage.getItem('myDrafts'));
   }
 };
 </script>
@@ -161,6 +169,10 @@ export default {
   bottom: 1.7em;
   right: 1em;
   z-index: 10;
+}
+.tags-container {
+  border-radius: 0 !important;
+  color: rgba(0, 0, 0, 0.54);
 }
 .tags-list {
   display: flex;
