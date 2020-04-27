@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'SkeletonLoader',
+  name: 'CardListLoader',
   props: ['isLoadingBlogs', 'blogsLength']
 };
 </script>
