@@ -42,16 +42,30 @@
         </v-text-field>
       </v-list-item>
 
-      <v-list-item>
+      <v-list-item class="side-nav-list-item">
         <div class="tags-list">
           <v-chip
-            v-for="(tag, index) in tags.slice(0, 10)"
-            :key="index"
+            v-for="tag in defaultTags"
+            :key="tag.id"
             outlined
             class="tags-container ma-2"
           >
             {{ tag }}
           </v-chip>
+        </div>
+        <div
+          class="see-more"
+          v-if="this.defaultTags.length === 5"
+          @click="showRemainingTags"
+        >
+          ...see more tags
+        </div>
+        <div
+          class="see-less"
+          v-if="this.defaultTags.length > 5"
+          @click="collapseTags"
+        >
+          ...see less tags
         </div>
       </v-list-item>
     </v-list>
@@ -67,6 +81,8 @@ export default {
     return {
       drawer: this.toggleDrawer,
       isClosed: false,
+      defaultTags: [],
+      showRestTags: [],
       tags: [],
       searchTerm: '',
       searchTermPublished: '',
@@ -116,7 +132,13 @@ export default {
         this.filteredMyDrafts = this.myDrafts;
       }
       bus.$emit('filteredMyDrafts', this.filteredMyDrafts);
-    }, 2000)
+    }, 2000),
+    showRemainingTags() {
+      this.defaultTags = this.tags;
+    },
+    collapseTags() {
+      this.defaultTags = this.tags.slice(0, 5);
+    }
   },
   mounted() {
     const { path } = this.$route;
@@ -126,6 +148,7 @@ export default {
     if (this.activePath === '/blogs') {
       bus.$on('tagList', tags => {
         this.tags = tags;
+        this.defaultTags = this.tags.slice(0, 5);
       });
       bus.$on('blogList', blogList => {
         this.blogs = blogList;
@@ -164,6 +187,9 @@ export default {
   position: relative;
   margin-top: 5em;
 }
+.side-nav-list-item {
+  margin-bottom: 10em;
+}
 .search-icon {
   position: absolute;
   bottom: 1.7em;
@@ -178,5 +204,20 @@ export default {
   display: flex;
   flex-wrap: wrap;
   text-transform: capitalize;
+}
+.see-more,
+.see-less {
+  font-size: 1.5em;
+  position: absolute;
+  left: 1.6em;
+  cursor: pointer;
+}
+
+.see-more {
+  top: 6.5em;
+}
+
+.see-less {
+  bottom: -2em;
 }
 </style>
