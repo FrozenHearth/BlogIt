@@ -440,6 +440,7 @@ export default {
 }
 .tag-chips-container {
   display: flex;
+  flex-wrap: wrap;
   width: 68em;
 }
 .tag-description {
