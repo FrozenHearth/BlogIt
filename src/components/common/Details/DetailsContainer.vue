@@ -79,7 +79,7 @@ import MyPublishedDetails from './MyPublishedDetails';
 import MyDraftsDetails from './MyDraftsDetails';
 import { getBlogDetails } from '../../../apis/api';
 export default {
-  name: 'DetailsView',
+  name: 'DetailsContainer',
   data: () => ({
     blog: {
       blogTitle: '',
