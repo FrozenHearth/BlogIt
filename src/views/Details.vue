@@ -1,18 +1,18 @@
 <template>
   <div>
     <Header />
-    <DetailsView />
+    <DetailsContainer />
   </div>
 </template>
 
 <script>
 import Header from '../components/common/Header';
-import DetailsView from '../components/common/DetailsView';
+import DetailsContainer from '../components/common/Details/DetailsContainer';
 export default {
   name: 'Details',
   components: {
     Header,
-    DetailsView
+    DetailsContainer
   }
 };
 </script>
