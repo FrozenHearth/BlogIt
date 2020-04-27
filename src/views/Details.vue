@@ -7,7 +7,7 @@
 
 <script>
 import Header from '../components/common/Header';
-import DetailsView from '../components/common/DetailsView';
+import DetailsView from '../components/common/Details/DetailsView';
 export default {
   name: 'Details',
   components: {
