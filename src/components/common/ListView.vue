@@ -5,7 +5,7 @@
       <div class="empty-list-msg text-center" v-if="blogs.length === 0">
         No blogs found.
       </div>
-      <CardView v-if="blogs.length > 0" v-bind:blogs="blogs" />
+      <Card v-if="blogs.length > 0" v-bind:blogs="blogs" />
       <div class="text-center pagination-container">
         <v-pagination
           @input="pageChange"
@@ -21,7 +21,7 @@
       <v-btn icon @click="goToNewBlog" class="new-blog-btn"
         ><v-icon> mdi-plus-circle-outline</v-icon></v-btn
       >
-      <CardView :publishedBlogs="publishedBlogs" />
+      <Card :publishedBlogs="publishedBlogs" />
       <div class="text-center pagination-container">
         <v-pagination
           @input="pageChange"
@@ -38,7 +38,7 @@
         ><v-icon> mdi-plus-circle-outline</v-icon></v-btn
       >
 
-      <CardView :myDrafts="myDrafts" />
+      <Card :myDrafts="myDrafts" />
       <div v-if="count > 6" class="text-center pagination-container">
         <v-pagination
           @input="pageChange"
@@ -60,13 +60,13 @@ import {
   getNextDraftsList
 } from '../../apis/api';
 import { getMyPublishedBlogs } from '../../apis/api';
-import CardView from './CardView';
+import Card from './Cards/Card';
 import { bus } from '../../main';
 
 export default {
   name: 'ListView',
   components: {
-    CardView
+    Card
   },
 
   data() {
