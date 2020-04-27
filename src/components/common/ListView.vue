@@ -2,11 +2,15 @@
   <v-content>
     <div class="card-list-container" v-if="activePath === '/blogs'">
       <h1 class="card-list-container-title text-center">Latest Posts</h1>
-      <div class="empty-list-msg text-center" v-if="blogs.length === 0">
-        No blogs found.
-      </div>
-      <Card v-if="blogs.length > 0" v-bind:blogs="blogs" />
-      <div class="text-center pagination-container">
+      <SkeletonLoader
+        :isLoadingBlogs="isLoadingBlogs"
+        :blogsLength="blogsLength"
+      />
+      <CardContainer v-if="isLoadingBlogs === false" :blogs="blogs" />
+      <div
+        v-if="isLoadingBlogs === false"
+        class="text-center pagination-container"
+      >
         <v-pagination
           @input="pageChange"
           v-model="pagination.currentPage"
@@ -21,8 +25,18 @@
       <v-btn icon @click="goToNewBlog" class="new-blog-btn"
         ><v-icon> mdi-plus-circle-outline</v-icon></v-btn
       >
-      <Card :publishedBlogs="publishedBlogs" />
-      <div class="text-center pagination-container">
+      <SkeletonLoader
+        :isLoadingBlogs="isLoadingBlogs"
+        :blogsLength="blogsLength"
+      />
+      <CardContainer
+        v-if="isLoadingBlogs === false"
+        :publishedBlogs="publishedBlogs"
+      />
+      <div
+        v-if="isLoadingBlogs === false"
+        class="text-center pagination-container"
+      >
         <v-pagination
           @input="pageChange"
           v-model="pagination.currentPage"
@@ -37,9 +51,15 @@
       <v-btn icon @click="goToNewBlog" class="new-blog-btn"
         ><v-icon> mdi-plus-circle-outline</v-icon></v-btn
       >
-
-      <Card :myDrafts="myDrafts" />
-      <div v-if="count > 6" class="text-center pagination-container">
+      <SkeletonLoader
+        :isLoadingBlogs="isLoadingBlogs"
+        :blogsLength="blogsLength"
+      />
+      <CardContainer v-if="isLoadingBlogs === false" :myDrafts="myDrafts" />
+      <div
+        v-if="isLoadingBlogs === false && count > 6"
+        class="text-center pagination-container"
+      >
         <v-pagination
           @input="pageChange"
           v-model="pagination.currentPage"
@@ -60,13 +80,15 @@ import {
   getNextDraftsList
 } from '../../apis/api';
 import { getMyPublishedBlogs } from '../../apis/api';
-import Card from './Cards/Card';
+import CardContainer from './Cards/CardContainer';
+import SkeletonLoader from './Loaders/SkeletonLoader';
 import { bus } from '../../main';
 
 export default {
   name: 'ListView',
   components: {
-    Card
+    CardContainer,
+    SkeletonLoader
   },
 
   data() {
@@ -75,6 +97,8 @@ export default {
         currentPage: 1
       },
       blogs: [],
+      blogsLength: 0,
+      isLoadingBlogs: true,
       activePath: '',
       tag_details: [],
       publishedBlogs: [],
@@ -97,33 +121,40 @@ export default {
   },
   methods: {
     getAllBlogs() {
+      this.isLoadingBlogs = true;
       getBlogList()
         .then(res => {
           this.blogs = res.data.results
             .filter(el => el.published === true)
             .sort((a, b) => a.id - b.id)
             .reverse();
+          this.blogsLength = this.blogs.length;
           bus.$emit('blogList', this.blogs);
           this.tag_details = res.data.results.map(el => el.tag_details);
           // Get tags for displayed blogs, and then flatten the result
           const allTags = [].concat(
             ...this.tag_details.map(el => el.map(x => x.tag))
           );
-
           bus.$emit('tagList', allTags);
           this.pageCount = Math.ceil(res.data.count / 6);
           this.count = res.data.count;
         })
+        .then(() => {
+          setTimeout(() => {
+            this.isLoadingBlogs = false;
+          }, 1000);
+        })
         .catch(err => console.log(err));
     },
     getPublishedBlogs() {
+      this.isLoadingBlogs = true;
       getMyPublishedBlogs()
         .then(res => {
           this.publishedBlogs = res.data.results
             .sort((a, b) => a.id - b.id)
             .reverse();
+          this.blogsLength = this.publishedBlogs.length;
           bus.$emit('publishedBlogs', this.publishedBlogs);
-
           this.tag_details = res.data.results.map(el => el.tag_details);
           const publishedBlogTags = [].concat(
             ...this.tag_details.map(el => el.map(x => x.tag))
@@ -132,14 +163,21 @@ export default {
           this.pageCount = Math.ceil(res.data.count / 6);
           this.count = res.data.count;
         })
+        .then(() => {
+          setTimeout(() => {
+            this.isLoadingBlogs = false;
+          }, 1000);
+        })
         .catch(err => console.log(err));
     },
     getAllDrafts() {
+      this.isLoadingBlogs = true;
       getMyDrafts()
         .then(res => {
           this.myDrafts = res.data.results
             .sort((a, b) => a.id - b.id)
             .reverse();
+          this.blogsLength = this.myDrafts.length;
           bus.$emit('myDrafts', this.myDrafts);
           this.tag_details = res.data.results.map(el => el.tag_details);
           const myDraftsBlogTags = [].concat(
@@ -149,44 +187,76 @@ export default {
           this.pageCount = Math.ceil(res.data.count / 6);
           this.count = res.data.count;
         })
+        .then(() => {
+          setTimeout(() => {
+            this.isLoadingBlogs = false;
+          }, 1000);
+        })
         .catch(err => console.log(err));
     },
     pageChange() {
       window.scrollTo(0, 0);
       const { currentPage } = this.pagination;
       if (currentPage > 1 && this.activePath === '/blogs') {
-        getNextBlogList((currentPage - 1) * 6).then(res => {
-          this.blogs = res.data.results;
-          bus.$emit('blogList', this.blogs);
-          this.tag_details = res.data.results.map(el => el.tag_details);
-          // Get tags for displayed blogs, and then flatten the result
-          const allTags = [].concat(
-            ...this.tag_details.map(el => el.map(x => x.tag))
-          );
-          bus.$emit('tagList', allTags);
-        });
+        this.isLoadingBlogs = true;
+        getNextBlogList((currentPage - 1) * 6)
+          .then(res => {
+            this.blogs = res.data.results;
+            this.blogsLength = this.blogs.length;
+            bus.$emit('blogList', this.blogs);
+            this.tag_details = res.data.results.map(el => el.tag_details);
+            // Get tags for displayed blogs, and then flatten the result
+            const allTags = [].concat(
+              ...this.tag_details.map(el => el.map(x => x.tag))
+            );
+            bus.$emit('tagList', allTags);
+          })
+          .then(() => {
+            this.isLoadingBlogs = false;
+          })
+          .catch(err => {
+            console.log(err);
+          });
       } else if (currentPage > 1 && this.activePath === '/myPublished') {
-        getNextPublishedBlogsList((currentPage - 1) * 6).then(res => {
-          this.publishedBlogs = res.data.results;
-          bus.$emit('publishedBlogs', this.publishedBlogs);
-          this.tag_details = res.data.results.map(el => el.tag_details);
-          // Get tags for displayed blogs, and then flatten the result
-          const allTags = [].concat(
-            ...this.tag_details.map(el => el.map(x => x.tag))
-          );
-          bus.$emit('tagList', allTags);
-        });
+        this.isLoadingBlogs = true;
+        getNextPublishedBlogsList((currentPage - 1) * 6)
+          .then(res => {
+            this.publishedBlogs = res.data.results;
+            this.blogsLength = this.publishedBlogs.length;
+            bus.$emit('publishedBlogs', this.publishedBlogs);
+            this.tag_details = res.data.results.map(el => el.tag_details);
+            // Get tags for displayed blogs, and then flatten the result
+            const allTags = [].concat(
+              ...this.tag_details.map(el => el.map(x => x.tag))
+            );
+            bus.$emit('tagList', allTags);
+          })
+          .then(() => {
+            this.isLoadingBlogs = false;
+          })
+          .catch(err => {
+            console.log(err);
+          });
       } else if (currentPage > 1 && this.activePath === '/myDrafts') {
-        getNextDraftsList((currentPage - 1) * 6).then(res => {
-          this.myDrafts = res.data.results;
-          this.tag_details = res.data.results.map(el => el.tag_details);
-          bus.$emit('myDrafts', this.myDrafts);
-          // Get tags for displayed blogs, and then flatten the result
-          const allTags = [].concat(
-            ...this.tag_details.map(el => el.map(x => x.tag))
-          );
-          bus.$emit('tagList', allTags);
-        });
+        this.isLoadingBlogs = true;
+        getNextDraftsList((currentPage - 1) * 6)
+          .then(res => {
+            this.myDrafts = res.data.results;
+            this.blogsLength = this.myDrafts.length;
+            this.tag_details = res.data.results.map(el => el.tag_details);
+            bus.$emit('myDrafts', this.myDrafts);
+            // Get tags for displayed blogs, and then flatten the result
+            const allTags = [].concat(
+              ...this.tag_details.map(el => el.map(x => x.tag))
+            );
+            bus.$emit('tagList', allTags);
+          })
+          .then(() => {
+            this.isLoadingBlogs = false;
+          })
+          .catch(err => {
+            console.log(err);
+          });
       } else if (
         this.count > 6 &&
         currentPage === 1 &&

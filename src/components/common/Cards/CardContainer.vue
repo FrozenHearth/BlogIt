@@ -1,6 +1,9 @@
 <template>
   <v-container fluid class="list-card-container">
-    <BlogCard v-if="activePath === '/blogs'" :blogs="blogs" />
+    <BlogCard
+      v-if="activePath === '/blogs' && blogs.length > 0"
+      :blogs="blogs"
+    />
     <MyPublishedCard
       :publishedBlogs="publishedBlogs"
       v-if="activePath === '/myPublished'"
@@ -14,7 +17,7 @@ import BlogCard from './BlogCard';
 import MyPublishedCard from './MyPublishedCard';
 import MyDraftsCard from './MyDraftsCard';
 export default {
-  name: 'CardView',
+  name: 'CardContainer',
   props: ['blogs', 'publishedBlogs', 'myDrafts'],
   components: {
     BlogCard,
@@ -65,7 +68,7 @@ export default {
 }
 
 ::v-deep .blog-details-text,
-.blog-subtitle {
+::v-deep .blog-subtitle {
   margin: -1.5em 0 0 0.2em;
 }
 
@@ -110,7 +113,7 @@ export default {
   left: -3em;
 }
 ::v-deep .card-text-read-more-link,
-.read-more-link {
+::v-deep .read-more-link {
   text-decoration: none !important;
   position: relative;
   right: 0.1em;
