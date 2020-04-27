@@ -3,7 +3,7 @@
     <Header />
     <div class="add-blog-container">
       <v-alert
-        class="alert-banner"
+        class="alert-banner-add-blog"
         width="300"
         v-if="blogPublished === true"
         type="success"
@@ -11,7 +11,7 @@
         Blog successfully published!
       </v-alert>
       <v-alert
-        class="alert-banner"
+        class="alert-banner-add-blog"
         width="300"
         v-if="blogPublished === false"
         type="error"
@@ -19,7 +19,7 @@
         Failed to publish blog! Please check the entered details.
       </v-alert>
       <v-alert
-        class="alert-banner"
+        class="alert-banner-add-blog"
         width="300"
         v-if="blogUpdated === true"
         type="success"
@@ -27,7 +27,7 @@
         Blog successfully updated!
       </v-alert>
       <v-alert
-        class="alert-banner"
+        class="alert-banner-add-blog"
         width="300"
         v-if="blogUpdated === false"
         type="error"
@@ -35,20 +35,68 @@
         Failed to update blog! Please check the entered details.
       </v-alert>
       <v-alert
-        class="alert-banner"
+        class="alert-banner-add-blog"
         width="300"
         v-if="blogDeleted === true"
         type="success"
       >
-        Successfully Deleted Blog!
+        Blog successfully deleted!
       </v-alert>
       <v-alert
-        class="alert-banner"
+        class="alert-banner-add-blog"
         width="300"
         v-if="blogDeleted === false"
         type="error"
       >
-        Failed to Delete Blog!
+        Failed to delete blog!
+      </v-alert>
+      <v-alert
+        class="alert-banner-add-blog"
+        width="300"
+        v-if="draftCreated === true"
+        type="success"
+      >
+        Draft successfully created!
+      </v-alert>
+      <v-alert
+        class="alert-banner-add-blog"
+        width="300"
+        v-if="draftCreated === false"
+        type="error"
+      >
+        Failed to create draft! Please check the entered details.
+      </v-alert>
+      <v-alert
+        class="alert-banner-add-blog"
+        width="300"
+        v-if="draftUpdated === true"
+        type="success"
+      >
+        Draft successfully updated!
+      </v-alert>
+      <v-alert
+        class="alert-banner-add-blog"
+        width="300"
+        v-if="draftUpdated === false"
+        type="error"
+      >
+        Failed to update draft! Please check the entered details.
+      </v-alert>
+      <v-alert
+        class="alert-banner-add-blog"
+        width="300"
+        v-if="draftDeleted === true"
+        type="success"
+      >
+        Draft successfully deleted!
+      </v-alert>
+      <v-alert
+        class="alert-banner-add-blog"
+        width="300"
+        v-if="draftDeleted === false"
+        type="error"
+      >
+        Failed to delete draft!
       </v-alert>
 
       <v-form class="add-blog-form-wrapper" ref="form">
@@ -190,6 +238,15 @@
           </v-btn>
 
           <v-btn
+            @click="onDelete"
+            v-if="mode === 'edit' && previousComponent === 'MyDraftsDetails'"
+            class="delete-blog-btn"
+            outlined
+          >
+            Delete Draft
+          </v-btn>
+
+          <v-btn
             v-if="mode === 'create'"
             v-on:click="saveAsDraft"
             class="save-as-draft-btn"
@@ -232,7 +289,9 @@ export default {
     uploadedPic: '',
     blogPublished: null,
     blogUpdated: null,
-    draftPublished: null,
+    draftCreated: null,
+    draftUpdated: null,
+    draftDeleted: null,
     blogDeleted: null,
     imageUploaded: false,
     imageUpdated: false,
@@ -243,19 +302,14 @@ export default {
     previousComponent: '',
     titleRules: [
       v => !!v || 'Title cannot be blank',
-      v => /^[a-zA-Z ]/.test(v) || 'Title must be valid',
       v => (v && v.length > 10) || 'Title must be atleast 10 characters'
     ],
     descriptionRules: [
       v => !!v || 'Description cannot be blank',
-      v => /^[a-zA-Z ]/.test(v) || 'Description must be valid',
       v => (v && v.length > 50) || 'Description must be atleast 50 characters'
     ],
     fileRules: [v => !!v || 'Please upload an image'],
-    tagNamesRules: [
-      v => !!v || 'Please enter atleast one tag',
-      v => /^[a-zA-Z0-9 ]/.test(v) || 'Tag names must be valid'
-    ]
+    tagNamesRules: [v => !!v || 'Please enter atleast one tag']
   }),
   mounted() {
     this.$refs.addBlogTitle.focus();
@@ -379,15 +433,16 @@ export default {
         };
         createBlog(data)
           .then(() => {
-            this.draftPublished = true;
+            this.draftCreated = true;
+            window.scrollTo(0, 0);
             setTimeout(() => {
               window.scrollTo(0, 0);
               this.$router.push('/myDrafts');
-            }, 1000);
+            }, 1500);
           })
           .catch(err => {
             console.log(err);
-            this.draftPublished = false;
+            this.draftCreated = false;
           });
       }
     },
@@ -415,16 +470,15 @@ export default {
       };
       updateBlog(id, data)
         .then(() => {
-          this.blogUpdated = true;
+          this.draftUpdated = true;
           window.scrollTo(0, 0);
-
           setTimeout(() => {
             this.$router.push(`/myDrafts/${id}`);
-          }, 1000);
+          }, 1500);
         })
         .catch(err => {
           console.log(err);
-          this.blogUpdated = false;
+          this.draftUpdated = false;
         });
     },
     onUpdateBlog() {
@@ -449,7 +503,7 @@ export default {
 
           setTimeout(() => {
             this.$router.push(`/myPublished/${id}`);
-          }, 1000);
+          }, 1500);
         })
         .catch(err => {
           console.log(err);
@@ -462,23 +516,31 @@ export default {
       deleteBlog(id)
         .then(() => {
           window.scrollTo(0, 0);
-          this.blogDeleted = true;
           if (
             previousComponent === 'BlogDetails' ||
             previousComponent === 'PublishedDetails'
           ) {
+            this.blogDeleted = true;
             setTimeout(() => {
               this.$router.push('/myPublished');
             }, 1000);
           } else if (previousComponent === 'MyDraftsDetails') {
+            this.draftedDeleted = true;
             setTimeout(() => {
               this.$router.push('/myDrafts');
-            }, 1000);
+            }, 1500);
           }
         })
         .catch(() => {
           window.scrollTo(0, 0);
-          this.blogDeleted = false;
+          if (
+            previousComponent === 'BlogDetails' ||
+            previousComponent === 'PublishedDetails'
+          ) {
+            this.blogDeleted = false;
+          } else if (previousComponent === 'MyDraftsDetails') {
+            this.draftedDeleted = false;
+          }
         });
     }
   }
@@ -552,7 +614,6 @@ export default {
 .blog-title textarea {
   font-size: 2.2em;
   font-family: 'PT Serif', serif;
-
   line-height: 48px;
   font-weight: 400;
   word-spacing: -2px;
@@ -607,9 +668,10 @@ export default {
   width: 68em;
   margin: -10em auto 0 auto;
 }
-.alert-banner {
+.alert-banner-add-blog {
   position: absolute;
   right: 2em;
+  top: 2em;
 }
 .entered-tags-list {
   display: flex;
