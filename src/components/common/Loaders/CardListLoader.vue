@@ -17,7 +17,10 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.list-card-loader-wrapper .v-skeleton-loader__image {
+  min-height: 24em !important;
+}
 .list-card-loader {
   max-width: 65em;
   margin: 2.5em auto 2em auto;
