@@ -3,7 +3,9 @@
     <!-- My Blog Details  -->
 
     <v-container v-if="activeComponent === 'BlogDetails'">
+      <DetailsContainerLoader :isLoadingBlogs="isLoadingBlogs" />
       <BlogDetails
+        v-if="isLoadingBlogs === false"
         :blogId="blogId"
         :blog="blog"
         :showComments="showComments"
@@ -29,7 +31,9 @@
     <v-container
       v-if="isOwner === true && activeComponent === 'PublishedDetails'"
     >
+      <DetailsContainerLoader :isLoadingBlogs="isLoadingBlogs" />
       <MyPublishedDetails
+        v-if="isLoadingBlogs === false"
         :isOwner="isOwner"
         :blogId="blogId"
         :blog="blog"
@@ -60,7 +64,9 @@
     <v-container
       v-if="isOwner === true && activeComponent === 'MyDraftsDetails'"
     >
+      <DetailsContainerLoader :isLoadingBlogs="isLoadingBlogs" />
       <MyDraftsDetails
+        v-if="isLoadingBlogs === false"
         :blogId="blogId"
         :blog="blog"
         :isOwner="isOwner"
@@ -77,6 +83,7 @@ import AddComment from '../../comments/AddComment';
 import BlogDetails from './BlogDetails';
 import MyPublishedDetails from './MyPublishedDetails';
 import MyDraftsDetails from './MyDraftsDetails';
+import DetailsContainerLoader from '../../common/Loaders/DetailsContainerLoader';
 import { getBlogDetails } from '../../../apis/api';
 export default {
   name: 'DetailsContainer',
@@ -91,6 +98,7 @@ export default {
       commentsList: []
     },
     blogId: '',
+    isLoadingBlogs: null,
     activeComponent: '',
     isOwner: null,
     showComments: false
@@ -110,57 +118,66 @@ export default {
     this.activeComponent = name;
     const { id } = this.$route.params;
     this.blogId = id;
-    getBlogDetails(id).then(res => {
-      const {
-        title,
-        author_name,
-        pub_date,
-        details,
-        picture_url,
-        tag_details,
-        comment_details,
-        is_owner
-      } = res.data;
-      this.blog.blogTitle = title;
-      this.blog.authorName = author_name;
-      this.blog.publishedDate = pub_date;
-      this.blog.blogDetails = details;
-      this.blog.image = picture_url;
-      this.blog.blogTags = tag_details;
-      const allTags = this.blog.blogTags.map(el => el.tag);
-      bus.$emit('detailsTagList', allTags);
-      this.blog.commentsList = JSON.parse(JSON.stringify(comment_details)).sort(
-        (a, b) => a.id - b.id
-      );
-      this.isOwner = is_owner;
-    });
+    this.isLoadingBlogs = true;
+    getBlogDetails(id)
+      .then(res => {
+        const {
+          title,
+          author_name,
+          pub_date,
+          details,
+          picture_url,
+          tag_details,
+          comment_details,
+          is_owner
+        } = res.data;
+        this.blog.blogTitle = title;
+        this.blog.authorName = author_name;
+        this.blog.publishedDate = pub_date;
+        this.blog.blogDetails = details;
+        this.blog.image = picture_url;
+        this.blog.blogTags = tag_details;
+        const allTags = this.blog.blogTags.map(el => el.tag);
+        bus.$emit('detailsTagList', allTags);
+        this.blog.commentsList = JSON.parse(
+          JSON.stringify(comment_details)
+        ).sort((a, b) => a.id - b.id);
+        this.isOwner = is_owner;
+      })
+      .then(() => {
+        this.isLoadingBlogs = false;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
   components: {
     CommentList,
     AddComment,
     BlogDetails,
     MyPublishedDetails,
-    MyDraftsDetails
+    MyDraftsDetails,
+    DetailsContainerLoader
   }
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 // Using ::v-deep to apply styles to child components with the below classes
-::v-deep #user-initials-footer {
+#user-initials-footer {
   font-size: 2.5em !important;
 }
-::v-deep .details-container {
+.details-container {
   margin: 0 auto 3em auto;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-::v-deep .title-container {
+.title-container {
   width: 68em;
   margin-top: 10em;
 }
-::v-deep .blog-header {
+.blog-header {
   font-size: 3.6em;
   font-weight: 400;
   word-spacing: -2px;
@@ -168,40 +185,40 @@ export default {
   line-height: 48px;
   font-family: 'PT Serif', serif;
 }
-::v-deep .user-avatar {
+.user-avatar {
   min-width: 48px;
   height: 48px;
   width: 48px;
 }
-::v-deep .image-container {
+.image-container {
   width: 68em;
   height: 45em;
   margin-top: 3em;
 }
-::v-deep .blog-details-image {
+.blog-details-image {
   object-fit: cover;
   height: 100%;
   width: 100%;
 }
-::v-deep .author-details-wrapper {
+.author-details-wrapper {
   width: 68em;
   display: flex;
   position: relative;
   justify-content: space-between;
   top: 2em;
 }
-::v-deep .edit-link {
+.edit-link {
   text-decoration: none;
 }
-::v-deep .edit-blog-btn {
+.edit-blog-btn {
   margin-left: auto;
 }
-::v-deep .tag-chips-container {
+.tag-chips-container {
   display: flex;
   flex-wrap: wrap;
   width: 68em;
 }
-::v-deep .tag-description {
+.tag-description {
   font-size: 1.35em;
   line-height: 22px;
   margin-top: 1.5em !important;
@@ -211,47 +228,47 @@ export default {
   color: rgba(0, 0, 0, 0.54) !important;
   background: #f2f2f2 !important;
 }
-::v-deep .blog-details-divider {
+.blog-details-divider {
   width: 68em;
   margin-top: 3em;
 }
-::v-deep .blog-details-divider-second {
+.blog-details-divider-second {
   width: 68em;
   margin-top: 1em;
 }
-::v-deep .blog-details-footer-wrapper {
+.blog-details-footer-wrapper {
   width: 68em;
 }
-::v-deep .blog-details-footer-container {
+.blog-details-footer-container {
   padding-top: 2.5em;
 }
-::v-deep .user-avatar-footer {
+.user-avatar-footer {
   position: relative;
   bottom: 1.9em;
 }
-::v-deep .author-details-title {
+.author-details-title {
   color: rgba(0, 0, 0, 0.54);
   font-size: 1.35em;
   line-height: 20px;
   letter-spacing: 0.7px;
 }
-::v-deep .author-details-footer {
+.author-details-footer {
   display: inline-block;
   padding: 0.3em 2em 2em 2em;
 }
-::v-deep .author-name {
+.author-name {
   font-size: 2.5em;
   position: relative;
   bottom: 0.6em;
   line-height: 36px;
 }
-::v-deep .description-container {
+.description-container {
   position: relative;
   margin-top: 5em;
   width: 68em;
   margin-bottom: 2em;
 }
-::v-deep .short-description {
+.short-description {
   white-space: pre-line;
   font-size: 1.9em;
   margin-top: 1em;
@@ -264,7 +281,7 @@ export default {
   font-family: 'PT Serif', serif;
   letter-spacing: 0.2px;
 }
-::v-deep .responses-container {
+.responses-container {
   border: 1px solid rgba(3, 168, 124, 1);
   padding: 2em;
   width: 68em;
@@ -272,18 +289,18 @@ export default {
   border-radius: 4px;
   cursor: pointer;
 }
-::v-deep .response-content-msg {
+.response-content-msg {
   color: #029e74;
   font-size: 1.4em;
   font-weight: 400;
   margin: 0 auto;
 }
-::v-deep .comment-header-container {
+.comment-header-container {
   width: 68em;
   display: flex;
   margin: 0 auto;
 }
-::v-deep .comment-header {
+.comment-header {
   font-weight: 500;
   color: rgba(0, 0, 0, 0.68);
   font-size: 1.4em;

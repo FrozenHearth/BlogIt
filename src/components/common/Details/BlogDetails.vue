@@ -5,6 +5,7 @@
         {{ blog.blogTitle }}
       </h2>
     </div>
+
     <div class="author-details-wrapper">
       <UserInfo :initials="blog.authorName" :datePosted="blog.publishedDate" />
       <router-link

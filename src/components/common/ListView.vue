@@ -2,7 +2,7 @@
   <v-content>
     <div class="card-list-container" v-if="activePath === '/blogs'">
       <h1 class="card-list-container-title text-center">Latest Posts</h1>
-      <SkeletonLoader
+      <CardListLoader
         :isLoadingBlogs="isLoadingBlogs"
         :blogsLength="blogsLength"
       />
@@ -25,7 +25,7 @@
       <v-btn icon @click="goToNewBlog" class="new-blog-btn"
         ><v-icon> mdi-plus-circle-outline</v-icon></v-btn
       >
-      <SkeletonLoader
+      <CardListLoader
         :isLoadingBlogs="isLoadingBlogs"
         :blogsLength="blogsLength"
       />
@@ -51,7 +51,7 @@
       <v-btn icon @click="goToNewBlog" class="new-blog-btn"
         ><v-icon> mdi-plus-circle-outline</v-icon></v-btn
       >
-      <SkeletonLoader
+      <CardListLoader
         :isLoadingBlogs="isLoadingBlogs"
         :blogsLength="blogsLength"
       />
@@ -81,14 +81,14 @@ import {
 } from '../../apis/api';
 import { getMyPublishedBlogs } from '../../apis/api';
 import CardContainer from './Cards/CardContainer';
-import SkeletonLoader from './Loaders/SkeletonLoader';
+import CardListLoader from './Loaders/CardListLoader';
 import { bus } from '../../main';
 
 export default {
   name: 'ListView',
   components: {
     CardContainer,
-    SkeletonLoader
+    CardListLoader
   },
 
   data() {
