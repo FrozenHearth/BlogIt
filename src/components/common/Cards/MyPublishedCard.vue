@@ -45,7 +45,7 @@
         <v-card-actions class="card-actions-container">
           <v-chip class="posted-date-btn">
             <v-icon class="clock-icon">mdi-clock-outline</v-icon>
-            {{ moment(blog.pub_date).fromNow() }}
+            {{ moment(blog.pub_date).format('LL') }}
           </v-chip>
         </v-card-actions>
       </div>
