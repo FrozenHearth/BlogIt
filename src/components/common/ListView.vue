@@ -7,11 +7,13 @@
       </h1>
       <CardListLoader
         :isLoadingBlogs="isLoadingBlogs"
+        :searchingBlogs="searchingBlogs"
+        :blogSearchResultLength="blogSearchResultLength"
         :blogsLength="blogsLength"
       />
       <CardContainer v-if="isLoadingBlogs === false" :blogs="blogs" />
       <div
-        v-if="isLoadingBlogs === false"
+        v-if="isLoadingBlogs === false && blogSearchResultLength !== 0"
         class="text-center pagination-container"
       >
         <v-pagination
@@ -32,6 +34,8 @@
       >
       <CardListLoader
         :isLoadingBlogs="isLoadingBlogs"
+        :searchingBlogs="searchingBlogs"
+        :blogSearchResultLength="blogSearchResultLength"
         :blogsLength="blogsLength"
       />
       <CardContainer
@@ -39,7 +43,7 @@
         :publishedBlogs="publishedBlogs"
       />
       <div
-        v-if="isLoadingBlogs === false"
+        v-if="isLoadingBlogs === false && blogSearchResultLength !== 0"
         class="text-center pagination-container"
       >
         <v-pagination
@@ -61,11 +65,15 @@
       >
       <CardListLoader
         :isLoadingBlogs="isLoadingBlogs"
+        :searchingBlogs="searchingBlogs"
+        :blogSearchResultLength="blogSearchResultLength"
         :blogsLength="blogsLength"
       />
       <CardContainer v-if="isLoadingBlogs === false" :myDrafts="myDrafts" />
       <div
-        v-if="isLoadingBlogs === false && count > 6"
+        v-if="
+          isLoadingBlogs === false && count > 6 && blogSearchResultLength !== 0
+        "
         class="text-center pagination-container"
       >
         <v-pagination
@@ -107,6 +115,9 @@ export default {
       blogs: [],
       blogsLength: 0,
       isLoadingBlogs: true,
+      searchingBlogs: null,
+      noBlogsFound: null,
+      blogSearchResultLength: null,
       activePath: '',
       tag_details: [],
       publishedBlogs: [],
@@ -294,15 +305,43 @@ export default {
       bus.$on('filteredBlogs', filteredBlogs => {
         this.blogs = filteredBlogs;
       });
+      bus.$on('searchingBlogs', searchingBlogs => {
+        this.searchingBlogs = searchingBlogs;
+      });
+      bus.$on('noBlogsFound', noBlogsFound => {
+        this.noBlogsFound = noBlogsFound;
+      });
+      bus.$on('blogSearchResultLength', blogSearchResultLength => {
+        this.blogSearchResultLength = blogSearchResultLength;
+        console.log(this.blogSearchResultLength);
+      });
     },
     publishedBlogs() {
       bus.$on('filteredPublishedBlogs', filteredPublishedBlogs => {
         this.publishedBlogs = filteredPublishedBlogs;
       });
+      bus.$on('searchingBlogs', searchingBlogs => {
+        this.searchingBlogs = searchingBlogs;
+      });
+      bus.$on('noBlogsFound', noBlogsFound => {
+        this.noBlogsFound = noBlogsFound;
+      });
+      bus.$on('blogSearchResultLength', blogSearchResultLength => {
+        this.blogSearchResultLength = blogSearchResultLength;
+      });
     },
     myDrafts() {
       bus.$on('filteredMyDrafts', filteredMyDrafts => {
         this.myDrafts = filteredMyDrafts;
+      });
+      bus.$on('searchingBlogs', searchingBlogs => {
+        this.searchingBlogs = searchingBlogs;
+      });
+      bus.$on('noBlogsFound', noBlogsFound => {
+        this.noBlogsFound = noBlogsFound;
+      });
+      bus.$on('blogSearchResultLength', blogSearchResultLength => {
+        this.blogSearchResultLength = blogSearchResultLength;
       });
     }
   }
