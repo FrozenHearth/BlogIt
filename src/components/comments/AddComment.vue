@@ -15,7 +15,6 @@
       min-width="36"
       class="user-avatar-add-comment"
       default
-      color="primary"
     >
       <span id="user-initials-comment-avatar" class="white--text headline ">{{
         initials ? initials.substring(0, 2).toUpperCase() : 'N/A'
@@ -89,6 +88,8 @@ export default {
   padding-right: 12px !important;
   padding-left: 4em !important;
   padding-top: 0.6em !important;
+  position: relative;
+  top: 0.3em;
   font-size: 1.1em !important;
   color: rgba(0, 0, 0, 0.84) !important;
   font-weight: 400 !important;
@@ -108,6 +109,7 @@ export default {
   position: absolute;
   top: 2em;
   left: 3em;
+  background: #3ca8e8;
 }
 .post-comment-btn {
   font-family: 'Roboto', serif;

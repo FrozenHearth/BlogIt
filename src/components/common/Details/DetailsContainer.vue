@@ -244,6 +244,7 @@ export default {
 .user-avatar-footer {
   position: relative;
   bottom: 1.9em;
+  background: #3ca8e8;
 }
 .author-details-title {
   color: rgba(0, 0, 0, 0.54);

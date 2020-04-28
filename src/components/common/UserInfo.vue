@@ -6,7 +6,6 @@
       :min-width="userCommentAvatarMinWidth"
       class="user-avatar"
       default
-      color="primary"
     >
       <span id="user-initials" class="white--text headline ">{{
         initials ? initials.substring(0, 2).toUpperCase() : 'N/A'
@@ -43,7 +42,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #user-initials {
   font-size: 1.5em !important;
 }
@@ -54,6 +53,9 @@ export default {
   position: relative;
   left: 0.7em;
   bottom: 0.7em;
+}
+.user-avatar {
+  background: #3ca8e8 !important;
 }
 .posted-date {
   font-size: 1.35em;

@@ -22,7 +22,12 @@
         <v-menu content-class="avatar-dropdown-menu">
           <template v-slot:activator="{ on }">
             <v-btn v-on="on" class="profile-icon" icon>
-              <v-avatar color="primary" min-width="36" width="36" height="36">
+              <v-avatar
+                class="header-user-avatar"
+                min-width="36"
+                width="36"
+                height="36"
+              >
                 <span id="user-initials-header" class="white--text headline ">{{
                   username.substring(0, 2).toUpperCase()
                 }}</span>
@@ -138,6 +143,9 @@ export default {
 .header-title {
   margin-left: 5em;
   cursor: pointer;
+}
+.header-user-avatar {
+  background: #3ca8e8;
 }
 .logout-btn {
   background: #4ca97c;
