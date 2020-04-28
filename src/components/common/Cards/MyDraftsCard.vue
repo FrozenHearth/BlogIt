@@ -30,7 +30,7 @@
         <v-card-text class="blog-details-text">
           {{ blog.details | truncate(50) }}
           <router-link
-            class="card-textread-more-link"
+            class="card-text-read-more-link"
             :to="`/myDrafts/${blog.id}`"
           >
             <span>...read more </span>
