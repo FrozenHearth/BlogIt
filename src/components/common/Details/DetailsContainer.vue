@@ -163,7 +163,6 @@ export default {
 </script>
 
 <style lang="scss">
-// Using ::v-deep to apply styles to child components with the below classes
 #user-initials-footer {
   font-size: 2.5em !important;
 }
@@ -283,7 +282,7 @@ export default {
 }
 .responses-container {
   border: 1px solid rgba(3, 168, 124, 1);
-  padding: 2em;
+  padding: 0.5em;
   width: 68em;
   margin-top: 2.2em;
   border-radius: 4px;
@@ -293,7 +292,7 @@ export default {
   color: #029e74;
   font-size: 1.4em;
   font-weight: 400;
-  margin: 0 auto;
+  margin: 1em;
 }
 .comment-header-container {
   width: 68em;
