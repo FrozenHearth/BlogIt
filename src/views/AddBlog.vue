@@ -2,102 +2,14 @@
   <v-content>
     <Header />
     <div class="add-blog-container">
-      <v-alert
-        class="alert-banner-add-blog"
-        width="300"
-        v-if="blogPublished === true"
-        type="success"
-      >
-        Blog successfully published!
-      </v-alert>
-      <v-alert
-        class="alert-banner-add-blog"
-        width="300"
-        v-if="blogPublished === false"
-        type="error"
-      >
-        Failed to publish blog! Please check the entered details.
-      </v-alert>
-      <v-alert
-        class="alert-banner-add-blog"
-        width="300"
-        v-if="blogUpdated === true"
-        type="success"
-      >
-        Blog successfully updated!
-      </v-alert>
-      <v-alert
-        class="alert-banner-add-blog"
-        width="300"
-        v-if="blogUpdated === false"
-        type="error"
-      >
-        Failed to update blog! Please check the entered details.
-      </v-alert>
-      <v-alert
-        class="alert-banner-add-blog"
-        width="300"
-        v-if="blogDeleted === true"
-        type="success"
-      >
-        Blog successfully deleted!
-      </v-alert>
-      <v-alert
-        class="alert-banner-add-blog"
-        width="300"
-        v-if="blogDeleted === false"
-        type="error"
-      >
-        Failed to delete blog!
-      </v-alert>
-      <v-alert
-        class="alert-banner-add-blog"
-        width="300"
-        v-if="draftCreated === true"
-        type="success"
-      >
-        Draft successfully created!
-      </v-alert>
-      <v-alert
-        class="alert-banner-add-blog"
-        width="300"
-        v-if="draftCreated === false"
-        type="error"
-      >
-        Failed to create draft! Please check the entered details.
-      </v-alert>
-      <v-alert
-        class="alert-banner-add-blog"
-        width="300"
-        v-if="draftUpdated === true"
-        type="success"
-      >
-        Draft successfully updated!
-      </v-alert>
-      <v-alert
-        class="alert-banner-add-blog"
-        width="300"
-        v-if="draftUpdated === false"
-        type="error"
-      >
-        Failed to update draft! Please check the entered details.
-      </v-alert>
-      <v-alert
-        class="alert-banner-add-blog"
-        width="300"
-        v-if="draftDeleted === true"
-        type="success"
-      >
-        Draft successfully deleted!
-      </v-alert>
-      <v-alert
-        class="alert-banner-add-blog"
-        width="300"
-        v-if="draftDeleted === false"
-        type="error"
-      >
-        Failed to delete draft!
-      </v-alert>
+      <Alert
+        :blogPublished="blogPublished"
+        :blogUpdated="blogUpdated"
+        :blogDeleted="blogDeleted"
+        :draftCreated="draftCreated"
+        :draftUpdated="draftUpdated"
+        :draftDeleted="draftDeleted"
+      />
 
       <v-form class="add-blog-form-wrapper" ref="form">
         <v-col class="add-title-container" cols="12" sm="6">
@@ -270,10 +182,12 @@ import {
   getBlogDetails
 } from '../apis/api';
 import Header from '../components/common/Header';
+import Alert from '../components/common/Alerts/Alert';
 export default {
   name: 'AddBlog',
   components: {
-    Header
+    Header,
+    Alert
   },
   data: () => ({
     file: null,
@@ -702,11 +616,7 @@ export default {
   width: 68em;
   margin: -10em auto 0 auto;
 }
-.alert-banner-add-blog {
-  position: absolute;
-  right: 2em;
-  top: 2em;
-}
+
 .entered-tags-list {
   display: flex;
   width: 68em;
