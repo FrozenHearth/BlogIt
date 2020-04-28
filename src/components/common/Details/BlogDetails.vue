@@ -50,13 +50,7 @@
     <v-divider class="blog-details-divider"></v-divider>
     <footer class="blog-details-footer-wrapper">
       <div class="blog-details-footer-container">
-        <v-avatar
-          width="80"
-          height="80"
-          class="user-avatar-footer"
-          default
-          color="primary"
-        >
+        <v-avatar width="80" height="80" class="user-avatar-footer" default>
           <span id="user-initials-footer" class="white--text headline ">{{
             blog.authorName
               ? blog.authorName.substring(0, 2).toUpperCase()
