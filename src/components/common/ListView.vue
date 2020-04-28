@@ -1,7 +1,10 @@
 <template>
   <v-content>
     <div class="card-list-container" v-if="activePath === '/blogs'">
-      <h1 class="card-list-container-title text-center">Latest Posts</h1>
+      <h1 class="card-list-container-title text-center">
+        Latest Posts
+        <v-icon class="latest-posts-icon">mdi-calendar-text</v-icon>
+      </h1>
       <CardListLoader
         :isLoadingBlogs="isLoadingBlogs"
         :blogsLength="blogsLength"
@@ -21,9 +24,11 @@
     </div>
 
     <div class="card-list-container" v-if="activePath === '/myPublished'">
-      <h1 class="card-list-container-title text-center">My Published</h1>
+      <h1 class="card-list-container-title text-center">
+        My Published <v-icon class="published-icon">mdi-marker-check</v-icon>
+      </h1>
       <v-btn icon @click="goToNewBlog" class="new-blog-btn"
-        ><v-icon> mdi-plus-circle-outline</v-icon></v-btn
+        ><v-icon class="new-blog-icon"> mdi-plus-box-outline</v-icon></v-btn
       >
       <CardListLoader
         :isLoadingBlogs="isLoadingBlogs"
@@ -47,9 +52,12 @@
     </div>
 
     <div class="card-list-container" v-if="activePath === '/myDrafts'">
-      <h1 class="card-list-container-title text-center">My Drafts</h1>
+      <h1 class="card-list-container-title text-center">
+        My Drafts
+        <v-icon class="drafts-icon">mdi-file-edit</v-icon>
+      </h1>
       <v-btn icon @click="goToNewBlog" class="new-blog-btn"
-        ><v-icon> mdi-plus-circle-outline</v-icon></v-btn
+        ><v-icon> mdi-plus-box-outline</v-icon></v-btn
       >
       <CardListLoader
         :isLoadingBlogs="isLoadingBlogs"
@@ -316,6 +324,24 @@ export default {
   margin: 0 auto;
   display: block;
   top: 1em;
+}
+.latest-posts-icon {
+  color: #3ca8e8;
+  position: relative;
+  bottom: 0.05em;
+  left: 0.15em;
+}
+.published-icon {
+  color: #4ca97c;
+  position: relative;
+  bottom: 0.05em;
+  left: 0.15em;
+}
+.drafts-icon {
+  color: #ff5252;
+  position: relative;
+  bottom: 0.05em;
+  left: 0.15em;
 }
 .pagination-container {
   margin-top: 5em;
