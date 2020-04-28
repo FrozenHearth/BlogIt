@@ -107,8 +107,7 @@
             maxlength="150"
             class="customTextField blog-title"
             type="text"
-            :rules="titleRules"
-            width="680"
+            :rules="[titleRules]"
             solo
             label="Title"
             v-model="title"
@@ -131,7 +130,7 @@
           <v-file-input
             class="customFileInput blog-file-input"
             solo
-            :rules="fileRules"
+            :rules="[fileRules]"
             @change="onImageUpload"
             v-model="file"
             accept="image/*"
@@ -152,7 +151,7 @@
           <v-textarea
             minlength="50"
             solo
-            :rules="descriptionRules"
+            :rules="[descriptionRules]"
             auto-grow
             class="customTextField blog-description"
             type="text"
@@ -164,7 +163,8 @@
         <v-col class="tag-details-container" cols="12" sm="6">
           <v-text-field
             autocomplete="off"
-            :rules="tagNamesRules"
+            :rules="[tagNamesRules]"
+            v-model="tag"
             v-on:keydown.enter.prevent="submitTags"
             label="Add a tag name and hit Enter"
             class="customTextField blog-tags"
@@ -277,15 +277,15 @@ export default {
   },
   data: () => ({
     file: null,
+    fd: new FormData(),
     text: '',
     title: '',
     details: '',
     mode: 'create',
     pic: '',
-    tag: 0,
     tagNames: [],
+    tag: '',
     user: null,
-    tagIds: [],
     uploadedPic: '',
     blogPublished: null,
     blogUpdated: null,
@@ -299,17 +299,7 @@ export default {
     tagExists: false,
     published: null,
     hideImageUploadBox: false,
-    previousComponent: '',
-    titleRules: [
-      v => !!v || 'Title cannot be blank',
-      v => (v && v.length > 10) || 'Title must be atleast 10 characters'
-    ],
-    descriptionRules: [
-      v => !!v || 'Description cannot be blank',
-      v => (v && v.length > 50) || 'Description must be atleast 50 characters'
-    ],
-    fileRules: [v => !!v || 'Please upload an image'],
-    tagNamesRules: [v => !!v || 'Please enter atleast one tag']
+    previousComponent: ''
   }),
   mounted() {
     this.$refs.addBlogTitle.focus();
@@ -342,15 +332,55 @@ export default {
       this.mode = 'create';
     }
   },
+  computed: {
+    titleRules() {
+      if (!this.title) {
+        return 'Title cannot be empty!';
+      } else if (this.title.length < 10) {
+        return 'Title must be atleast 10 characters!';
+      } else {
+        return '';
+      }
+    },
+    descriptionRules() {
+      if (!this.details) {
+        return 'Description cannot be empty!';
+      } else if (this.details.length < 50) {
+        return 'Description must be atleast 50 characters!';
+      } else {
+        return '';
+      }
+    },
+    fileRules() {
+      if (!this.uploadedPic) {
+        return 'Please upload an image!';
+      } else {
+        return '';
+      }
+    },
+    tagNamesRules() {
+      const { id } = this.$route.params;
+
+      if (id) {
+        if (this.tag === '' && this.tagNames.length === 0) {
+          return 'Please enter atleast one tag';
+        } else {
+          return '';
+        }
+      } else if (!this.tag && this.tagNames.length === 0) {
+        return 'Tag name cannot be empty!';
+      } else {
+        return '';
+      }
+    }
+  },
   methods: {
     onImageUpload() {
       this.isLoading = true;
       if (this.file) {
-        const fd = new FormData();
+        this.fd.append('pic', this.file, this.file.name);
 
-        fd.append('pic', this.file, this.file.name);
-
-        imageUpload(fd).then(res => {
+        imageUpload(this.fd).then(res => {
           this.uploadedPic = res.data.pic;
           this.pic = res.data.id;
           this.isLoading = false;
@@ -363,23 +393,22 @@ export default {
         this.isLoading = false;
       }
     },
-    submitTags({ target }) {
-      this.tag = target.value;
+    submitTags() {
       if (this.tag !== '') {
         const data = {
           tag: this.tag
         };
         addTags(data)
           .then(res => {
-            this.tag = res.data.id;
+            this.tagId = res.data.id;
             this.tagNames.push(res.data);
-            this.tagIds.push(this.tag);
-            target.value = '';
+            // this.tagIds.push(this.tagId);
+            this.tag = '';
             this.tagExists = false;
           })
           .catch(() => {
             this.tagExists = true;
-            target.value = '';
+            this.tag = '';
           });
       }
     },
@@ -402,13 +431,14 @@ export default {
         };
         createBlog(data)
           .then(() => {
+            window.scrollTo(0, 0);
             this.blogPublished = true;
             setTimeout(() => {
-              window.scrollTo(0, 0);
               this.$router.push('/myPublished');
             }, 1000);
           })
           .catch(err => {
+            window.scrollTo(0, 0);
             console.log(err);
             this.blogPublished = false;
           });
@@ -433,14 +463,14 @@ export default {
         };
         createBlog(data)
           .then(() => {
-            this.draftCreated = true;
             window.scrollTo(0, 0);
+            this.draftCreated = true;
             setTimeout(() => {
-              window.scrollTo(0, 0);
               this.$router.push('/myDrafts');
             }, 1500);
           })
           .catch(err => {
+            window.scrollTo(0, 0);
             console.log(err);
             this.draftCreated = false;
           });
@@ -452,6 +482,8 @@ export default {
     removeImage() {
       this.imageUploaded = false;
       this.hideImageUploadBox = false;
+      this.uploadedPic = '';
+      this.pic = 0;
     },
     onUpdateDraft() {
       const { id } = this.$route.params;
@@ -470,13 +502,14 @@ export default {
       };
       updateBlog(id, data)
         .then(() => {
-          this.draftUpdated = true;
           window.scrollTo(0, 0);
+          this.draftUpdated = true;
           setTimeout(() => {
             this.$router.push(`/myDrafts/${id}`);
           }, 1500);
         })
         .catch(err => {
+          window.scrollTo(0, 0);
           console.log(err);
           this.draftUpdated = false;
         });
@@ -498,14 +531,14 @@ export default {
       };
       updateBlog(id, data)
         .then(() => {
-          this.blogUpdated = true;
           window.scrollTo(0, 0);
-
+          this.blogUpdated = true;
           setTimeout(() => {
             this.$router.push(`/myPublished/${id}`);
           }, 1500);
         })
         .catch(err => {
+          window.scrollTo(0, 0);
           console.log(err);
           this.blogUpdated = false;
         });
@@ -531,7 +564,8 @@ export default {
             }, 1500);
           }
         })
-        .catch(() => {
+        .catch(err => {
+          console.log(err);
           window.scrollTo(0, 0);
           if (
             previousComponent === 'BlogDetails' ||
