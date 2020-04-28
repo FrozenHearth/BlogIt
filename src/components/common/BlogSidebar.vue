@@ -93,44 +93,95 @@ export default {
       filteredMyDrafts: [],
       filteredPublishedBlogs: [],
       myDrafts: [],
-      activePath: ''
+      activePath: '',
+      searchingBlogs: null,
+      noBlogsFound: null,
+      blogSearchResultLength: null
     };
   },
 
   methods: {
     searchBlogs: _.debounce(function() {
       if (this.searchTerm !== '' && this.blogs.length > 0) {
-        const result = this.blogs.filter(blog =>
-          blog.title.toLowerCase().match(this.searchTerm.toLowerCase())
-        );
+        this.searchingBlogs = true;
+        bus.$emit('searchingBlogs', this.searchingBlogs);
+        const result = this.blogs.filter(blog => {
+          return blog.title.toLowerCase().match(this.searchTerm.toLowerCase());
+        });
         this.filteredBlogs = result;
+        this.blogSearchResultLength = this.filteredBlogs.length;
+        if (this.filteredBlogs.length > 0) {
+          this.searchingBlogs = false;
+          bus.$emit('searchingBlogs', this.searchingBlogs);
+        } else {
+          this.searchingBlogs = true;
+          bus.$emit('searchingBlogs', this.searchingBlogs);
+          this.noBlogsFound = true;
+        }
         // Return search results
       } else if (this.searchTerm === '') {
         this.filteredBlogs = this.blogs;
+        this.blogSearchResultLength = null;
         // If search term is empty or is resetted, then return the original list
       }
+      bus.$emit('blogSearchResultLength', this.blogSearchResultLength);
+      bus.$emit('noBlogsFound', this.noBlogsFound);
       bus.$emit('filteredBlogs', this.filteredBlogs);
     }, 2000),
+
     searchPublishedBlogs: _.debounce(function() {
       if (this.searchTermPublished !== '' && this.publishedBlogs.length > 0) {
-        const result = this.publishedBlogs.filter(blog =>
-          blog.title.toLowerCase().match(this.searchTermPublished.toLowerCase())
-        );
+        this.searchingBlogs = true;
+        bus.$emit('searchingBlogs', this.searchingBlogs);
+        const result = this.publishedBlogs.filter(blog => {
+          return blog.title
+            .toLowerCase()
+            .match(this.searchTermPublished.toLowerCase());
+        });
         this.filteredPublishedBlogs = result;
+        this.blogSearchResultLength = this.filteredPublishedBlogs.length;
+        if (this.filteredPublishedBlogs.length > 0) {
+          this.searchingBlogs = false;
+          bus.$emit('searchingBlogs', this.searchingBlogs);
+        } else {
+          this.searchingBlogs = false;
+          bus.$emit('searchingBlogs', this.searchingBlogs);
+          this.noBlogsFound = true;
+        }
       } else if (this.searchTerm === '') {
         this.filteredPublishedBlogs = this.publishedBlogs;
+        this.blogSearchResultLength = null;
       }
+      bus.$emit('blogSearchResultLength', this.blogSearchResultLength);
+      bus.$emit('noBlogsFound', this.noBlogsFound);
       bus.$emit('filteredPublishedBlogs', this.filteredPublishedBlogs);
     }, 2000),
+
     searchMyDrafts: _.debounce(function() {
       if (this.searchTermDrafts !== '' && this.myDrafts.length > 0) {
-        const result = this.myDrafts.filter(blog =>
-          blog.title.toLowerCase().match(this.searchTermDrafts.toLowerCase())
-        );
+        this.searchingBlogs = true;
+        bus.$emit('searchingBlogs', this.searchingBlogs);
+        const result = this.myDrafts.filter(blog => {
+          return blog.title
+            .toLowerCase()
+            .match(this.searchTermDrafts.toLowerCase());
+        });
         this.filteredMyDrafts = result;
+        this.blogSearchResultLength = this.filteredMyDrafts.length;
+        if (this.filteredMyDrafts.length > 0) {
+          this.searchingBlogs = false;
+          bus.$emit('searchingBlogs', this.searchingBlogs);
+        } else {
+          this.searchingBlogs = false;
+          bus.$emit('searchingBlogs', this.searchingBlogs);
+          this.noBlogsFound = true;
+        }
       } else if (this.searchTerm === '') {
         this.filteredMyDrafts = this.myDrafts;
+        this.blogSearchResultLength = null;
       }
+      bus.$emit('blogSearchResultLength', this.blogSearchResultLength);
+      bus.$emit('noBlogsFound', this.noBlogsFound);
       bus.$emit('filteredMyDrafts', this.filteredMyDrafts);
     }, 2000),
     showRemainingTags() {
@@ -156,6 +207,7 @@ export default {
     } else if (this.activePath === '/myPublished') {
       bus.$on('publishedBlogTags', tags => {
         this.tags = tags;
+        this.defaultTags = this.tags.slice(0, 5);
       });
       bus.$on('publishedBlogs', publishedBlogs => {
         this.publishedBlogs = publishedBlogs;
@@ -163,6 +215,7 @@ export default {
     } else if (this.activePath === '/myDrafts') {
       bus.$on('myDraftsBlogTags', tags => {
         this.tags = tags;
+        this.defaultTags = this.tags.slice(0, 5);
       });
       bus.$on('myDrafts', myDrafts => {
         this.myDrafts = myDrafts;
@@ -189,6 +242,9 @@ export default {
 }
 .side-nav-list-item {
   margin-bottom: 10em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 .search-icon {
   position: absolute;
@@ -208,16 +264,12 @@ export default {
 .see-more,
 .see-less {
   font-size: 1.5em;
-  position: absolute;
-  left: 1.6em;
+  position: relative;
+  left: 0.6em;
   cursor: pointer;
 }
 
-.see-more {
-  top: 6.5em;
-}
-
-.see-less {
-  bottom: -2em;
-}
+// .see-less {
+//   bottom: -2em;
+// }
 </style>
