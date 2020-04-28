@@ -132,6 +132,13 @@ export default {
 <style lang="scss" scoped>
 .header-toolbar {
   position: fixed;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 1) 35%,
+    rgba(136, 200, 238, 1) 85%,
+    rgba(199, 228, 246, 1) 100%
+  );
+
   width: 100%;
   z-index: 2;
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
@@ -161,6 +168,7 @@ export default {
 }
 #user-initials-header {
   font-size: 0.8em !important;
+  font-weight: 600 !important;
 }
 .alert-banner-logout {
   position: absolute;
