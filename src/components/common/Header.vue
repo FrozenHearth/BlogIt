@@ -42,7 +42,28 @@
               >
             </v-list-item>
             <v-list-item class="active-link" ripple>
-              <v-list-item-title @click="logout">Logout</v-list-item-title>
+              <v-list-item-title @click.stop="dialog = true"
+                >Logout</v-list-item-title
+              >
+              <v-dialog v-model="dialog" max-width="290">
+                <v-card>
+                  <v-card-title class="headline"
+                    >Are you sure you want to log out?</v-card-title
+                  >
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn class="logout-btn" outlined @click="logout">
+                      Logout
+                    </v-btn>
+
+                    <v-btn class="cancel-btn" outlined @click="dialog = false">
+                      Cancel
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -74,6 +95,7 @@ export default {
     headerLogo: ZayaHeaderLogo,
     drawer: false,
     logoutSuccessful: false,
+    dialog: false,
     username: localStorage.getItem('username')
   }),
   methods: {
@@ -115,6 +137,18 @@ export default {
 .header-title {
   margin-left: 5em;
   cursor: pointer;
+}
+.logout-btn {
+  background: #4ca97c;
+  color: white !important;
+  text-transform: capitalize;
+  font-size: 1.4em;
+}
+.cancel-btn {
+  background: #ff5252;
+  color: white !important;
+  text-transform: capitalize;
+  font-size: 1.4em;
 }
 #user-initials-header {
   font-size: 0.8em !important;
