@@ -109,6 +109,7 @@ export default {
       this.$router.push('/myPublished');
     },
     logout() {
+      this.dialog = false;
       localStorage.removeItem('user-token');
       localStorage.removeItem('username');
       this.logoutSuccessful = true;
