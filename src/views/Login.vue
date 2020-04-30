@@ -79,7 +79,8 @@
 import ZayaLoginLogo from '../assets/Zaya_Logo.png';
 import ZayaHeaderLogo from '../assets/Zaya_Header_Logo.png';
 import blogBackground from '../assets/undraw_blogging_vpvv.png';
-import { login } from '../apis/api';
+// import { login } from '../apis/api';
+import { mapActions } from 'vuex';
 export default {
   name: 'Login',
   data: () => ({
@@ -103,16 +104,21 @@ export default {
     logo: ZayaLoginLogo
   }),
   methods: {
+    ...mapActions({
+      signIn: 'auth/signInAction'
+    }),
     validateLogin() {
       this.$refs.form.validate();
       if (this.$refs.form.validate() === true) {
         const { username, password } = this;
-        login({ username, password })
-          .then(res => {
-            const username = JSON.parse(res.config.data).username;
-            const token = res.data.token;
-            localStorage.setItem('user-token', token);
-            localStorage.setItem('username', username);
+
+        const data = {
+          username,
+          password
+        };
+
+        this.signIn(data)
+          .then(() => {
             this.formValid = true;
             setTimeout(() => {
               this.$router.push('/blogs', () => this.$router.go(0));
