@@ -94,15 +94,18 @@
 <script>
 import ZayaHeaderLogo from '../../assets/Zaya_Header_Logo.png';
 import BlogSidebar from '../common/BlogSidebar';
+import { mapState } from 'vuex';
 export default {
   name: 'Header',
   data: () => ({
     headerLogo: ZayaHeaderLogo,
     drawer: false,
     logoutSuccessful: false,
-    dialog: false,
-    username: localStorage.getItem('username')
+    dialog: false
   }),
+  computed: {
+    ...mapState('auth', ['username'])
+  },
   methods: {
     redirectToHomePage() {
       this.$router.push('/blogs');

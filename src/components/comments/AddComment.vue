@@ -36,6 +36,7 @@
 
 <script>
 import { addComment } from '../../apis/api';
+import { mapState } from 'vuex';
 export default {
   name: 'AddComment',
   data: () => ({
@@ -45,8 +46,11 @@ export default {
     commentError: false
   }),
   props: ['blogId', 'allComments'],
+  computed: {
+    ...mapState('auth', ['username'])
+  },
   mounted() {
-    this.initials = localStorage.getItem('username');
+    this.initials = this.username;
   },
   methods: {
     addNewComment() {
