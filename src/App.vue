@@ -8,16 +8,7 @@
 
 <script>
 export default {
-  data: () => ({
-    token: localStorage.getItem('user-token')
-  }),
-  created() {
-    if (this.token) {
-      if (this.$route.path === '/') this.$router.push('/blogs');
-    } else {
-      this.$router.push('/login');
-    }
-  }
+  name: 'App'
 };
 </script>
 
