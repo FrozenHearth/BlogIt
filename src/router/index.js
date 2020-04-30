@@ -62,8 +62,16 @@ const router = new VueRouter({
   routes
 });
 
-router.beforeEach((to, from, next) => {
+const token = localStorage.getItem('user-token');
+
+router.beforeEach((to, _, next) => {
   window.scrollTo(0, 0);
+  if (to.name !== 'Login' && token === null) {
+    // Redirect user to login, if user is not authenticated
+    next({ name: 'Login' });
+  } else {
+    next();
+  }
   next();
 });
 
