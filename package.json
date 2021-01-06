@@ -9,7 +9,7 @@
     "prod-build": "rm -rf dist && npm run build && cd dist/ && surge"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.4",
     "lodash": "^4.17.19",
     "moment": "^2.24.0",
